@@ -4,17 +4,12 @@ namespace Todo.Cli;
 
 public class Todo
 {
-    public Todo(string name, bool isComplete)
+    public Todo(string name)
     {
         Id = Guid.NewGuid();
         Name = name;
         CreatedAt = DateTime.Now;
         IsComplete = false;
-    }
-
-    public Todo(string newTask)
-    {
-        throw new NotImplementedException();
     }
 
     public Guid Id { get; set; }
