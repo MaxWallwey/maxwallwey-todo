@@ -9,7 +9,7 @@ public class MenuNavigation
         // Set the default index of the selected item to be the first
         public static int Index;
 
-        public void Main()
+        public void Start()
         {
             Items.Add(new Todo("hoover"));
             Items.Add(new Todo("mop"));

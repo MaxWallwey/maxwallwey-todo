@@ -3,4 +3,4 @@ using Todo.Cli.Menu;
 
 var menu = new MenuNavigation();
 
-menu.Main();
+menu.Start();
