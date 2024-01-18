@@ -12,10 +12,10 @@ public class Todo
         IsComplete = false;
     }
 
-    public Guid Id { get; set; }
+    public Guid Id { get; }
     public string Name { get; }
-    public DateTime CreatedAt { get; set; }
-    public bool IsComplete { get; set; }
+    public DateTime CreatedAt { get; }
+    public bool IsComplete { get; private set; }
 
     public void Complete()
     {

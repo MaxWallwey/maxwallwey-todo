@@ -1,4 +1,4 @@
-namespace Todo.Cli.Menu;
+namespace Todo.Cli.Menu.Actions;
 
 public class ListIncompleteItemsAction : IMenuAction
 {
