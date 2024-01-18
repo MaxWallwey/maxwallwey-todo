@@ -18,7 +18,6 @@ public class MenuNavigation
             Items.Add(new Todo("washing"));
             
             
-                
             // Create options that you want your menu to have
             Options = new List<Option>
             {
