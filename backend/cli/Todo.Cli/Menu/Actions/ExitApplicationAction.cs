@@ -1,6 +1,6 @@
 namespace Todo.Cli.Menu.Actions;
 
-public class ExitApplicationAction : IMenuAction
+public class ExitApplicationAction
 {
     public void Run()
     {

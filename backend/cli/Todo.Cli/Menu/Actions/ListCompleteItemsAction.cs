@@ -1,6 +1,6 @@
 namespace Todo.Cli.Menu.Actions;
 
-public class ListCompleteItemsAction : IMenuAction
+public class ListCompleteItemsAction : ToDoRepository
 {
     private readonly List<Todo> _items;
 
@@ -13,9 +13,6 @@ public class ListCompleteItemsAction : IMenuAction
     {
         Console.WriteLine("Current completed tasks:");
 
-        foreach (var item in _items.Where(item => item.IsComplete))
-        {
-            Console.WriteLine(item.Name);
-        }
+        ListCompleteTasks();
     }
 }

@@ -1,6 +1,6 @@
 namespace Todo.Cli.Menu.Actions;
 
-public class AddNewItemAction : IMenuAction
+public class AddNewItemAction : ToDoRepository
 {
     private readonly List<Todo> _items;
 
@@ -14,9 +14,6 @@ public class AddNewItemAction : IMenuAction
         Console.WriteLine("What task would you like to add? To cancel this, type 'exit'\n");
         string? newTask = Console.ReadLine();
 
-        if (newTask != null && newTask != "exit")
-        {
-            _items.Add(new Todo(newTask));
-        }
+        AddTask(newTask);
     }
 }

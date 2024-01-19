@@ -2,22 +2,15 @@ using Todo.Cli.Menu.Actions;
 
 namespace Todo.Cli.Menu;
 
-public class MenuNavigation
+public class MenuNavigation : ToDoRepository
 {
         public static List<Option>? Options;
-
-        public List<Todo> Items = new List<Todo>();
-        
+    
         // Set the default index of the selected item to be the first
         public static int Index;
 
         public void Start()
         {
-            Items.Add(new Todo("hoover"));
-            Items.Add(new Todo("mop"));
-            Items.Add(new Todo("washing"));
-            
-            
             // Create options that you want your menu to have
             Options = new List<Option>
             {
