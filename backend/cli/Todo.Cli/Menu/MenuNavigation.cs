@@ -2,85 +2,75 @@ using Todo.Cli.Menu.Actions;
 
 namespace Todo.Cli.Menu;
 
-public class MenuNavigation : ToDoRepository
+public class MenuNavigation
 {
-        // public static List<Option>? Options;
+    private readonly List<Option> _options;
+
+    public MenuNavigation(List<Option> options)
+    {
+        _options = options;
+    }
+
+    // Set the default index of the selected item to be the first
+    private static int _index;
     
-        // Set the default index of the selected item to be the first
-        public static int Index;
+    public void Start()
+    {
+        WriteMenu(_options, _options[_index]);
 
-        public void Start()
+        // Store key info in here
+        ConsoleKeyInfo keyinfo;
+        do
         {
-            MenuOptions options = new MenuOptions();
-            
-            WriteMenu(MenuOptions.Options, MenuOptions.Options[Index]);
+            keyinfo = Console.ReadKey();
 
-            // Store key info in here
-            ConsoleKeyInfo keyinfo;
-            do
+            // Handle each key input (down arrow will write the menu again with a different selected item)
+            if (keyinfo.Key == ConsoleKey.DownArrow)
             {
-                keyinfo = Console.ReadKey();
-
-                // Handle each key input (down arrow will write the menu again with a different selected item)
-                if (keyinfo.Key == ConsoleKey.DownArrow)
+                if (_index + 1 < _options.Count)
                 {
-                    if (Index + 1 < MenuOptions.Options.Count)
-                    {
-                        Index++;
-                        WriteMenu(MenuOptions.Options, MenuOptions.Options[Index]);
-                    }
-                }
-                if (keyinfo.Key == ConsoleKey.UpArrow)
-                {
-                    if (Index - 1 >= 0)
-                    {
-                        Index--;
-                        WriteMenu(MenuOptions.Options, MenuOptions.Options[Index]);
-                    }
-                }
-                // Handle different action for the option
-                if (keyinfo.Key == ConsoleKey.Enter)
-                {
-                    MenuOptions.Options[Index].Selected.Invoke();
-                    Index = 0;
+                    _index++;
+                    WriteMenu(_options, _options[_index]);
                 }
             }
-            while (keyinfo.Key != ConsoleKey.X);
 
-            Console.ReadKey();
-
-        }
-        // 
-        
-        public static void WriteMenu(List<Option>? options, Option selectedOption)
-        {
-            Console.Clear();
-
-            if (options != null)
-                foreach (Option option in options)
+            if (keyinfo.Key == ConsoleKey.UpArrow)
+            {
+                if (_index - 1 >= 0)
                 {
-                    if (option == selectedOption)
-                    {
-                        Console.Write("> ");
-                    }
-                    else
-                    {
-                        Console.Write(" ");
-                    }
-
-                    Console.WriteLine(option.Name);
+                    _index--;
+                    WriteMenu(_options, _options[_index]);
                 }
-        }
-}
+            }
 
-    public class Option
-    {
-        public string Name { get; }
-        public Action Selected { get; }
+            // Handle different action for the option
+            if (keyinfo.Key == ConsoleKey.Enter)
+            {
+                _options[_index].Selected.Invoke();
+                _index = 0;
+            }
+        } while (keyinfo.Key != ConsoleKey.X);
 
-        public Option(string name, Action selected)
-        {
-            Name = name;
-            Selected = selected;
-        }
+        Console.ReadKey();
     }
+
+    private static void WriteMenu(List<Option>? options, Option selectedOption)
+    {
+        Console.Clear();
+
+        if (options != null)
+            foreach (Option option in options)
+            {
+                if (option == selectedOption)
+                {
+                    Console.Write("> ");
+                }
+                else
+                {
+                    Console.Write(" ");
+                }
+
+                Console.WriteLine(option.Name);
+            }
+    }
+}

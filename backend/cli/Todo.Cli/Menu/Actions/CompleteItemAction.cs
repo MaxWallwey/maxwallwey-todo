@@ -1,12 +1,12 @@
 namespace Todo.Cli.Menu.Actions;
 
-public class CompleteItemAction : ToDoRepository
+public class CompleteItemAction : IMenuAction
 {
-    private readonly List<Todo> _items;
+    private readonly ToDoRepository _repository;
 
-    public CompleteItemAction(List<Todo> items)
+    public CompleteItemAction(ToDoRepository repository)
     {
-        _items = items;
+        _repository = repository;
     }
 
     public void Run()
@@ -14,6 +14,6 @@ public class CompleteItemAction : ToDoRepository
         Console.WriteLine("What task would you like to mark as completed? To cancel this, type 'exit'\n");
         var completeTask = Console.ReadLine();
 
-        CompleteTask(completeTask);
+        _repository.CompleteTask(completeTask);
     }
 }

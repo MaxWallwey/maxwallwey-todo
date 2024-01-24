@@ -1,19 +1,17 @@
-﻿using Todo.Cli.Menu;
+﻿using Todo.Cli;
+using Todo.Cli.Menu;
 using Todo.Cli.Menu.Actions;
 
-MenuNavigation menu = new MenuNavigation();
+ToDoRepository repository = new ToDoRepository();
 
-menu.Start();
-
-public class MenuOptions : MenuNavigation
+var options = new List<Option>
 {
-    public static List<Option>? Options = new List<Option>
-    {
-        new Option("View all incompleted tasks", () => new ListIncompleteItemsAction(Items).Run()),
-        new Option("View all completed tasks", () => new ListCompleteItemsAction(Items).Run()),
-        new Option("Add a new task", () => new AddNewItemAction(Items).Run()),
-        new Option("Mark task as completed", () => new CompleteItemAction(Items).Run()),
-        new Option("Remove a task", () => new RemoveItemAction(Items).Run()),
-        new Option("Exit", () => Environment.Exit(0)),
-    };
-}
+    new Option("View all incompleted tasks", () => new ListIncompleteItemsAction(repository).Run()),
+    new Option("View all completed tasks", () => new ListCompleteItemsAction(repository).Run()),
+    new Option("Add a new task", () => new AddNewItemAction(repository).Run()),
+    new Option("Mark task as completed", () => new CompleteItemAction(repository).Run()),
+    new Option("Remove a task", () => new RemoveItemAction(repository).Run()),
+    new Option("Exit", () => Environment.Exit(0)),
+};
+
+new MenuNavigation(options).Start();

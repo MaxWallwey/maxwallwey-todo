@@ -1,18 +1,21 @@
 namespace Todo.Cli.Menu.Actions;
 
-public class ListCompleteItemsAction : ToDoRepository
+public class ListCompleteItemsAction : IMenuAction
 {
-    private readonly List<Todo> _items;
+    private readonly ToDoRepository _repository;
 
-    public ListCompleteItemsAction(List<Todo> items)
+    public ListCompleteItemsAction(ToDoRepository repository)
     {
-        _items = items;
+        _repository = repository;
     }
 
     public void Run()
     {
         Console.WriteLine("Current completed tasks:");
 
-        ListCompleteTasks();
+        foreach (var item in _repository.ListCompleteTasks())
+        {
+            Console.WriteLine(item.Name);
+        }
     }
 }

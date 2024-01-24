@@ -1,43 +1,46 @@
 namespace Todo.Cli;
 
-public class ToDoRepository : BaseRepository
+public class ToDoRepository
 {
+    private readonly List<Todo> _items;
+
+    public ToDoRepository(List<Todo> items)
+    {
+        _items = items;
+    }
+    
+    public ToDoRepository()
+    {
+        _items = new List<Todo> { new Todo("Buy some milk"), new Todo("Call the dentist"), new Todo("Cancel Netflix", true)};
+    }
+    
     // Add task
     public void AddTask(string? newTask)
     {
-        if (newTask != null && newTask != "exit")
-        {
-            Items.Add(new Todo(newTask));
-        }
+        _items.Add(new Todo(newTask));
     }
 
     // Remove task
     public void RemoveTask(string? removeTask)
     {
-        var itemToRemove = Items.FirstOrDefault(i => i.Name == removeTask);
+        var itemToRemove = _items.FirstOrDefault(i => i.Name == removeTask);
 
         if (itemToRemove != null && removeTask != "exit")
         {
-            Items.Remove(itemToRemove);
+            _items.Remove(itemToRemove);
         }
     }
 
     // List incomplete tasks
-    public void ListIncompleteTasks()
+    public List<Todo> ListIncompleteTasks()
     {
-        foreach (var item in Items.Where(item => item.IsComplete == false))
-        {
-            Console.WriteLine(item.Name);
-        }
+        return _items.Where(item => !item.IsComplete).ToList();
     }
 
     // List complete tasks
-    public void ListCompleteTasks()
+    public List<Todo> ListCompleteTasks()
     {
-        foreach (var item in Items.Where(item => item.IsComplete))
-        {
-            Console.WriteLine(item.Name);
-        }
+        return _items.Where(item => item.IsComplete).ToList();
     }
 
     //Complete task
@@ -45,7 +48,7 @@ public class ToDoRepository : BaseRepository
     {
         if (completeTask != "exit")
         {
-            var taskToComplete = Items.FirstOrDefault(i => i.Name == completeTask);
+            var taskToComplete = _items.FirstOrDefault(i => i.Name == completeTask);
 
             if (taskToComplete?.IsComplete != null || false)
             {
