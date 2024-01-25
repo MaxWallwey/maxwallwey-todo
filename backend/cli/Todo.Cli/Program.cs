@@ -2,16 +2,25 @@
 using Todo.Cli.Menu;
 using Todo.Cli.Menu.Actions;
 
-ToDoRepository repository = new ToDoRepository();
+ToDoRepository repository = new ToDoRepository(new List<Todo.Cli.Todo>{new Todo.Cli.Todo("Buy some milk"), new Todo.Cli.Todo("Call the dentist"), new Todo.Cli.Todo("Cancel Netflix", true)});
 
+// Instantiate actions for saving memory
+var incompleteItemsAction = new ListIncompleteItemsAction(repository);
+var completeItemsAction = new ListCompleteItemsAction(repository);
+var addItemsAction = new AddNewItemAction(repository);
+var markCompleteItemsAction = new CompleteItemAction(repository);
+var removeItemsAction = new RemoveItemAction(repository);
+
+// Instantiate options for menu
 var options = new List<Option>
 {
-    new Option("View all incompleted tasks", () => new ListIncompleteItemsAction(repository).Run()),
-    new Option("View all completed tasks", () => new ListCompleteItemsAction(repository).Run()),
-    new Option("Add a new task", () => new AddNewItemAction(repository).Run()),
-    new Option("Mark task as completed", () => new CompleteItemAction(repository).Run()),
-    new Option("Remove a task", () => new RemoveItemAction(repository).Run()),
-    new Option("Exit", () => Environment.Exit(0)),
+    new Option("View all incompleted tasks", () => incompleteItemsAction.Run()),
+    new Option("View all completed tasks", () => completeItemsAction.Run()),
+    new Option("Add a new task", () => addItemsAction.Run()),
+    new Option("Mark task as completed", () => markCompleteItemsAction.Run()),
+    new Option("Remove a task", () => removeItemsAction.Run()),
+    new Option("Exit", () => new ExitApplicationAction().Run()),
 };
 
+//Start Menu
 new MenuNavigation(options).Start();

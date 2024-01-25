@@ -11,7 +11,7 @@ public class ToDoRepository
     
     public ToDoRepository()
     {
-        _items = new List<Todo> { new Todo("Buy some milk"), new Todo("Call the dentist"), new Todo("Cancel Netflix", true)};
+        _items = new List<Todo>();
     }
     
     // Add task
@@ -25,10 +25,7 @@ public class ToDoRepository
     {
         var itemToRemove = _items.FirstOrDefault(i => i.Name == removeTask);
 
-        if (itemToRemove != null && removeTask != "exit")
-        {
-            _items.Remove(itemToRemove);
-        }
+        if (itemToRemove != null) _items.Remove(itemToRemove);
     }
 
     // List incomplete tasks
@@ -46,14 +43,7 @@ public class ToDoRepository
     //Complete task
     public void CompleteTask(string? completeTask)
     {
-        if (completeTask != "exit")
-        {
-            var taskToComplete = _items.FirstOrDefault(i => i.Name == completeTask);
-
-            if (taskToComplete?.IsComplete != null || false)
-            {
-                taskToComplete.IsComplete = true;
-            }
-        }
+        var taskToComplete = _items.FirstOrDefault(i => i.Name == completeTask);
+        taskToComplete?.Complete();
     }
 }

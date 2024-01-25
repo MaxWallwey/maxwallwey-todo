@@ -11,9 +11,9 @@ public class Todo
     }
 
     public Guid Id { get; }
-    public string? Name { get; set; }
+    public string? Name { get; private set; }
     public DateTime CreatedAt { get; }
-    public bool IsComplete { get; set; }
+    public bool IsComplete { get; private set; }
 
     public void Complete()
     {

@@ -11,7 +11,7 @@ public class RemoveItemAction : IMenuAction
 
     public void Run()
     {
-        Console.WriteLine("What task would you like to remove? To cancel this, type 'exit'\n");
+        Console.WriteLine("What task would you like to remove?\n");
         var removeTask = Console.ReadLine();
 
         _repository.RemoveTask(removeTask);
