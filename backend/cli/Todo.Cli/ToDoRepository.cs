@@ -2,48 +2,48 @@ namespace Todo.Cli;
 
 public class ToDoRepository
 {
-    private readonly List<Todo> _items;
+    public List<ToDo> Items { get; }
 
-    public ToDoRepository(List<Todo> items)
+    public ToDoRepository(List<ToDo> items)
     {
-        _items = items;
+        Items = items;
     }
     
     public ToDoRepository()
     {
-        _items = new List<Todo>();
+        Items = new List<ToDo>();
     }
     
     // Add task
     public void AddTask(string? newTask)
     {
-        _items.Add(new Todo(newTask));
+        Items.Add(new ToDo(newTask));
     }
 
     // Remove task
     public void RemoveTask(string? removeTask)
     {
-        var itemToRemove = _items.FirstOrDefault(i => i.Name == removeTask);
+        var itemToRemove = Items.FirstOrDefault(i => i.Name == removeTask);
 
-        if (itemToRemove != null) _items.Remove(itemToRemove);
+        if (itemToRemove != null) Items.Remove(itemToRemove);
     }
 
     // List incomplete tasks
-    public List<Todo> ListIncompleteTasks()
+    public List<ToDo> ListIncompleteTasks()
     {
-        return _items.Where(item => !item.IsComplete).ToList();
+        return Items.Where(item => !item.IsComplete).ToList();
     }
 
     // List complete tasks
-    public List<Todo> ListCompleteTasks()
+    public List<ToDo> ListCompleteTasks()
     {
-        return _items.Where(item => item.IsComplete).ToList();
+        return Items.Where(item => item.IsComplete).ToList();
     }
 
     //Complete task
     public void CompleteTask(string? completeTask)
     {
-        var taskToComplete = _items.FirstOrDefault(i => i.Name == completeTask);
+        var taskToComplete = Items.FirstOrDefault(i => i.Name == completeTask);
         taskToComplete?.Complete();
     }
 }
