@@ -1,8 +1,8 @@
 namespace Todo.Cli;
 
-public class Todo
+public class ToDo
 {
-    public Todo(string? name, bool isComplete = false)
+    public ToDo(string? name, bool isComplete = false)
     {
         Id = Guid.NewGuid();
         Name = name;

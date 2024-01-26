@@ -2,7 +2,7 @@
 using Todo.Cli.Menu;
 using Todo.Cli.Menu.Actions;
 
-ToDoRepository repository = new ToDoRepository(new List<Todo.Cli.Todo>{new Todo.Cli.Todo("Buy some milk"), new Todo.Cli.Todo("Call the dentist"), new Todo.Cli.Todo("Cancel Netflix", true)});
+ToDoRepository repository = new ToDoRepository(new List<Todo.Cli.ToDo>{new Todo.Cli.ToDo("Buy some milk"), new Todo.Cli.ToDo("Call the dentist"), new Todo.Cli.ToDo("Cancel Netflix", true)});
 
 // Instantiate actions for saving memory
 var incompleteItemsAction = new ListIncompleteItemsAction(repository);
