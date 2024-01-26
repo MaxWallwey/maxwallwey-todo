@@ -6,13 +6,13 @@ public class ToDo
     {
         Id = Guid.NewGuid();
         Name = name;
-        CreatedAt = DateTime.Now;
+        CreatedAt = DateTime.UtcNow;
         IsComplete = isComplete;
     }
 
     public Guid Id { get; }
     public string? Name { get; private set; }
-    public DateTime CreatedAt { get; }
+    public DateTime? CreatedAt { get; }
     public bool IsComplete { get; private set; }
 
     public void Complete()
