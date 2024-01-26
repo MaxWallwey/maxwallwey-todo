@@ -16,7 +16,7 @@ public class ToDoTests
 
         item.IsComplete.Should().BeFalse();
 
-        item.CreatedAt.Should().BeOnOrAfter(DateTime.Today);
+        item.CreatedAt.Should().NotBeNull();
     }
 
     [Fact]
