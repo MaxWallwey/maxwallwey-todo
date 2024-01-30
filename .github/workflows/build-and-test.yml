@@ -4,9 +4,6 @@ on:
   push:
   pull_request:
     branches: [ main ]
-    paths:
-    - 'backend/cli/Todo.Cli/Todo.cs'
-    - 'backend/cli/Todo.Cli/Todo.Cli.csproj'
 
 env:
   DOTNET_VERSION: '6.0' # The .NET SDK version to use
