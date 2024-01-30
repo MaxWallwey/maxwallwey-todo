@@ -38,7 +38,3 @@ jobs:
     - name: Test
       run: dotnet test --no-restore --verbosity normal
       working-directory: backend/cli/Todo.Cli.Tests
-
-    - name: Test Reporter
-      uses: dorny/test-reporter@v1.8.0
-            
