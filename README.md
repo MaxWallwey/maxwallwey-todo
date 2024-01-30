@@ -2,5 +2,5 @@
 
 This is my repository for working on the Mina academy.
 
-##Status
+## Status
 [![build and test](https://github.com/MaxWallwey/maxwallwey-todo/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/MaxWallwey/maxwallwey-todo/actions/workflows/build-and-test.yml)
