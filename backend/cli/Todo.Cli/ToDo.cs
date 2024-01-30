@@ -2,7 +2,7 @@ namespace Todo.Cli;
 
 public class ToDo
 {
-    public ToDo(string? name, bool isComplete = false)
+    public ToDo(string name, bool isComplete = false)
     {
         Id = Guid.NewGuid();
         Name = name;
@@ -11,8 +11,8 @@ public class ToDo
     }
 
     public Guid Id { get; }
-    public string? Name { get; private set; }
-    public DateTime? CreatedAt { get; }
+    public string Name { get; private set; }
+    public DateTime CreatedAt { get; }
     public bool IsComplete { get; private set; }
 
     public void Complete()

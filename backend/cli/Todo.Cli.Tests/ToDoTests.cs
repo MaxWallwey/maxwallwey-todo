@@ -12,15 +12,15 @@ public class ToDoTests
 
         item.Name.Should().Be("mock").And.NotBeNull();
 
-        item.Id.Should().NotBeEmpty();
+        item.Id.Should().NotBe(Guid.Empty);
 
         item.IsComplete.Should().BeFalse();
 
-        item.CreatedAt.Should().NotBeNull();
+        item.CreatedAt.Should().NotBe(DateTime.MinValue);
     }
 
     [Fact]
-    public void ToDoCompleteTest()
+    public void Complete_CompleteAToDo_CompletesAToDo()
     {
         var item = new ToDo("mock");
         
