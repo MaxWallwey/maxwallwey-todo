@@ -10,7 +10,7 @@ public class ToDoTests
     {
         var item = new ToDo("mock");
 
-        item.Name.Should().Be("mock").And.NotBeNull();
+        item.Name.Should().Be("mock");
 
         item.Id.Should().NotBe(Guid.Empty);
 
@@ -20,7 +20,7 @@ public class ToDoTests
     }
 
     [Fact]
-    public void Complete_CompleteAToDo_CompletesAToDo()
+    public void Complete_CompletesSpecifiedToDo()
     {
         var item = new ToDo("mock");
         

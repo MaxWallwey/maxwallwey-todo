@@ -2,7 +2,7 @@
 using Todo.Cli.Menu;
 using Todo.Cli.Menu.Actions;
 
-ToDoRepository repository = new ToDoRepository(new List<Todo.Cli.ToDo>{
+ToDoRepository repository = new ToDoRepository(new List<ToDo>{
     new Todo.Cli.ToDo("Buy some milk"), 
     new Todo.Cli.ToDo("Call the dentist"), 
     new Todo.Cli.ToDo("Cancel Netflix", true)});
