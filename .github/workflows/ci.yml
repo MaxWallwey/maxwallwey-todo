@@ -41,11 +41,6 @@ jobs:
 
     - name: Generate test report
       uses: dorny/test-reporter@v1
-      if: success() || failure()
-      with:
-        name: ${{ matrix.os }} Test Results
-        path: "**/TestResults/test-results.trx"
-        reporter: dotnet-trx
 
     - name: Generate test coverage report
       uses: 5monkeys/cobertura-action@master
