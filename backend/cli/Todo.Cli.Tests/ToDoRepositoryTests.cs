@@ -5,7 +5,7 @@ namespace Todo.Cli.Tests;
 public class ToDoRepositoryTests
 {
     [Fact]
-    public void AddTaskTest()
+    public void AddTaskShouldAddANewToDo()
     {
         ToDoRepository repository = new ToDoRepository();
         
@@ -15,7 +15,7 @@ public class ToDoRepositoryTests
     }
 
     [Fact]
-    public void DeleteTaskTest()
+    public void DeleteTaskShouldDeleteAToDo()
     {
         ToDoRepository repository = new ToDoRepository();
         repository.Items.Add(new ToDo("mock"));
@@ -26,7 +26,7 @@ public class ToDoRepositoryTests
     }
 
     [Fact]
-    public void CompleteTaskTest()
+    public void CompleteTaskShouldCompleteAToDo()
     {
         ToDoRepository repository = new ToDoRepository();
         repository.Items.Add(new ToDo("mock"));
@@ -37,7 +37,7 @@ public class ToDoRepositoryTests
     }
 
     [Fact]
-    public void ListTasksTests()
+    public void ListTasksTestsShouldListRespectiveToDos()
     {
         ToDoRepository repository = new ToDoRepository();
         
