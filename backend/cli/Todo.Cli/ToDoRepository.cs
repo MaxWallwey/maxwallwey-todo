@@ -15,13 +15,13 @@ public class ToDoRepository
     }
     
     // Add task
-    public void AddTask(string? newTask)
+    public void AddTask(string newTask)
     {
         Items.Add(new ToDo(newTask));
     }
 
     // Remove task
-    public void RemoveTask(string? removeTask)
+    public void RemoveTask(string removeTask)
     {
         var itemToRemove = Items.FirstOrDefault(i => i.Name == removeTask);
 
@@ -41,7 +41,7 @@ public class ToDoRepository
     }
 
     //Complete task
-    public void CompleteTask(string? completeTask)
+    public void CompleteTask(string completeTask)
     {
         var taskToComplete = Items.FirstOrDefault(i => i.Name == completeTask);
         taskToComplete?.Complete();
