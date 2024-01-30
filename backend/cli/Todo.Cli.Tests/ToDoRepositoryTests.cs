@@ -5,25 +5,18 @@ namespace Todo.Cli.Tests;
 public class ToDoRepositoryTests
 {
     [Fact]
-    public void AddTask_AddNewTask_AddsNewToDoToDB()
+    public void AddTask_AddsNewToDo()
     {
         ToDoRepository repository = new ToDoRepository();
         
         repository.AddTask("mock");
 
         repository.Items.Should().SatisfyRespectively(
-            first =>
-            {
-                first.Name.Should().NotBeNull();
-            },
-            second =>
-            {
-                second.Name.Should().BeNullOrEmpty();
-            });
+            first => first.Name.Should().NotBeNull());
     }
 
     [Fact]
-    public void RemoveTask_DeleteTask_DeletesTaskFromDB()
+    public void RemoveTask_DeletesTask()
     {
         ToDoRepository repository = new ToDoRepository(new List<ToDo>{new ToDo("mock")});
         
@@ -33,10 +26,9 @@ public class ToDoRepositoryTests
     }
 
     [Fact]
-    public void CompleteTask_CompleteATask_ChangeCompleteStatusToComplete()
+    public void CompleteTask_ChangeCompleteStatusToComplete()
     {
-        ToDoRepository repository = new ToDoRepository();
-        repository.Items.Add(new ToDo("mock"));
+        ToDoRepository repository = new ToDoRepository(new List<ToDo>{new ToDo("mock")});
         
         repository.CompleteTask("mock");
 
@@ -46,25 +38,25 @@ public class ToDoRepositoryTests
     }
 
     [Fact]
-    public void ListIncompleteTasks_ListTasks_ListsAllIncompleteTasks()
+    public void ListIncompleteTasks_ListsAllIncompleteTasks()
     {
-        ToDoRepository repository = new ToDoRepository();
-        
-        repository.Items.Add(new ToDo("mock1"));
-        
-        repository.Items.Add(new ToDo("mock2", true));
+        ToDoRepository repository = new ToDoRepository(new List<ToDo>
+        {
+            new ToDo("mock1"), 
+            new ToDo("mock2", true)
+        });
 
         repository.ListIncompleteTasks()[0].IsComplete.Should().BeFalse();
     }
     
     [Fact]
-    public void ListCompleteTasks_ListTasks_ListsAllCompleteTasks()
+    public void ListCompleteTasks_ListsAllCompleteTasks()
     {
-        ToDoRepository repository = new ToDoRepository();
-        
-        repository.Items.Add(new ToDo("mock1"));
-        
-        repository.Items.Add(new ToDo("mock2", true));
+        ToDoRepository repository = new ToDoRepository(new List<ToDo>
+        {
+            new ToDo("mock1"), 
+            new ToDo("mock2", true)
+        });
 
         repository.ListCompleteTasks()[0].IsComplete.Should().BeTrue();
     }
