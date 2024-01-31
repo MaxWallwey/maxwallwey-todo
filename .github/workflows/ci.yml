@@ -1,4 +1,4 @@
-name: test and build
+name: CI
 
 on:
   push:
@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   ci:
-    name: build-and-test-${{matrix.os}}
+    name: CI-${{matrix.os}}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
