@@ -20,7 +20,7 @@ public class ToDoRepositoryTests
     {
         ToDoRepository repository = new ToDoRepository(new List<ToDo>{new ToDo("mock")});
         
-        repository.RemoveTask("mock");
+        repository.RemoveTaskUsingName("mock");
 
         repository.Items.Count.Should().Be(0);
     }
@@ -30,7 +30,7 @@ public class ToDoRepositoryTests
     {
         ToDoRepository repository = new ToDoRepository(new List<ToDo>{new ToDo("mock")});
         
-        repository.CompleteTask("mock");
+        repository.CompleteTaskUsingName("mock");
 
         repository.Items.Should().SatisfyRespectively(
             first => first.IsComplete.Should().BeTrue()
