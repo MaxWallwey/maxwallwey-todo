@@ -6,6 +6,9 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <PropertyGroup>
         <VSTestLogger>trx%3bLogFileName=$(MSBuildProjectName).trx</VSTestLogger>
         <VSTestResultsDirectory>$(MSBuildThisFileDirectory)/TestResults/$(TargetFramework)</VSTestResultsDirectory>
     </PropertyGroup>
