@@ -46,13 +46,17 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
       working-directory: backend/cli/Todo.Cli.Tests
 
-    - name: Generate test report
+    
+    - run: npm ci                   # install packages
+    - run: npm test                 # run tests (configured to use jest-junit reporter)
+
+    - name: Test Report
       uses: dorny/test-reporter@v1
+      if: success() || failure()    # run this step even if previous step failed
       with:
-        artifact: test-results            # artifact name
-        name: JEST Tests                  # Name of the check run which will be created
-        path: '*.xml'                     # Path to test results (inside artifact .zip)
-        reporter: jest-junit              # Format of test results
+        name: JEST Tests            # Name of the check run which will be created
+        path: reports/jest-*.xml    # Path to test results
+        reporter: jest-junit        # Format of test results
 
     - name: Generate test coverage report
       uses: 5monkeys/cobertura-action@master
