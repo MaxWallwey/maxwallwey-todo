@@ -4,6 +4,9 @@ on:
   push:
     paths-ignore: ["**.md"]
 
+env:
+  DOTNET_VERSION: '6.0' # The .NET SDK version to use
+
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
@@ -15,24 +18,33 @@ permissions:
 
 jobs:
   ci:
-    name: ${{ matrix.os }} test and build
+    name: build-and-test-${{matrix.os}}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
-    runs-on: ${{ matrix.os }}
+
     steps:
     - uses: actions/checkout@v3
-
-    - name: Setup .NET
+    - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install task
       uses: arduino/setup-task@v1
 
-    - name: Build dotnet and run tests
-      run: task test and build
+    - name: Install dependencies
+      run: dotnet restore
+      working-directory: backend/cli/Todo.Cli
+      
+    - name: Build   
+      run: dotnet build --configuration Release --no-restore
+      working-directory: backend/cli/Todo.Cli
+    
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+      working-directory: backend/cli/Todo.Cli.Tests
 
     - name: Generate test report
       uses: dorny/test-reporter@v1
