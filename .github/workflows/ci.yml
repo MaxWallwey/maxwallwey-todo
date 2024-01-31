@@ -60,7 +60,7 @@ jobs:
         skip_covered: false
         
   build-test:
-      runs-on: ${{ matrix.os }}
+      runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v3         # checkout the repo
         - run: npm ci                       # install packages
