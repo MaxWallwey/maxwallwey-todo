@@ -1,49 +1,79 @@
 using Microsoft.AspNetCore.Mvc;
-using Todo.Cli;
+using Microsoft.EntityFrameworkCore;
+using Todo.API.Models;
 
 namespace Todo.API.Controllers;
 
+[Route("api/[controller]")]
 [ApiController]
-[Route("[controller]")]
 public class ToDoController : ControllerBase
 {
-    private readonly ToDoRepository _repository;
+    private readonly ToDoContext _context;
 
-    public ToDoController(ToDoRepository repository)
+    public ToDoController(ToDoContext context)
     {
-        _repository = repository;
-    }
-    
-    [HttpGet ("{complete tasks}")]
-    public Task<ActionResult<List<ToDo>>> GetCompleteTasks()
-    {
-        return Task.FromResult<ActionResult<List<ToDo>>>(_repository.ListCompleteTasks());
+        _context = context;
     }
 
-    [HttpGet ("{incomplete tasks}")]
-    public Task<ActionResult<List<ToDo>>> GetIncompleteTasks()
+    // GET: api/ToDo
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ToDo>>> GetTodos()
     {
-        return Task.FromResult<ActionResult<List<ToDo>>>(_repository.ListIncompleteTasks());
+        if (_context.Todos == null) return NotFound();
+        return await _context.Todos.ToListAsync();
     }
 
-    [HttpPost]
-    public Task<Guid> CreateNewTask(string name)
+    // GET: api/ToDo/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ToDo>> GetToDo(Guid id)
     {
-        _repository.AddTask(name);
-        return Task.FromResult(_repository.ListToDoFromTask(name)!.Id);
+        if (_context.Todos == null) return NotFound();
+        var toDo = await _context.Todos.FindAsync(id);
+
+        if (toDo == null) return NotFound();
+
+        return toDo;
     }
 
-    [HttpPost]
-    public Task<ActionResult> CompleteTask(Guid id)
+    //Complete todo
+    [HttpPost("complete {id}")]
+    public async Task<IActionResult> PutToDo(Guid id)
     {
-        _repository.CompleteTaskUsingId(id);
-        return Task.FromResult<ActionResult>(Ok());
+        var todo = await _context.Todos.FindAsync(id);
+        
+        todo?.Complete();
+
+        return NoContent();
     }
 
-    [HttpPost]
-    public Task<ActionResult> RemoveTask(Guid id)
+    //Add new todo
+    [HttpPost ("add{toDo}")]
+    public async Task<ActionResult<Guid>> PostToDo(string toDo, bool isComplete = false)
     {
-        _repository.RemoveTaskUsingId(id);
-        return Task.FromResult<ActionResult>(Ok());
+        if (_context.Todos == null) return Problem("Entity set 'ToDoContext.Todos'  is null.");
+        var newToDo = new ToDo(toDo, isComplete);
+        _context.Todos.Add(newToDo);
+        await _context.SaveChangesAsync();
+
+        return newToDo.Id;
+    }
+
+    //Remove todo
+    [HttpDelete(" remove{id}")]
+    public async Task<IActionResult> DeleteToDo(Guid id)
+    {
+        if (_context.Todos == null) return NotFound();
+        var toDo = await _context.Todos.FindAsync(id);
+        if (toDo == null) return NotFound();
+
+        _context.Todos.Remove(toDo);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    private bool ToDoExists(Guid id)
+    {
+        return (_context.Todos?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }
