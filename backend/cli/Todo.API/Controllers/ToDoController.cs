@@ -1,10 +1,10 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Todo.API.Models;
 
 namespace Todo.API.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
 public class ToDoController : ControllerBase
 {
@@ -15,65 +15,75 @@ public class ToDoController : ControllerBase
         _context = context;
     }
 
-    // GET: api/ToDo
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<ToDo>>> GetTodos()
+    //List all todos with optional complete parameter
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ToDo))]
+    [HttpGet ("todo.findMany")]
+    public async Task<List<ToDo?>> FindMany(bool? isComplete)
     {
-        if (_context.Todos == null) return NotFound();
-        return await _context.Todos.ToListAsync();
-    }
-
-    // GET: api/ToDo/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<ToDo>> GetToDo(Guid id)
-    {
-        if (_context.Todos == null) return NotFound();
-        var toDo = await _context.Todos.FindAsync(id);
-
-        if (toDo == null) return NotFound();
-
-        return toDo;
+        if (isComplete == null)
+        {
+            return await _context.Todos.ToListAsync();
+        }
+        return await _context.Todos.Where(i => i.IsComplete == isComplete).ToListAsync();
     }
 
     //Complete todo
-    [HttpPost("complete {id}")]
-    public async Task<IActionResult> PutToDo(Guid id)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    [HttpPost("complete")]
+    public async Task<IActionResult> CompleteToDo(Guid id)
     {
         var todo = await _context.Todos.FindAsync(id);
+
+        if (todo is null)
+        {
+            return ValidationProblem("No matching todo was found");
+        }
         
         todo?.Complete();
-
-        return NoContent();
+        
+        return Ok();
     }
 
     //Add new todo
-    [HttpPost ("add{toDo}")]
-    public async Task<ActionResult<Guid>> PostToDo(string toDo, bool isComplete = false)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    [HttpPost ("add")]
+    public async Task<ActionResult<Guid>> AddToDo(CreateToDo toDo)
     {
-        if (_context.Todos == null) return Problem("Entity set 'ToDoContext.Todos'  is null.");
-        var newToDo = new ToDo(toDo, isComplete);
-        _context.Todos.Add(newToDo);
+        if (toDo.Name is null)
+        {
+            var problemDetails = new ValidationProblemDetails();
+            return new ObjectResult(problemDetails)
+            {
+                ContentTypes = { "application/problem+json" },
+                StatusCode = 400
+            };
+        }
+        
+        _context.Todos.Add(new ToDo(toDo.Name!));
+
         await _context.SaveChangesAsync();
 
-        return newToDo.Id;
+        return Ok(_context.Todos.FirstOrDefault(i => i.Name == toDo.Name).Id);
     }
 
     //Remove todo
-    [HttpDelete(" remove{id}")]
-    public async Task<IActionResult> DeleteToDo(Guid id)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    [HttpDelete("remove")]
+    public async Task<IActionResult> RemoveToDo(Guid id)
     {
-        if (_context.Todos == null) return NotFound();
-        var toDo = await _context.Todos.FindAsync(id);
-        if (toDo == null) return NotFound();
+        var todo = await _context.Todos.FindAsync(id);
+        
+        if (todo is null)
+        {
+            return ValidationProblem("No matching todo was found");
+        }
 
-        _context.Todos.Remove(toDo);
+        _context.Todos.Remove(todo);
         await _context.SaveChangesAsync();
 
-        return NoContent();
-    }
-
-    private bool ToDoExists(Guid id)
-    {
-        return (_context.Todos?.Any(e => e.Id == id)).GetValueOrDefault();
+        return Ok();
     }
 }
