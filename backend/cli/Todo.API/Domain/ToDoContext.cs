@@ -1,4 +1,4 @@
-namespace Todo.API.Models;
+namespace Todo.API.Domain;
 
 using Microsoft.EntityFrameworkCore;
 public class ToDoContext : DbContext
@@ -8,5 +8,5 @@ public class ToDoContext : DbContext
     {
     }
 
-    public DbSet<ToDo?> Todos { get; set; } = null!;
+    public DbSet<ToDo?> Todos { get; set; }
 }

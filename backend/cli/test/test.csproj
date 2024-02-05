@@ -6,6 +6,8 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
+
+        <RootNamespace>Todo.Cli.Tests</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -29,6 +31,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Todo.Cli\Todo.Cli.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Todo.Cli.Tests\TestResults\" />
     </ItemGroup>
 
 </Project>

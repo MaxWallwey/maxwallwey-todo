@@ -21,14 +21,7 @@ public class ToDoRepository
     }
 
     // Remove task
-    public void RemoveTaskUsingName(string removeTask)
-    {
-        var itemToRemove = Items.FirstOrDefault(i => i.Name == removeTask);
-
-        if (itemToRemove != null) Items.Remove(itemToRemove);
-    }
-    
-    public void RemoveTaskUsingId(Guid removeTask)
+    public void RemoveTask(Guid removeTask)
     {
         var itemToRemove = Items.FirstOrDefault(i => i.Id == removeTask);
 
@@ -54,13 +47,7 @@ public class ToDoRepository
     }
 
     //Complete task
-    public void CompleteTaskUsingName(string? completeTask)
-    {
-        var taskToComplete = Items.FirstOrDefault(i => i.Name == completeTask);
-        taskToComplete?.Complete();
-    }
-    
-    public void CompleteTaskUsingId(Guid id)
+    public void CompleteTask(Guid id)
     {
         var taskToComplete = Items.FirstOrDefault(i => i.Id == id);
         taskToComplete?.Complete();
