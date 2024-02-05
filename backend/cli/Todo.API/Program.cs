@@ -10,6 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<ToDoContext>(opt =>
     opt.UseInMemoryDatabase("ToDoList"));
 
+builder.Services.AddScoped(typeof(IToDoRepository),typeof(InMemoryToDoRepository));
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "TodoApi", Version = "v1" });
