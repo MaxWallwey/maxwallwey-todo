@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Todo.API.Models;
 
@@ -13,9 +12,9 @@ public class InMemoryToDoRepository : IToDoRepository
         _context = context;
     }
     
-    public async Task<List<ToDo>> FindMany(bool? isComplete)
+    public Task<List<ToDo>> FindMany(bool? isComplete)
     {
-        return (await _context.Todos.Where(i => isComplete == null || i!.IsComplete == isComplete).ToListAsync())!;
+        return Task.FromResult(_context.Todos.Where(i => isComplete == null || i.IsComplete == isComplete).ToList());
     }
 
     public async Task<ToDo?> FindToDo(Guid id)
@@ -47,7 +46,7 @@ public class InMemoryToDoRepository : IToDoRepository
     {
         var todo = await _context.Todos.FindAsync(id);
         
-        _context.Todos.Remove(todo);
+        _context.Todos.Remove(todo!);
 
         await _context.SaveChangesAsync();
     }
