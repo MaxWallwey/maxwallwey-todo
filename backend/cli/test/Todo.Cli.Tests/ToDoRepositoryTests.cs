@@ -18,9 +18,11 @@ public class ToDoRepositoryTests
     [Fact]
     public void RemoveTask_DeletesTask()
     {
-        ToDoRepository repository = new ToDoRepository(new List<ToDo>{new ToDo("mock")});
-        
-        repository.RemoveTaskUsingName("mock");
+        var todo1 = new ToDo("mock");
+
+        ToDoRepository repository = new ToDoRepository(new List<ToDo>{ todo1 });
+
+        repository.RemoveTask(todo1.Id);
 
         repository.Items.Count.Should().Be(0);
     }
@@ -28,9 +30,11 @@ public class ToDoRepositoryTests
     [Fact]
     public void CompleteTask_ChangeCompleteStatusToComplete()
     {
-        ToDoRepository repository = new ToDoRepository(new List<ToDo>{new ToDo("mock")});
+        var todo1 = new ToDo("mock");
+
+        ToDoRepository repository = new ToDoRepository(new List<ToDo>{ todo1 });
         
-        repository.CompleteTaskUsingName("mock");
+        repository.CompleteTask(todo1.Id);
 
         repository.Items.Should().SatisfyRespectively(
             first => first.IsComplete.Should().BeTrue()

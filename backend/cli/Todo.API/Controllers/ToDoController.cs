@@ -1,6 +1,6 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Todo.API.Domain;
 using Todo.API.Models;
 
 namespace Todo.API.Controllers;
@@ -8,81 +8,64 @@ namespace Todo.API.Controllers;
 [ApiController]
 public class ToDoController : ControllerBase
 {
-    private readonly ToDoContext _context;
+    private readonly IToDoRepository _toDoRepository;
 
-    public ToDoController(ToDoContext context)
+    public ToDoController(IToDoRepository toDoRepository)
     {
-        _context = context;
+        _toDoRepository = toDoRepository;
     }
-
-    //List all todos with optional complete parameter
+    
+    // List all todos with optional complete parameter
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ToDo))]
-    [HttpGet ("todo.findMany")]
-    public async Task<List<ToDo?>> FindMany(bool? isComplete)
+    [HttpGet("todo.findMany")]
+    public async Task<List<ToDo>> FindMany(bool? isComplete)
     {
-        if (isComplete == null)
-        {
-            return await _context.Todos.ToListAsync();
-        }
-        return await _context.Todos.Where(i => i.IsComplete == isComplete).ToListAsync();
+        return await _toDoRepository.FindMany(isComplete);
     }
 
-    //Complete todo
+    // Complete todo
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-    [HttpPost("complete")]
+    [HttpPost("todo.complete")]
     public async Task<IActionResult> CompleteToDo(Guid id)
     {
-        var todo = await _context.Todos.FindAsync(id);
-
-        if (todo is null)
+        var todo = await _toDoRepository.FindToDo(id);
+        
+        if (todo == null)
         {
             return ValidationProblem("No matching todo was found");
         }
         
-        todo?.Complete();
+        await _toDoRepository.CompleteToDo(id);
         
         return Ok();
     }
 
-    //Add new todo
+    // Add new todo
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-    [HttpPost ("add")]
+    [HttpPost("todo.add")]
     public async Task<ActionResult<Guid>> AddToDo(CreateToDo toDo)
     {
-        if (toDo.Name is null)
-        {
-            var problemDetails = new ValidationProblemDetails();
-            return new ObjectResult(problemDetails)
-            {
-                ContentTypes = { "application/problem+json" },
-                StatusCode = 400
-            };
-        }
-        
-        _context.Todos.Add(new ToDo(toDo.Name!));
+        var toDoId = await _toDoRepository.AddToDo(toDo);
 
-        await _context.SaveChangesAsync();
-
-        return Ok(_context.Todos.FirstOrDefault(i => i.Name == toDo.Name).Id);
+        return Ok(toDoId);
     }
 
-    //Remove todo
+    // Remove todo
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-    [HttpDelete("remove")]
+    [HttpDelete("todo.remove")]
     public async Task<IActionResult> RemoveToDo(Guid id)
     {
-        var todo = await _context.Todos.FindAsync(id);
+        var todo = await _toDoRepository.FindToDo(id);
         
-        if (todo is null)
+        if (todo == null)
         {
             return ValidationProblem("No matching todo was found");
         }
 
-        _context.Todos.Remove(todo);
-        await _context.SaveChangesAsync();
+        await _toDoRepository.RemoveToDo(id);
 
         return Ok();
     }

@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Cli", "Todo.Cli\Todo.Cli.csproj", "{7EEE1CE4-0497-4F82-98D0-9E075D3E970B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Cli.Tests", "Todo.Cli.Tests\Todo.Cli.Tests.csproj", "{4C438475-30C4-4CF1-80B2-94BB93B95627}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{4C438475-30C4-4CF1-80B2-94BB93B95627}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.API", "Todo.API\Todo.API.csproj", "{9BEE5419-E571-4A4D-AC74-EDE60A61CF1A}"
 EndProject
