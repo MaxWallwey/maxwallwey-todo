@@ -43,7 +43,7 @@ jobs:
       working-directory: backend/cli/Todo.Cli
     
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test
       working-directory: backend/cli/Todo.Cli.Tests
 
     - name: Generate test report
