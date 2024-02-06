@@ -41,7 +41,7 @@ public class ToDoRepository
     }
     
     //List ToDo for task
-    public ToDo? ListToDoFromTask(string name)
+    public ToDo? ListToDoFromTask(string? name)
     {
         return Items.FirstOrDefault(i => i.Name == name);
     }

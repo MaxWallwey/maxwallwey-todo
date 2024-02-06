@@ -4,13 +4,13 @@ namespace Todo.API.Domain;
 
 public interface IToDoRepository
 {
-    public Task<List<ToDo>> FindMany(bool? isComplete);
+    public Task<List<ToDo>> FindManyAsync(bool? isComplete);
 
-    public Task<ToDo?> FindToDo(Guid id);
+    public Task<ToDo?> FindToDoAsync(Guid id);
 
-    public Task CompleteToDo(Guid id);
+    public Task CompleteToDoAsync(Guid id);
 
-    public Task<Guid> AddToDo(CreateToDo toDo);
+    public Task<Guid> AddToDoAsync(CreateToDo toDo);
 
-    public Task RemoveToDo(Guid id);
+    public Task RemoveToDoAsync(Guid id);
 }

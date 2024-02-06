@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<ToDoContext>(opt =>
     opt.UseInMemoryDatabase("ToDoList"));
 
-builder.Services.AddScoped(typeof(IToDoRepository),typeof(InMemoryToDoRepository));
+builder.Services.AddScoped<IToDoRepository, InMemoryToDoRepository>();
 
 builder.Services.AddSwaggerGen(c =>
 {

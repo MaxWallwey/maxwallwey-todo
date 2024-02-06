@@ -12,26 +12,26 @@ public class InMemoryToDoRepository : IToDoRepository
         _context = context;
     }
     
-    public Task<List<ToDo>> FindMany(bool? isComplete)
+    public Task<List<ToDo>> FindManyAsync(bool? isComplete)
     {
-        return Task.FromResult(_context.Todos.Where(i => isComplete == null || i.IsComplete == isComplete).ToList());
+        return _context.Todos.Where(i => isComplete == null || i.IsComplete == isComplete).ToListAsync();
     }
 
-    public async Task<ToDo?> FindToDo(Guid id)
+    public async Task<ToDo?> FindToDoAsync(Guid id)
     {
         return await _context.Todos.FindAsync(id);
     }
 
-    public async Task CompleteToDo(Guid id)
+    public async Task CompleteToDoAsync(Guid id)
     {
-        var todo = await _context.Todos.FindAsync(id);
+        var todo = await FindToDoAsync(id);
         
-        todo!.Complete();
+        todo?.Complete();
 
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Guid> AddToDo(CreateToDo toDo)
+    public async Task<Guid> AddToDoAsync(CreateToDo toDo)
     {
         var todo = new ToDo(toDo.Name!);
 
@@ -42,11 +42,15 @@ public class InMemoryToDoRepository : IToDoRepository
         return todo.Id;
     }
 
-    public async Task RemoveToDo(Guid id)
+    public async Task RemoveToDoAsync(Guid id)
     {
-        var todo = await _context.Todos.FindAsync(id);
+        var todo = await FindToDoAsync(id);
+
+        if (todo == null)
+        {
+            return;}
         
-        _context.Todos.Remove(todo!);
+        _context.Todos.Remove(todo);
 
         await _context.SaveChangesAsync();
     }
