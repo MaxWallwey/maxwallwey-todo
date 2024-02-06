@@ -17,9 +17,9 @@ public class ToDoController : ControllerBase
     // List all todos with optional complete parameter
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ToDo))]
     [HttpGet("todo.findMany")]
-    public async Task<List<ToDo>> FindMany(bool? isComplete)
+    public async Task<ResponseData<List<ToDo>>> FindMany(bool? isComplete)
     {
-        return await _toDoRepository.FindManyAsync(isComplete);
+        return new ResponseData<List<ToDo>>(await _toDoRepository.FindManyAsync(isComplete));
     }
 
     // Complete todo
@@ -44,11 +44,11 @@ public class ToDoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [HttpPost("todo.add")]
-    public async Task<ActionResult<Guid>> AddToDo(CreateToDo toDo)
+    public async Task<ResponseData<Guid>> AddToDo(CreateToDo toDo)
     {
         var toDoId = await _toDoRepository.AddToDoAsync(toDo);
 
-        return Ok(toDoId);
+        return new ResponseData<Guid>(toDoId);
     }
 
     // Remove todo
