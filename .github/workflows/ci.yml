@@ -32,7 +32,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install task
-      uses: arduino/setup-task@v1
+      uses: arduino/setup-task@v2
 
     - name: Install dependencies
       run: dotnet restore
