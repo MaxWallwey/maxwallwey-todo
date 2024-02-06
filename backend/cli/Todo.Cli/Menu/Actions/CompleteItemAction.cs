@@ -11,9 +11,12 @@ public class CompleteItemAction : IMenuAction
 
     public void Run()
     {
-        Console.WriteLine("What task would you like to mark as completed? To cancel this, type 'exit'\n");
-        var completeTask = Console.ReadLine();
+        var taskName = Console.ReadLine();
+        var task = _repository.ListToDoFromTask(taskName);
+        if (task != null) 
+        {
+            _repository.CompleteTask(task.Id);
+        }
 
-        _repository.CompleteTask(Guid.Parse(completeTask!));
     }
 }

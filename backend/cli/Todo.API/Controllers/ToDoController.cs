@@ -19,7 +19,7 @@ public class ToDoController : ControllerBase
     [HttpGet("todo.findMany")]
     public async Task<List<ToDo>> FindMany(bool? isComplete)
     {
-        return await _toDoRepository.FindMany(isComplete);
+        return await _toDoRepository.FindManyAsync(isComplete);
     }
 
     // Complete todo
@@ -28,16 +28,16 @@ public class ToDoController : ControllerBase
     [HttpPost("todo.complete")]
     public async Task<IActionResult> CompleteToDo(Guid id)
     {
-        var todo = await _toDoRepository.FindToDo(id);
+        var todo = await _toDoRepository.FindToDoAsync(id);
         
         if (todo == null)
         {
             return ValidationProblem("No matching todo was found");
         }
         
-        await _toDoRepository.CompleteToDo(id);
+        await _toDoRepository.CompleteToDoAsync(id);
         
-        return Ok();
+        return NoContent();
     }
 
     // Add new todo
@@ -46,7 +46,7 @@ public class ToDoController : ControllerBase
     [HttpPost("todo.add")]
     public async Task<ActionResult<Guid>> AddToDo(CreateToDo toDo)
     {
-        var toDoId = await _toDoRepository.AddToDo(toDo);
+        var toDoId = await _toDoRepository.AddToDoAsync(toDo);
 
         return Ok(toDoId);
     }
@@ -57,15 +57,15 @@ public class ToDoController : ControllerBase
     [HttpDelete("todo.remove")]
     public async Task<IActionResult> RemoveToDo(Guid id)
     {
-        var todo = await _toDoRepository.FindToDo(id);
+        var todo = await _toDoRepository.FindToDoAsync(id);
         
         if (todo == null)
         {
             return ValidationProblem("No matching todo was found");
         }
 
-        await _toDoRepository.RemoveToDo(id);
+        await _toDoRepository.RemoveToDoAsync(id);
 
-        return Ok();
+        return NoContent();
     }
 }

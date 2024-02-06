@@ -13,10 +13,6 @@ public class ToDo
     }
 
     public Guid Id { get; set; }
-    
-    [Required(ErrorMessage = "Name is required")]
-    [StringLength(50, MinimumLength = 3,
-        ErrorMessage = "Name should be minimum 3 characters and a maximum of 50 characters")]
     public string Name { get; private set; }
     public DateTime CreatedAt { get; set; }
     public bool IsComplete { get; private set; }
