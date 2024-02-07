@@ -6,8 +6,12 @@
 	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=48e5b375_002D6dc7_002D4ac8_002Da531_002D5f2eee0aa7e8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="ToDoRepositoryTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::5DA46879-4954-4531-9A3D-2C9064DA5FFF::net6.0::Todo.Cli.Tests.ToDoTests&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::5DA46879-4954-4531-9A3D-2C9064DA5FFF::net6.0::Todo.Cli.Tests.ToDoRepositoryTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::9CC48E0D-284D-497C-818D-15B815FB1FFC::net6.0::Todo.Cli.Tests.IntegrationTests.ToDoControllerTests.Post_AddAsync_AddsNewTodo_ReturnsOK&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::9CC48E0D-284D-497C-818D-15B815FB1FFC::net6.0::Todo.Cli.Tests.IntegrationTests.ToDoControllerTests.Get_FindManyAsync_ReturnsOK&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::9CC48E0D-284D-497C-818D-15B815FB1FFC::net6.0::Todo.Cli.Tests.IntegrationTests.ToDoControllerTests.Post_CompleteAsync_SetsCompletionStatusToTrue_ReturnsNoContent&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::9CC48E0D-284D-497C-818D-15B815FB1FFC::net6.0::Todo.Cli.Tests.IntegrationTests.ToDoControllerTests.Post_CompleteAsync_GuidNotFound_Returns400&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::9CC48E0D-284D-497C-818D-15B815FB1FFC::net6.0::Todo.Cli.Tests.IntegrationTests.ToDoControllerTests.Post_AddAsync_ValidationErrorsReturn400&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::9CC48E0D-284D-497C-818D-15B815FB1FFC::net6.0::Todo.Cli.Tests.IntegrationTests.ToDoControllerTests.Delete_RemoveAsync_DeletesTodo_ReturnsNoContent&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	

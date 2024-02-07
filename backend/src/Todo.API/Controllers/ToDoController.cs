@@ -44,9 +44,9 @@ public class ToDoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [HttpPost("todo.add")]
-    public async Task<ResponseData<Guid>> AddToDo(CreateToDo toDo)
+    public async Task<ResponseData<Guid>> AddToDo(CreateToDo name)
     {
-        var toDoId = await _toDoRepository.AddToDoAsync(toDo);
+        var toDoId = await _toDoRepository.AddToDoAsync(name);
 
         return new ResponseData<Guid>(toDoId);
     }
