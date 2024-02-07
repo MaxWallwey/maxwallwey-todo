@@ -44,7 +44,7 @@ jobs:
     
     - name: Test
       run: dotnet test
-      working-directory: backend/test/Todo.Cli.Tests
+      working-directory: backend/test/Todo.Api.Tests
 
     - name: Generate test report
       uses: dorny/test-reporter@v1
