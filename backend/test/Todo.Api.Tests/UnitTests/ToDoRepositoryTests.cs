@@ -1,6 +1,6 @@
 using FluentAssertions;
 
-namespace Todo.Cli.Tests;
+namespace Todo.Cli.Tests.UnitTests;
 
 public class ToDoRepositoryTests
 {

@@ -19,15 +19,22 @@ public class InMemoryToDoRepository : IToDoRepository
 
     public async Task<ToDo?> FindToDoAsync(Guid id)
     {
-        return await _context.Todos.FindAsync(id);
+        var todo = await _context.Todos.FindAsync(id);
+        
+        return todo ?? null;
     }
 
     public async Task CompleteToDoAsync(Guid id)
     {
         var todo = await FindToDoAsync(id);
-        
-        todo?.Complete();
 
+        if (todo == null)
+        {
+            return;
+        }
+        
+        todo.Complete();
+        
         await _context.SaveChangesAsync();
     }
 

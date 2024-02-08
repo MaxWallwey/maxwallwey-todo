@@ -21,6 +21,22 @@ public class ToDoController : ControllerBase
     {
         return new ResponseData<List<ToDo>>(await _toDoRepository.FindManyAsync(isComplete));
     }
+    
+    // List todo using ID
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ToDo))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    [HttpGet("todo.findOne")]
+    public async Task<ActionResult<ToDo>> FindOne(Guid id)
+    {
+        var todo = await _toDoRepository.FindToDoAsync(id);
+
+        if (todo == null)
+        {
+            return ValidationProblem("No matching todo was found.");
+        }
+        
+        return Ok(todo);
+    }
 
     // Complete todo
     [ProducesResponseType(StatusCodes.Status200OK)]
