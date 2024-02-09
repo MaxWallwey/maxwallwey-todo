@@ -20,7 +20,7 @@ public class CompleteAsyncTests : IClassFixture<WebApplicationFactory<Program>>
     }
     
     [Fact]
-    public async Task Post_CompleteAsync_SetsCompletionStatusToTrue_ReturnsNoContent()
+    public async Task CompleteAsync_ValidTask_ReturnsNoContent()
     {
         using var scope = new AssertionScope();
 
@@ -41,7 +41,7 @@ public class CompleteAsyncTests : IClassFixture<WebApplicationFactory<Program>>
     }
     
     [Fact]
-    public async Task Post_CompleteAsync_GuidNotFound_ReturnsBadRequest()
+    public async Task CompleteAsync_InvalidTask_ReturnsBadRequest()
     {
         using var scope = new AssertionScope();
         

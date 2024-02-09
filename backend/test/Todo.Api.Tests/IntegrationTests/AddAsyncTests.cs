@@ -9,17 +9,17 @@ using Todo.API.Models;
 
 namespace Todo.Cli.Tests.IntegrationTests;
 
-public class AddAsyncTest : IClassFixture<WebApplicationFactory<Program>>
+public class AddAsyncTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly WebApplicationFactory<Program> _factory;
 
-    public AddAsyncTest(WebApplicationFactory<Program> factory)
+    public AddAsyncTests(WebApplicationFactory<Program> factory)
     {
         _factory = factory;
     }
     
     [Fact]
-    public async Task Post_AddAsync_AddsNewTodo_ReturnsOK()
+    public async Task AddAsync_ValidTask_ReturnsOK()
     {
         using var scope = new AssertionScope();
         
@@ -36,7 +36,7 @@ public class AddAsyncTest : IClassFixture<WebApplicationFactory<Program>>
     }
     
     [Fact]
-    public async Task Post_AddAsync_ValidationErrorsReturnBadRequest()
+    public async Task AddAsync_MissingName_ReturnBadRequest()
     {
         using var scope = new AssertionScope();
         
