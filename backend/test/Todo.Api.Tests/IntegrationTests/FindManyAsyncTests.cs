@@ -35,7 +35,7 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
     }
     
     [Fact]
-    public async Task FindManyAsync_CompletionStatusFalse_ReturnsOK()
+    public async Task FindManyAsync_CompletionStatusTrue_ReturnsOK()
     {
         using var scope = new AssertionScope();
         var obj = new { name = "mock" };
@@ -45,27 +45,27 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         await client.PostAsync($"/todo.complete?id={id?.Data}", null);
         
-        var response = await client.GetAsync("/todo.findMany?isComplete=false");
+        var response = await client.GetAsync("/todo.findMany?isComplete=true");
 
         var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
 
-        content.Data.Should().BeNullOrEmpty();
+        content.Data.Should().NotBeNullOrEmpty();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
     
     [Fact]
-    public async Task FindManyAsync_CompletionStatusTrue_ReturnsOK()
+    public async Task FindManyAsync_CompletionStatusFalse_ReturnsOK()
     {
         using var scope = new AssertionScope();
         var obj = new { name = "mock" };
         var client = _factory.CreateClient();
         await client.PostAsJsonAsync("/todo.add", obj);
         
-        var response = await client.GetAsync("/todo.findMany?isComplete=true");
+        var response = await client.GetAsync("/todo.findMany?isComplete=False");
 
         var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
 
-        content.Data.Should().BeNullOrEmpty();
+        content.Data.Should().NotBeNullOrEmpty();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 }
