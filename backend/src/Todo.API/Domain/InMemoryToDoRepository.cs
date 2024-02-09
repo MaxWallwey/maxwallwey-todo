@@ -25,7 +25,7 @@ public class InMemoryToDoRepository : IToDoRepository
     {
         var todo = await _context.Todos.FindAsync(id);
         
-        return todo ?? null;
+        return todo;
     }
 
     public async Task CompleteToDoAsync(Guid id)

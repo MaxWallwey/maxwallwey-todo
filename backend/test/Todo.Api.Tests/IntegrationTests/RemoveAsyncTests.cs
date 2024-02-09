@@ -19,7 +19,7 @@ public class RemoveAsyncTests : IClassFixture<WebApplicationFactory<Program>>
     }
 
     [Fact]
-    public async Task Delete_RemoveAsync_DeletesTodo_ReturnsNoContent()
+    public async Task RemoveAsync_ValidTask_ReturnsNoContent()
     {
         using var scope = new AssertionScope();
 
@@ -36,5 +36,17 @@ public class RemoveAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var checkDeletion = await client.GetAsync($"/todo.findOne?id={content?.Data}");
         checkDeletion.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+    
+    [Fact]
+    public async Task RemoveAsync_InvalidTask_ReturnsNoContent()
+    {
+        using var scope = new AssertionScope();
+        
+        var client = _factory.CreateClient();
+   
+        var response = await client.DeleteAsync("/todo.remove?id=");
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 }

@@ -19,10 +19,53 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
     
     // FindMany Endpoint
     [Fact]
-    public async Task Get_FindManyAsync_ReturnsOK()
+    public async Task FindManyAsync_NoCompletionStatus_ReturnsOK()
     {
+        using var scope = new AssertionScope();
+        var obj = new { name = "mock" };
         var client = _factory.CreateClient();
+        await client.PostAsJsonAsync("/todo.add", obj);
+        
         var response = await client.GetAsync("/todo.findMany");
+
+        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
+
+        content.Data.Should().NotBeNullOrEmpty();
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+    
+    [Fact]
+    public async Task FindManyAsync_CompletionStatusFalse_ReturnsOK()
+    {
+        using var scope = new AssertionScope();
+        var obj = new { name = "mock" };
+        var client = _factory.CreateClient();
+        var addedTodo = await client.PostAsJsonAsync("/todo.add", obj);
+        var id = await addedTodo.Content.ReadFromJsonAsync<ResponseData<Guid>>();
+        
+        await client.PostAsync($"/todo.complete?id={id?.Data}", null);
+        
+        var response = await client.GetAsync("/todo.findMany?isComplete=false");
+
+        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
+
+        content.Data.Should().BeNullOrEmpty();
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+    
+    [Fact]
+    public async Task FindManyAsync_CompletionStatusTrue_ReturnsOK()
+    {
+        using var scope = new AssertionScope();
+        var obj = new { name = "mock" };
+        var client = _factory.CreateClient();
+        await client.PostAsJsonAsync("/todo.add", obj);
+        
+        var response = await client.GetAsync("/todo.findMany?isComplete=true");
+
+        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
+
+        content.Data.Should().BeNullOrEmpty();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 }
