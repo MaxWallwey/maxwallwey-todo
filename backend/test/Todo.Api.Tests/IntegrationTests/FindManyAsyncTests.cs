@@ -1,6 +1,5 @@
 using System.Net;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -30,7 +29,7 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
 
         var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
 
-        content.Data.Should().NotBeNullOrEmpty();
+        content?.Data.Should().NotBeNullOrEmpty();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
     
@@ -49,7 +48,7 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
 
         var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
 
-        content.Data.Should().NotBeNullOrEmpty();
+        content?.Data.Should().NotBeNullOrEmpty();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
     
@@ -65,7 +64,7 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
 
         var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
 
-        content.Data.Should().NotBeNullOrEmpty();
+        content?.Data.Should().NotBeNullOrEmpty();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 }

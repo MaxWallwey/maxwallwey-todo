@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Todo.API.Domain;
 using Todo.API.Models;
@@ -32,16 +28,16 @@ public class ToDoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ToDo))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [HttpGet("todo.findOne")]
-    public async Task<ActionResult<ToDo>> FindOne(Guid id)
+    public async Task<ActionResult<ResponseData<ToDo>>> FindOne(Guid id)
     {
         var todo = await _toDoRepository.FindToDoAsync(id);
 
         if (todo == null)
         {
-            return ValidationProblem("No matching todo was found.");
+            return ValidationProblem();
         }
         
-        return Ok(new ResponseData<ToDo>(todo));
+        return new ResponseData<ToDo>(todo);
     }
 
     // Complete todo

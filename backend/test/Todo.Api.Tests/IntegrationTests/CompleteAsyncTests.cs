@@ -1,10 +1,7 @@
-using System;
 using System.Net;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Todo.API.Models;
 
