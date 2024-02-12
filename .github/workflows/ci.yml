@@ -32,7 +32,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install task
-      uses: arduino/setup-task@v1
+      uses: arduino/setup-task@v2
 
     - name: Install dependencies
       run: dotnet restore
@@ -51,7 +51,7 @@ jobs:
       if: success() || failure()
       with:
         name: ${{ matrix.os }} Test Results
-        path: "**/TestResults/net6.0/Todo.Cli.Tests.trx"
+        path: "**/TestResults/net6.0/Todo.Api.Tests.trx"
         reporter: dotnet-trx
         
     - name: Generate test coverage report

@@ -6,6 +6,10 @@
 	
 	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=48e5b375_002D6dc7_002D4ac8_002Da531_002D5f2eee0aa7e8/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="1" IsActive="True" Name="ToDoRepositoryTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+&lt;/AssemblyExplorer&gt;</s:String>
+	
+	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=48e5b375_002D6dc7_002D4ac8_002Da531_002D5f2eee0aa7e8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="ToDoRepositoryTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Project Location="/Users/maxwallwey/code/maxwallwey-todo/backend/test/Todo.Api.Tests" Presentation="&amp;lt;test&amp;gt;\&amp;lt;Todo.Api.Tests&amp;gt;" /&gt;
 &lt;/SessionState&gt;</s:String>
 	

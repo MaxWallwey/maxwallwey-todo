@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Todo.API.Models;
 
@@ -21,7 +25,7 @@ public class InMemoryToDoRepository : IToDoRepository
     {
         var todo = await _context.Todos.FindAsync(id);
         
-        return todo ?? null;
+        return todo;
     }
 
     public async Task CompleteToDoAsync(Guid id)

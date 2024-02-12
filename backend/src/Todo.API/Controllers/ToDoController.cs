@@ -19,23 +19,25 @@ public class ToDoController : ControllerBase
     [HttpGet("todo.findMany")]
     public async Task<ResponseData<List<ToDo>>> FindMany(bool? isComplete)
     {
-        return new ResponseData<List<ToDo>>(await _toDoRepository.FindManyAsync(isComplete));
+        var todos = await _toDoRepository.FindManyAsync(isComplete);
+        
+        return new ResponseData<List<ToDo>>(todos);
     }
     
     // List todo using ID
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ToDo))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [HttpGet("todo.findOne")]
-    public async Task<ActionResult<ToDo>> FindOne(Guid id)
+    public async Task<ActionResult<ResponseData<ToDo>>> FindOne(Guid id)
     {
         var todo = await _toDoRepository.FindToDoAsync(id);
 
         if (todo == null)
         {
-            return ValidationProblem("No matching todo was found.");
+            return ValidationProblem();
         }
         
-        return Ok(todo);
+        return new ResponseData<ToDo>(todo);
     }
 
     // Complete todo
@@ -60,9 +62,9 @@ public class ToDoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [HttpPost("todo.add")]
-    public async Task<ResponseData<Guid>> AddToDo(CreateToDo name)
+    public async Task<ResponseData<Guid>> AddToDo(CreateToDo model)
     {
-        var toDoId = await _toDoRepository.AddToDoAsync(name);
+        var toDoId = await _toDoRepository.AddToDoAsync(model);
 
         return new ResponseData<Guid>(toDoId);
     }

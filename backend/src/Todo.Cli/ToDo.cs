@@ -1,11 +1,8 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace Todo.API.Domain;
+namespace Todo.Cli;
 
 public class ToDo
 {
-    protected internal ToDo(string name, bool isComplete = false)
+    public ToDo(string name, bool isComplete = false)
     {
         Id = Guid.NewGuid();
         Name = name;
@@ -13,9 +10,9 @@ public class ToDo
         IsComplete = isComplete;
     }
 
-    public Guid Id { get; set; }
+    public Guid Id { get; }
     public string Name { get; private set; }
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; }
     public bool IsComplete { get; private set; }
 
     public void Complete()

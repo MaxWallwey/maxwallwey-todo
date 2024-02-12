@@ -17,7 +17,7 @@ public class CompleteAsyncTests : IClassFixture<WebApplicationFactory<Program>>
     }
     
     [Fact]
-    public async Task Post_CompleteAsync_SetsCompletionStatusToTrue_ReturnsNoContent()
+    public async Task CompleteAsync_ValidTask_ReturnsNoContent()
     {
         using var scope = new AssertionScope();
 
@@ -33,12 +33,12 @@ public class CompleteAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         
         var checkCompletion = await client.GetAsync($"/todo.findOne?id={content?.Data}");
+        
         var content1 = await checkCompletion.Content.ReadFromJsonAsync<ToDo.API.SDK.ToDo>();
         content1?.IsComplete.Should().Be(true);
-    }
     
     [Fact]
-    public async Task Post_CompleteAsync_GuidNotFound_ReturnsBadRequest()
+    public async Task CompleteAsync_InvalidTask_ReturnsBadRequest()
     {
         using var scope = new AssertionScope();
         
