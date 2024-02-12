@@ -4937,7 +4937,8 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "6.0.16",
           "Refit": "7.0.0",
           "Refit.HttpClientFactory": "7.0.0",
-          "Swashbuckle.AspNetCore": "6.5.0"
+          "Swashbuckle.AspNetCore": "6.5.0",
+          "Todo.Cli": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Todo.API.dll": {}

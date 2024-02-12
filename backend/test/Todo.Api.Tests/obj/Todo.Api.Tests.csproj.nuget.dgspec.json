@@ -88,7 +88,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "/Users/maxwallwey/code/maxwallwey-todo/backend/src/Todo.Cli/Todo.Cli.csproj": {
+                "projectPath": "/Users/maxwallwey/code/maxwallwey-todo/backend/src/Todo.Cli/Todo.Cli.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

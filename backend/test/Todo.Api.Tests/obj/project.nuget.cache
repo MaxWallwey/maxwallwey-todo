@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "WxYOXhKKuZZPHqVaGVEHMbGfs2jZOtN0d2xeH1XvEICUebUJVlNav6VCxQpf6OY1NCBtUr8IDkRhcNil+Llzdg==",
+  "dgSpecHash": "DA8wD3RaMJgm82JGzlNvfg3cRTL0f9tg8TbBRpgH2veAmLdxZMlV1dI12WhiTkR4mQeB+uOw94Ds1ajOgqvJdA==",
   "success": true,
   "projectFilePath": "/Users/maxwallwey/code/maxwallwey-todo/backend/test/Todo.Api.Tests/Todo.Api.Tests.csproj",
   "expectedPackageFiles": [
