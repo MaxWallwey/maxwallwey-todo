@@ -11,12 +11,7 @@ public class CompleteItemAction : IMenuAction
 
     public void Run()
     {
-        var taskName = Console.ReadLine();
-        var task = _repository.ListToDoFromTask(taskName);
-        if (task != null) 
-        {
-            _repository.CompleteTask(task.Id);
-        }
-
+        var id = Guid.Parse(Console.ReadLine());
+        _repository.CompleteTask(id);
     }
 }

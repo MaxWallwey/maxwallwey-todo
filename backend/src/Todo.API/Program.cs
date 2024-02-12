@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Todo.API.Domain;
+using Refit;
 
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ToDoContext>(opt =>
     opt.UseInMemoryDatabase("ToDoList"));

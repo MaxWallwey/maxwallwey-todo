@@ -9,13 +9,18 @@ public class ListCompleteItemsAction : IMenuAction
         _repository = repository;
     }
 
-    public void Run()
+    public async void Run()
     {
-        Console.WriteLine("Current completed tasks:");
-
-        foreach (var item in _repository.ListCompleteTasks())
+        var completeTasks = await _repository.ListCompleteTasks();
+        
+        Console.WriteLine("Current complete tasks:");
+        
+        foreach (var item in completeTasks.Data)
         {
             Console.WriteLine(item.Name);
+            Console.WriteLine(item.IsComplete);
+            Console.WriteLine(item.CreatedAt);
+            Console.WriteLine(item.Id);
         }
     }
 }

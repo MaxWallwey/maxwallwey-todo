@@ -5,7 +5,7 @@ using Todo.API.Models;
 namespace Todo.API.Controllers;
 
 [ApiController]
-public class ToDoController : ControllerBase
+public class ToDoController : TodoControllerBase
 {
     private readonly IToDoRepository _toDoRepository;
 

@@ -1,55 +1,58 @@
+using Refit;
+using ToDo.API.SDK;
+
 namespace Todo.Cli;
 
 public class ToDoRepository
 {
-    public List<ToDo> Items { get; }
+    private readonly IToDoClient _toDoClient = RestService.For<IToDoClient>("https://localhost:9000");
 
-    public ToDoRepository(List<ToDo> items)
-    {
-        Items = items;
-    }
-    
-    public ToDoRepository()
-    {
-        Items = new List<ToDo>();
-    }
-    
     // Add task
-    public void AddTask(string newTask)
+    public async Task<Guid> AddTask(string newTodo)
     {
-        Items.Add(new ToDo(newTask));
+        var model = new CreateToDo
+        {
+            Name = newTodo
+        };
+
+        var response = await _toDoClient.AddToDo(model);
+
+        return response.Data;
     }
 
     // Remove task
     public void RemoveTask(Guid removeTask)
     {
-        var itemToRemove = Items.FirstOrDefault(i => i.Id == removeTask);
-
-        if (itemToRemove != null) Items.Remove(itemToRemove);
+        _toDoClient.RemoveToDo(removeTask);
     }
 
     // List incomplete tasks
-    public List<ToDo> ListIncompleteTasks()
+    public async Task<ResponseData<List<ToDo.API.SDK.ToDo>>> ListIncompleteTasks()
     {
-        return Items.Where(i => !i.IsComplete).ToList();
+        var todos = await _toDoClient.FindManyFalse();
+
+        return todos;
     }
 
     // List complete tasks
-    public List<ToDo> ListCompleteTasks()
+    public async Task<ResponseData<List<ToDo.API.SDK.ToDo>>> ListCompleteTasks()
     {
-        return Items.Where(i => i.IsComplete).ToList();
+        var todos = await _toDoClient.FindManyTrue();
+
+        return todos;
     }
     
     //List ToDo for task
-    public ToDo? ListToDoFromTask(string? name)
+    public async Task<ToDo.API.SDK.ToDo> ListToDoFromTask(Guid id)
     {
-        return Items.FirstOrDefault(i => i.Name == name);
+        var todo = await _toDoClient.FindOne(id);
+
+        return todo;
     }
 
     //Complete task
     public void CompleteTask(Guid id)
     {
-        var taskToComplete = Items.FirstOrDefault(i => i.Id == id);
-        taskToComplete?.Complete();
+        _toDoClient.CompleteToDo(id);
     }
 }

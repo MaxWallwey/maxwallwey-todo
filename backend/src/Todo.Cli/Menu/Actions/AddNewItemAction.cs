@@ -9,14 +9,13 @@ public class AddNewItemAction : IMenuAction
         _repository = repository;
     }
     
-    public void Run()
+    public async void Run()
     {
         Console.WriteLine("What task would you like to add? To cancel this, type 'exit'\n");
         string? newTask = Console.ReadLine();
-
-        if (newTask != null && newTask != "exit")
-        {
-            _repository.AddTask(newTask);
-        }
+        
+        var newTodoId = await _repository.AddTask(newTask);
+        
+        Console.WriteLine($"ID: {newTodoId}");
     }
 }

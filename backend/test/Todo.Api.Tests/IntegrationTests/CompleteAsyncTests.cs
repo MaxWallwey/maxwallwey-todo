@@ -2,7 +2,6 @@ using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
 using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Todo.API.Models;
 
@@ -34,7 +33,7 @@ public class CompleteAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         
         var checkCompletion = await client.GetAsync($"/todo.findOne?id={content?.Data}");
-        var content1 = await checkCompletion.Content.ReadFromJsonAsync<ToDo>();
+        var content1 = await checkCompletion.Content.ReadFromJsonAsync<ToDo.API.SDK.ToDo>();
         content1?.IsComplete.Should().Be(true);
     }
     

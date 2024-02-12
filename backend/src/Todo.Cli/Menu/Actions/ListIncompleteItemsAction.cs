@@ -9,13 +9,18 @@ public class ListIncompleteItemsAction : IMenuAction
         _repository = repository;
     }
 
-    public void Run()
+    public async void Run()
     {
+        var incompleteTasks = await _repository.ListIncompleteTasks();
+        
         Console.WriteLine("Current incomplete tasks:");
-
-        foreach (var item in _repository.ListIncompleteTasks())
+        
+        foreach (var item in incompleteTasks.Data)
         {
             Console.WriteLine(item.Name);
+            Console.WriteLine(item.IsComplete);
+            Console.WriteLine(item.CreatedAt);
+            Console.WriteLine(item.Id);
         }
     }
 }

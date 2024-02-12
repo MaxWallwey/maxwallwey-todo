@@ -7,7 +7,7 @@ public class ToDoTests
     [Fact]
     public void ToDoTest()
     {
-        var item = new ToDo("mock");
+        var item = new API.Domain.ToDo("mock");
 
         item.Name.Should().Be("mock");
 
@@ -21,7 +21,7 @@ public class ToDoTests
     [Fact]
     public void Complete_CompletesSpecifiedToDo()
     {
-        var item = new ToDo("mock");
+        var item = new API.Domain.ToDo("mock");
         
         item.Complete();
         
