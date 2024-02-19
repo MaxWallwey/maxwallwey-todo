@@ -25,7 +25,7 @@ public class AddAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var client = _factory.CreateClient();
         var response = await client.PostAsJsonAsync("/todo.add", obj);
-
+        
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var content = await response.Content.ReadFromJsonAsync<ResponseData<Guid>>();

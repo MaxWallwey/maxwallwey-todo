@@ -1,4 +1,3 @@
-using System;
 using FluentAssertions;
 
 namespace Todo.Cli.Tests.UnitTests;
