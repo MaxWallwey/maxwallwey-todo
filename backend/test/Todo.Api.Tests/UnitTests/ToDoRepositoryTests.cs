@@ -1,8 +1,5 @@
 using FluentAssertions;
-using FluentAssertions.Execution;
 using NSubstitute;
-using ToDo.API.SDK;
-
 
 namespace Todo.Cli.Tests.UnitTests;
 public class ToDoRepositoryTests
@@ -15,7 +12,7 @@ public class ToDoRepositoryTests
         
         var newTaskId = await mockRepository.AddTask("mock");
 
-        mockRepository.ListToDoFromTask(newTaskId).Should().NotBeNull();
+        newTaskId.Should().NotBeEmpty();
     }
 
     [Fact]
