@@ -1,5 +1,5 @@
 using Refit;
-using ToDo.API.SDK;
+using ToDo.Api.Sdk;
 
 namespace Todo.Cli.Menu.Actions;
 

@@ -4,6 +4,6 @@ public class ExitApplicationAction : IMenuAction
 {
     public void Run()
     {
-        System.Environment.Exit(0);
+        Environment.Exit(0);
     }
 }

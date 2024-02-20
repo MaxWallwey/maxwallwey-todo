@@ -3,9 +3,10 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Todo.API.Models;
+using Todo.Api.Domain;
+using Todo.Api.Models;
 
-namespace Todo.Cli.Tests.IntegrationTests;
+namespace Todo.Api.Tests.IntegrationTests;
 
 public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
 {
@@ -27,7 +28,7 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var response = await client.GetAsync("/todo.findMany");
 
-        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo.API.SDK.ToDo>>>();
+        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
 
         content?.Data.Should().NotBeNullOrEmpty();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -62,7 +63,7 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var response = await client.GetAsync("/todo.findMany?isComplete=False");
 
-        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo.API.SDK.ToDo>>>();
+        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
 
         content?.Data.Should().NotBeNullOrEmpty();
         response.StatusCode.Should().Be(HttpStatusCode.OK);

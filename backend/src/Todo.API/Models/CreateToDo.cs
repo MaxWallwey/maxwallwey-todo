@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Todo.API.Models;
+namespace Todo.Api.Models;
 
 public class CreateToDo
 { 

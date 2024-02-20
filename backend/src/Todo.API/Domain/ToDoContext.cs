@@ -1,4 +1,4 @@
-namespace Todo.API.Domain;
+namespace Todo.Api.Domain;
 
 using Microsoft.EntityFrameworkCore;
 public class ToDoContext : DbContext

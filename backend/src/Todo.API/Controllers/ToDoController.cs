@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Todo.API.Domain;
-using Todo.API.Models;
+using Todo.Api.Domain;
+using Todo.Api.Models;
 
-namespace Todo.API.Controllers;
+namespace Todo.Api.Controllers;
 
 [ApiController]
 public class ToDoController : ControllerBase
@@ -15,20 +15,20 @@ public class ToDoController : ControllerBase
     }
     
     // List all todos with optional complete parameter
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Domain.ToDo))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ToDo))]
     [HttpGet("todo.findMany")]
-    public async Task<ResponseData<List<Domain.ToDo>>> FindMany(bool? isComplete)
+    public async Task<ResponseData<List<ToDo>>> FindMany(bool? isComplete)
     {
         var todos = await _toDoRepository.FindManyAsync(isComplete);
         
-        return new ResponseData<List<Domain.ToDo>>(todos);
+        return new ResponseData<List<ToDo>>(todos);
     }
     
     // List todo using ID
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Domain.ToDo))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ToDo))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [HttpGet("todo.findOne")]
-    public async Task<ActionResult<ResponseData<Domain.ToDo>>> FindOne(Guid id)
+    public async Task<ActionResult<ResponseData<ToDo>>> FindOne(Guid id)
     {
         var todo = await _toDoRepository.FindToDoAsync(id);
 
@@ -37,7 +37,7 @@ public class ToDoController : ControllerBase
             return ValidationProblem();
         }
         
-        return new ResponseData<Domain.ToDo>(todo);
+        return new ResponseData<ToDo>(todo);
     }
 
     // Complete todo

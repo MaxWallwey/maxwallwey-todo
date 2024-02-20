@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Todo.API.Domain;
+namespace Todo.Api.Domain;
 
 public class ToDo
 {

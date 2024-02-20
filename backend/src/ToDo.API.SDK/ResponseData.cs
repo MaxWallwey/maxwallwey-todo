@@ -1,4 +1,4 @@
-namespace ToDo.API.SDK;
+namespace ToDo.Api.Sdk;
 
 public class ResponseData<T>
 {

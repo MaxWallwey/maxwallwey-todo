@@ -3,9 +3,9 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Todo.API.Models;
+using Todo.Api.Models;
 
-namespace Todo.Cli.Tests.IntegrationTests;
+namespace Todo.Api.Tests.IntegrationTests;
 
 public class RemoveAsyncTests : IClassFixture<WebApplicationFactory<Program>>
 {

@@ -1,4 +1,4 @@
-namespace Todo.API.Models;
+namespace Todo.Api.Models;
 
 public class ResponseData<T>
 {

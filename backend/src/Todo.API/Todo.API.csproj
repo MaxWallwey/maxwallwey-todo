@@ -29,11 +29,4 @@
     <ItemGroup>
      <InternalsVisibleTo Include="Todo.Api.Tests"/>
     </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Todo.API">
-        <HintPath>..\..\test\Todo.Api.Tests\bin\Debug\net6.0\Todo.API.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Todo.API.Domain;
+using Todo.Api.Domain;
 
 // Add services to the container.
 var builder = WebApplication.CreateBuilder(args);
@@ -33,4 +33,7 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program { }
+namespace Todo.Api
+{
+    public partial class Program { }
+}

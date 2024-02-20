@@ -1,13 +1,14 @@
 using FluentAssertions;
+using Todo.Api.Domain;
 
-namespace Todo.Cli.Tests.UnitTests;
+namespace Todo.Api.Tests.UnitTests;
 
 public class ToDoTests
 {
     [Fact]
     public void ToDoTest()
     {
-        var item = new API.Domain.ToDo("mock");
+        var item = new ToDo("mock");
 
         item.Name.Should().Be("mock");
 
@@ -21,7 +22,7 @@ public class ToDoTests
     [Fact]
     public void Complete_CompletesSpecifiedToDo()
     {
-        var item = new API.Domain.ToDo("mock");
+        var item = new ToDo("mock");
         
         item.Complete();
         

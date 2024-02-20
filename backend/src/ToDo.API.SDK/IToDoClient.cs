@@ -1,6 +1,6 @@
 using Refit;
 
-namespace ToDo.API.SDK;
+namespace ToDo.Api.Sdk;
 
 [Headers("Content-Type: application/json")]
 public interface IToDoClient
