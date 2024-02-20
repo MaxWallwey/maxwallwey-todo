@@ -2,14 +2,12 @@
 using Todo.Cli.Menu;
 using Todo.Cli.Menu.Actions;
 
-ToDoRepository repository = new ToDoRepository();
-
 // Instantiate actions for saving memory
-var incompleteItemsAction = new ListIncompleteItemsAction(repository);
-var completeItemsAction = new ListCompleteItemsAction(repository);
-var addItemsAction = new AddNewItemAction(repository);
-var markCompleteItemsAction = new CompleteItemAction(repository);
-var removeItemsAction = new RemoveItemAction(repository);
+var incompleteItemsAction = new ListIncompleteItemsAction();
+var completeItemsAction = new ListCompleteItemsAction();
+var addItemsAction = new AddNewItemAction();
+var markCompleteItemsAction = new CompleteItemAction();
+var removeItemsAction = new RemoveItemAction();
 
 // Instantiate options for menu
 var options = new List<Option>

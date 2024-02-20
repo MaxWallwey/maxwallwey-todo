@@ -5,11 +5,8 @@ namespace ToDo.API.SDK;
 [Headers("Content-Type: application/json")]
 public interface IToDoClient
 {
-    [Get("/todo.findMany?isComplete=false")]
-    Task<ResponseData<List<ToDo>>> FindManyFalse();
-    
-    [Get("/todo.findMany?isComplete=true")]
-    Task<ResponseData<List<ToDo>>> FindManyTrue();
+    [Get("/todo.findMany")]
+    Task<ResponseData<List<ToDo>>> FindMany(bool isComplete);
     
     [Get("/todo.findOne")]
     Task<ToDo> FindOne(Guid id);
@@ -18,7 +15,7 @@ public interface IToDoClient
     Task CompleteToDo(Guid id);
 
     [Post("/todo.add")]
-    Task<ResponseData<Guid>> AddToDo(CreateToDo name);
+    Task<ResponseData<Guid>> AddToDo([Body] CreateToDo name);
 
     [Delete("/todo.remove")]
     Task RemoveToDo(Guid id);

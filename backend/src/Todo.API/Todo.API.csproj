@@ -21,17 +21,19 @@
         <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Todo.Cli\Todo.Cli.csproj" />
-    </ItemGroup>
-
+    
     <ItemGroup>
       <Folder Include="Controllers\" />
     </ItemGroup>
 
     <ItemGroup>
      <InternalsVisibleTo Include="Todo.Api.Tests"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Todo.API">
+        <HintPath>..\..\test\Todo.Api.Tests\bin\Debug\net6.0\Todo.API.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

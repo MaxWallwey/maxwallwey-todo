@@ -46,7 +46,7 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var response = await client.GetAsync("/todo.findMany?isComplete=true");
 
-        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo.API.SDK.ToDo>>>();
+        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
 
         content?.Data.Should().NotBeNullOrEmpty();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
