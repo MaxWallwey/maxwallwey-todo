@@ -5,11 +5,15 @@ namespace Todo.Cli.Menu.Actions;
 
 public class ListCompleteItemsAction : IMenuAction
 {
-    private readonly IToDoClient _toDoClient = RestService.For<IToDoClient>("https://localhost:9000");
+    public ListCompleteItemsAction(IToDoClient toDoClient)
+    {
+        ToDoClient = toDoClient;
+    }
+    private IToDoClient ToDoClient { get; }
 
     public async Task Run()
     {
-        var todos = await _toDoClient.FindMany(true);
+        var todos = await ToDoClient.FindMany(true);
         
         Console.WriteLine("Current complete tasks:");
         

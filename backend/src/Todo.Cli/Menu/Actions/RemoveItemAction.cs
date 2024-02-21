@@ -5,13 +5,17 @@ namespace Todo.Cli.Menu.Actions;
 
 public class RemoveItemAction : IMenuAction
 {
-    private readonly IToDoClient _toDoClient = RestService.For<IToDoClient>("https://localhost:9000");
+    public RemoveItemAction(IToDoClient toDoClient)
+    {
+        ToDoClient = toDoClient;
+    }
+    private IToDoClient ToDoClient { get; }
     
     public async Task Run()
     {
         Console.WriteLine("What task would you like to remove?\n");
         var removeTask = Guid.Parse(Console.ReadLine());
 
-        await _toDoClient.RemoveToDo(removeTask);
+        await ToDoClient.RemoveToDo(removeTask);
     }
 }

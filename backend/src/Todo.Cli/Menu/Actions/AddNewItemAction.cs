@@ -5,8 +5,12 @@ namespace Todo.Cli.Menu.Actions;
 
 public class AddNewItemAction : IMenuAction
 {
-    private readonly IToDoClient _toDoClient = RestService.For<IToDoClient>("https://localhost:9000");
-    
+    public AddNewItemAction(IToDoClient toDoClient)
+    {
+        ToDoClient = toDoClient;
+    }
+    private IToDoClient ToDoClient { get; }
+
     public async Task Run()
     {
         Console.WriteLine("What task would you like to add? To cancel this, type 'exit'\n");
@@ -19,7 +23,7 @@ public class AddNewItemAction : IMenuAction
 
         var model = new CreateToDo { Name = newTask };
 
-        var response = await _toDoClient.AddToDo(model);
+        var response = await ToDoClient.AddToDo(model);
         
         Console.WriteLine($"ID: {response.Data}");
     }
