@@ -7,7 +7,7 @@ public class AddNewItemAction : IMenuAction
 {
     private readonly IToDoClient _toDoClient = RestService.For<IToDoClient>("https://localhost:9000");
     
-    public async void Run()
+    public async Task Run()
     {
         Console.WriteLine("What task would you like to add? To cancel this, type 'exit'\n");
         string? newTask = Console.ReadLine();
