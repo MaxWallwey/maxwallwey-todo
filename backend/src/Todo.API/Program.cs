@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using Todo.API;
 using Todo.API.Domain;
 
 
@@ -15,12 +17,24 @@ builder.Services.AddDbContext<ToDoContext>(opt =>
 
 builder.Services.AddScoped<IToDoRepository, InMemoryToDoRepository>();
 
+builder.Host.UseSerilog();
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "TodoApi", Version = "v1" });
 });
 
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .Build();
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(configuration)
+    .CreateLogger();
+
 var app = builder.Build();
+
+//app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
 if (builder.Environment.IsDevelopment())
@@ -30,12 +44,27 @@ if (builder.Environment.IsDevelopment())
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApi v1"));
 }
 
+app.UseSerilogRequestLogging(opts
+    => opts.EnrichDiagnosticContext = LogHelper.EnrichFromRequest);
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+try
+{
+    Log.Information("Application starting.");
+    app.Run();
+}
+catch (Exception e)
+{
+    Log.Fatal(e, "The application could not be started.");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
 
 public partial class Program { }
