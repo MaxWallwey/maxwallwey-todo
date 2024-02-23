@@ -7,9 +7,9 @@ public class AddNewItemAction : IMenuAction
 {
     public AddNewItemAction(IToDoClient toDoClient)
     {
-        ToDoClient = toDoClient;
+        _toDoClient = toDoClient;
     }
-    private IToDoClient ToDoClient { get; }
+    private IToDoClient _toDoClient { get; }
 
     public async Task Run()
     {
@@ -23,7 +23,7 @@ public class AddNewItemAction : IMenuAction
 
         var model = new CreateToDo { Name = newTask };
 
-        var response = await ToDoClient.AddToDo(model);
+        var response = await _toDoClient.AddToDo(model);
         
         Console.WriteLine($"ID: {response.Data}");
     }

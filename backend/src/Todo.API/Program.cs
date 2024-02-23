@@ -9,9 +9,6 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<ToDoContext>(opt =>
     opt.UseInMemoryDatabase("ToDoList"));
 
-//builder.Services.AddRefitClient<IToDoClient>()
-//    .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://localhost:9000"));
-
 builder.Services.AddScoped<IToDoRepository, InMemoryToDoRepository>();
 
 builder.Services.AddSwaggerGen(c =>
