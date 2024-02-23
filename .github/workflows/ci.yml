@@ -36,11 +36,9 @@ jobs:
 
     - name: Install dependencies
       run: dotnet restore
-      working-directory: backend/src/Todo.Cli
       
     - name: Build   
       run: dotnet build --configuration Release --no-restore
-      working-directory: backend/src/Todo.Cli
     
     - name: Test
       run: dotnet test
