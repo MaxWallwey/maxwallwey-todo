@@ -1,0 +1,12 @@
+﻿services: 
+  seq:
+    container_name: seq
+    image: datalust/seq:latest
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "8080:80"
+    volumes:
+      - /Users/maxwallwey/code/maxwallwey-todo/backend/logs:/data
+    
