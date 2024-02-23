@@ -20,7 +20,7 @@ var options = new List<Option>
     new Option("Add a new task", async () => await addItemsAction.Run()),
     new Option("Mark task as completed", async () => await markCompleteItemsAction.Run()),
     new Option("Remove a task", async () => await removeItemsAction.Run()),
-    new Option("Exit", async () => await new ExitApplicationAction().Run()),
+    new Option("Exit", async () => new ExitApplicationAction().Run()),
 };
 
 //Start Menu
