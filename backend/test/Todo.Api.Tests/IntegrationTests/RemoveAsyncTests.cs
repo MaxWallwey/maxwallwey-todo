@@ -37,7 +37,7 @@ public class RemoveAsyncTests : IClassFixture<WebApplicationFactory<Program>>
     }
     
     [Fact]
-    public async Task RemoveAsync_InvalidTask_ReturnsNoContent()
+    public async Task RemoveAsync_InvalidTask_ReturnsBadRequest()
     {
         using var scope = new AssertionScope();
         

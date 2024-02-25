@@ -41,10 +41,10 @@ public class ToDoController : ControllerBase
     }
 
     // Complete todo
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [HttpPost("todo.complete")]
-    public async Task<IActionResult> CompleteToDo(Guid id)
+    public async Task<ActionResult<ResponseData<ToDo>>> CompleteToDo(Guid id)
     {
         var todo = await _toDoRepository.FindToDoAsync(id);
         
@@ -54,7 +54,7 @@ public class ToDoController : ControllerBase
         }
         
         await _toDoRepository.CompleteToDoAsync(id);
-        
+
         return NoContent();
     }
 
@@ -70,7 +70,7 @@ public class ToDoController : ControllerBase
     }
 
     // Remove todo
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [HttpDelete("todo.remove")]
     public async Task<IActionResult> RemoveToDo(Guid id)
