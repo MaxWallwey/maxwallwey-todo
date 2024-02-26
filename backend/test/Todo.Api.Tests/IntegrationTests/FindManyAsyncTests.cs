@@ -22,7 +22,7 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
     public async Task FindManyAsync_NoCompletionStatus_ReturnsOK()
     {
         using var scope = new AssertionScope();
-        var obj = new { name = "mock" };
+        var obj = new { name = "mock1" };
         var client = _factory.CreateClient();
         await client.PostAsJsonAsync("/todo.add", obj);
         
@@ -38,7 +38,7 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
     public async Task FindManyAsync_CompletionStatusTrue_ReturnsOK()
     {
         using var scope = new AssertionScope();
-        var obj = new { name = "mock" };
+        var obj = new { name = "mock2" };
         var client = _factory.CreateClient();
         var addedTodo = await client.PostAsJsonAsync("/todo.add", obj);
         var id = await addedTodo.Content.ReadFromJsonAsync<ResponseData<Guid>>();

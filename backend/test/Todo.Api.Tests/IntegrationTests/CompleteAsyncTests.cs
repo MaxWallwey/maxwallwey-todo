@@ -29,11 +29,8 @@ public class CompleteAsyncTests : IClassFixture<WebApplicationFactory<Program>>
 
         var response = await client.PostAsync($"/todo.complete?id={content?.Data}", null);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-        // I have no clue why this returns false instead of true. Using Postman I see that it must be true.
-        // I even made the API return the isComplete status after and response.Content still returned false?
-        // My best guess would be to do with serialisation?
         var checkCompletion = await client.GetAsync($"/todo.findOne?id={content?.Data}");
         var content1 = await checkCompletion.Content.ReadFromJsonAsync<ResponseData<ToDo>>();
         content1?.Data.IsComplete.Should().Be(true);

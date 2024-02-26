@@ -13,12 +13,10 @@ public class ToDo
         IsComplete = false;
     }
     
-    protected internal ToDo(){}
-
     public Guid Id { get; set; }
-    public string Name { get; private set; }
+    public string Name { get; set; }
     public DateTime CreatedAt { get; set; }
-    public bool IsComplete { get; private set; }
+    public bool IsComplete { get; set; }
 
     public void Complete()
     {
