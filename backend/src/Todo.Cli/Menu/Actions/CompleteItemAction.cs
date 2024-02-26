@@ -1,22 +1,18 @@
+using Refit;
+using Todo.Api.Sdk;
+
 namespace Todo.Cli.Menu.Actions;
 
 public class CompleteItemAction : IMenuAction
 {
-    private readonly ToDoRepository _repository;
-
-    public CompleteItemAction(ToDoRepository repository)
+    public CompleteItemAction(IToDoClient toDoClient)
     {
-        _repository = repository;
+        ToDoClient = toDoClient;
     }
-
-    public void Run()
+    private IToDoClient ToDoClient { get; }
+    public async Task Run()
     {
-        var taskName = Console.ReadLine();
-        var task = _repository.ListToDoFromTask(taskName);
-        if (task != null) 
-        {
-            _repository.CompleteTask(task.Id);
-        }
-
+        var id = Guid.Parse(Console.ReadLine());
+        await ToDoClient.CompleteToDo(id);
     }
 }

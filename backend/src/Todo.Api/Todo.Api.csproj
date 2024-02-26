@@ -27,13 +27,10 @@
         <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.1-dev-00572" />
         <PackageReference Include="Serilog.Sinks.Seq" Version="7.0.0-dev-00276" />
+        <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Todo.Cli\Todo.Cli.csproj" />
-    </ItemGroup>
-
+    
     <ItemGroup>
       <Folder Include="Controllers\" />
     </ItemGroup>
@@ -41,5 +38,4 @@
     <ItemGroup>
      <InternalsVisibleTo Include="Todo.Api.Tests"/>
     </ItemGroup>
-
 </Project>

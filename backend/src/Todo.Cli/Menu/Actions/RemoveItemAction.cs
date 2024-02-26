@@ -1,19 +1,21 @@
+using Refit;
+using Todo.Api.Sdk;
+
 namespace Todo.Cli.Menu.Actions;
 
 public class RemoveItemAction : IMenuAction
 {
-    private readonly ToDoRepository _repository;
-
-    public RemoveItemAction(ToDoRepository repository)
+    public RemoveItemAction(IToDoClient toDoClient)
     {
-        _repository = repository;
+        ToDoClient = toDoClient;
     }
-
-    public void Run()
+    private IToDoClient ToDoClient { get; }
+    
+    public async Task Run()
     {
         Console.WriteLine("What task would you like to remove?\n");
-        var removeTask = Console.ReadLine();
+        var removeTask = Guid.Parse(Console.ReadLine());
 
-        _repository.RemoveTask(Guid.Parse(removeTask!));
+        await ToDoClient.RemoveToDo(removeTask);
     }
 }

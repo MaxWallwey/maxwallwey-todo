@@ -1,21 +1,28 @@
+using Refit;
+using Todo.Api.Sdk;
+
 namespace Todo.Cli.Menu.Actions;
 
 public class ListCompleteItemsAction : IMenuAction
 {
-    private readonly ToDoRepository _repository;
-
-    public ListCompleteItemsAction(ToDoRepository repository)
+    public ListCompleteItemsAction(IToDoClient toDoClient)
     {
-        _repository = repository;
+        ToDoClient = toDoClient;
     }
+    private IToDoClient ToDoClient { get; }
 
-    public void Run()
+    public async Task Run()
     {
-        Console.WriteLine("Current completed tasks:");
-
-        foreach (var item in _repository.ListCompleteTasks())
+        var todos = await ToDoClient.FindMany(true);
+        
+        Console.WriteLine("Current complete tasks:");
+        
+        foreach (var item in todos.Data)
         {
             Console.WriteLine(item.Name);
+            Console.WriteLine(item.IsComplete);
+            Console.WriteLine(item.CreatedAt);
+            Console.WriteLine(item.Id);
         }
     }
 }

@@ -1,22 +1,30 @@
+using Refit;
+using Todo.Api.Sdk;
+
 namespace Todo.Cli.Menu.Actions;
 
 public class AddNewItemAction : IMenuAction
 {
-    private readonly ToDoRepository _repository;
-
-    public AddNewItemAction(ToDoRepository repository)
+    public AddNewItemAction(IToDoClient toDoClient)
     {
-        _repository = repository;
+        _toDoClient = toDoClient;
     }
-    
-    public void Run()
+    private IToDoClient _toDoClient { get; }
+
+    public async Task Run()
     {
         Console.WriteLine("What task would you like to add? To cancel this, type 'exit'\n");
         string? newTask = Console.ReadLine();
 
-        if (newTask != null && newTask != "exit")
+        if (newTask == "exit")
         {
-            _repository.AddTask(newTask);
+            return;
         }
+
+        var model = new CreateToDo { Name = newTask };
+
+        var response = await _toDoClient.AddToDo(model);
+        
+        Console.WriteLine($"ID: {response.Data}");
     }
 }

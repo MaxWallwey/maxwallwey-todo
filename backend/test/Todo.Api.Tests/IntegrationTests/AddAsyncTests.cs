@@ -3,9 +3,9 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Todo.API.Models;
+using Todo.Api.Models;
 
-namespace Todo.Cli.Tests.IntegrationTests;
+namespace Todo.Api.Tests.IntegrationTests;
 
 public class AddAsyncTests : IClassFixture<WebApplicationFactory<Program>>
 {
@@ -25,7 +25,7 @@ public class AddAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var client = _factory.CreateClient();
         var response = await client.PostAsJsonAsync("/todo.add", obj);
-
+        
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var content = await response.Content.ReadFromJsonAsync<ResponseData<Guid>>();

@@ -9,6 +9,18 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.26" />
+      <PackageReference Include="Refit" Version="7.0.0" />
+      <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Todo.Api">
+        <HintPath>..\..\test\Todo.Api.Tests\bin\Debug\net6.0\Todo.Api.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Todo.Api.Sdk\Todo.Api.Sdk.csproj" />
     </ItemGroup>
 
 </Project>

@@ -3,9 +3,9 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Todo.API.Models;
+using Todo.Api.Models;
 
-namespace Todo.Cli.Tests.IntegrationTests;
+namespace Todo.Api.Tests.IntegrationTests;
 
 public class RemoveAsyncTests : IClassFixture<WebApplicationFactory<Program>>
 {
@@ -37,7 +37,7 @@ public class RemoveAsyncTests : IClassFixture<WebApplicationFactory<Program>>
     }
     
     [Fact]
-    public async Task RemoveAsync_InvalidTask_ReturnsNoContent()
+    public async Task RemoveAsync_InvalidTask_ReturnsBadRequest()
     {
         using var scope = new AssertionScope();
         

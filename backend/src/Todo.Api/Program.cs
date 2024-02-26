@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,9 +7,12 @@ using Todo.API.Domain;
 
 
 var builder = WebApplication.CreateBuilder(args);
+using Todo.Api.Domain;
+using Refit;
 
 // Add services to the container.
-
+var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ToDoContext>(opt =>
     opt.UseInMemoryDatabase("ToDoList"));
@@ -67,4 +69,7 @@ finally
     Log.CloseAndFlush();
 }
 
-public partial class Program { }
+namespace Todo.Api
+{
+    public partial class Program { }
+}

@@ -1,22 +1,22 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Todo.API.Domain;
+namespace Todo.Api.Domain;
 
 public class ToDo
 {
-    protected internal ToDo(string name, bool isComplete = false)
+    public ToDo(string name)
     {
         Id = Guid.NewGuid();
         Name = name;
         CreatedAt = DateTime.UtcNow;
-        IsComplete = isComplete;
+        IsComplete = false;
     }
-
+    
     public Guid Id { get; set; }
-    public string Name { get; private set; }
+    public string Name { get; set; }
     public DateTime CreatedAt { get; set; }
-    public bool IsComplete { get; private set; }
+    public bool IsComplete { get; set; }
 
     public void Complete()
     {

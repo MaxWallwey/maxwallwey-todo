@@ -1,21 +1,28 @@
+using Refit;
+using Todo.Api.Sdk;
+
 namespace Todo.Cli.Menu.Actions;
 
 public class ListIncompleteItemsAction : IMenuAction
 {
-    private readonly ToDoRepository _repository;
-
-    public ListIncompleteItemsAction(ToDoRepository repository)
+    public ListIncompleteItemsAction(IToDoClient toDoClient)
     {
-        _repository = repository;
+        ToDoClient = toDoClient;
     }
-
-    public void Run()
+    private IToDoClient ToDoClient { get; }
+    
+    public async Task Run()
     {
+        var todos = await ToDoClient.FindMany(false);
+        
         Console.WriteLine("Current incomplete tasks:");
-
-        foreach (var item in _repository.ListIncompleteTasks())
+        
+        foreach (var item in todos.Data)
         {
             Console.WriteLine(item.Name);
+            Console.WriteLine(item.IsComplete);
+            Console.WriteLine(item.CreatedAt);
+            Console.WriteLine(item.Id);
         }
     }
 }

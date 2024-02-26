@@ -2,8 +2,8 @@ namespace Todo.Cli.Menu.Actions;
 
 public class ExitApplicationAction : IMenuAction
 {
-    public void Run()
+    public async Task Run()
     {
-        System.Environment.Exit(0);
+        Environment.Exit(0);
     }
 }

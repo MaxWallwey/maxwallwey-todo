@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Todo.API.Models;
+using Todo.Api.Models;
 
-namespace Todo.API.Domain;
+namespace Todo.Api.Domain;
 
 public class InMemoryToDoRepository : IToDoRepository
 {
@@ -44,6 +44,13 @@ public class InMemoryToDoRepository : IToDoRepository
 
     public async Task<Guid> AddToDoAsync(CreateToDo toDo)
     {
+        var checkExisting = await _context.Todos.FirstOrDefaultAsync(i => i.Name == toDo.Name);
+        
+        if (checkExisting?.Name != null)
+        {
+            throw new Exception("Error! ToDo already exists!");
+        }
+        
         var todo = new ToDo(toDo.Name!);
 
         _context.Todos.Add(todo);

@@ -1,7 +1,7 @@
-using System;
 using FluentAssertions;
+using Todo.Api.Domain;
 
-namespace Todo.Cli.Tests.UnitTests;
+namespace Todo.Api.Tests.UnitTests;
 
 public class ToDoTests
 {
