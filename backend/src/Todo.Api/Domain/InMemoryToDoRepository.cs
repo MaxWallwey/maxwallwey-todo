@@ -16,16 +16,16 @@ public class InMemoryToDoRepository : IToDoRepository
         _context = context;
     }
     
-    public Task<List<ToDo>> FindManyAsync(bool? isComplete)
+    public async Task<ResponseData<List<ToDo>>> FindManyAsync(bool? isComplete)
     {
-        return _context.Todos.Where(i => isComplete == null || i.IsComplete == isComplete).ToListAsync();
+        return new ResponseData<List<ToDo>>(await _context.Todos.Where(i => isComplete == null || i.IsComplete == isComplete).ToListAsync());
     }
 
-    public async Task<ToDo?> FindToDoAsync(Guid id)
+    public async Task<ResponseData<ToDo?>> FindToDoAsync(Guid id)
     {
         var todo = await _context.Todos.FindAsync(id);
         
-        return todo;
+        return new ResponseData<ToDo?>(todo);
     }
 
     public async Task CompleteToDoAsync(Guid id)
@@ -37,12 +37,12 @@ public class InMemoryToDoRepository : IToDoRepository
             return;
         }
         
-        todo.Complete();
+        todo.Data.Complete();
         
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Guid> AddToDoAsync(CreateToDo toDo)
+    public async Task<ResponseData<Guid>> AddToDoAsync(CreateToDo toDo)
     {
         var checkExisting = await _context.Todos.FirstOrDefaultAsync(i => i.Name == toDo.Name);
         
@@ -57,7 +57,7 @@ public class InMemoryToDoRepository : IToDoRepository
 
         await _context.SaveChangesAsync();
 
-        return todo.Id;
+        return new ResponseData<Guid>(todo.Id);
     }
 
     public async Task RemoveToDoAsync(Guid id)
@@ -66,9 +66,10 @@ public class InMemoryToDoRepository : IToDoRepository
 
         if (todo == null)
         {
-            return;}
+            throw new Exception("Error! ToDo was not found.");
+        }
         
-        _context.Todos.Remove(todo);
+        _context.Todos.Remove(todo.Data);
 
         await _context.SaveChangesAsync();
     }

@@ -7,12 +7,10 @@ namespace Todo.Api.Slices;
 [ApiController]
 public abstract class BaseController : ControllerBase
 {
-    protected readonly IToDoRepository ToDoRepository;
-
-    protected BaseController(IToDoRepository toDoRepository)
+    protected BaseController(IMediator mediator)
     {
-        ToDoRepository = toDoRepository;
+        Mediator = mediator;
     }
 
-    //public IMediator Mediator { get; set; }
+    protected IMediator Mediator { get; set; }
 }
