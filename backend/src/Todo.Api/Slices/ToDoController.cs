@@ -16,6 +16,15 @@ public class ToDoController : BaseController
         return await Mediator.Send(new FindManyToDoRequest(isComplete));
     }
     
+    // List ToDo based on ID
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseData<ToDo>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    [HttpGet("todo.findOne")]
+    public async Task<ResponseData<ToDo>> FindOne(Guid id)
+    {
+        return await Mediator.Send(new FindOneToDoRequest(id));
+    }
+    
     // Complete todo
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]

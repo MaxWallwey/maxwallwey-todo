@@ -21,20 +21,25 @@ public class InMemoryToDoRepository : IToDoRepository
         return new ResponseData<List<ToDo>>(await _context.Todos.Where(i => isComplete == null || i.IsComplete == isComplete).ToListAsync());
     }
 
-    public async Task<ResponseData<ToDo?>> FindToDoAsync(Guid id)
+    public async Task<ResponseData<ToDo?>> FindOneToDoAsync(Guid id)
     {
         var todo = await _context.Todos.FindAsync(id);
+        
+        if (todo == null)
+        {
+            throw new BadHttpRequestException("Error! ToDo was not found.");
+        }
         
         return new ResponseData<ToDo?>(todo);
     }
 
     public async Task CompleteToDoAsync(Guid id)
     {
-        var todo = await FindToDoAsync(id);
+        var todo = await FindOneToDoAsync(id);
 
         if (todo == null)
         {
-            return;
+            throw new BadHttpRequestException("Error! ToDo was not found.");
         }
         
         todo.Data.Complete();
@@ -48,7 +53,7 @@ public class InMemoryToDoRepository : IToDoRepository
         
         if (checkExisting?.Name != null)
         {
-            throw new Exception("Error! ToDo already exists!");
+            throw new BadHttpRequestException("Error! ToDo already exists.");
         }
         
         var todo = new ToDo(toDo.Name!);
@@ -62,11 +67,11 @@ public class InMemoryToDoRepository : IToDoRepository
 
     public async Task RemoveToDoAsync(Guid id)
     {
-        var todo = await FindToDoAsync(id);
+        var todo = await FindOneToDoAsync(id);
 
         if (todo == null)
         {
-            throw new Exception("Error! ToDo was not found.");
+            throw new BadHttpRequestException("Error! ToDo was not found.");
         }
         
         _context.Todos.Remove(todo.Data);
