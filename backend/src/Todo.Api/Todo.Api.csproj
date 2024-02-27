@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MediatR" Version="12.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.26" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.26" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.26" />
@@ -29,10 +30,6 @@
         <PackageReference Include="Serilog.Sinks.Seq" Version="7.0.0-dev-00276" />
         <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
-    </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="Controllers\" />
     </ItemGroup>
 
     <ItemGroup>

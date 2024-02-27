@@ -1,15 +1,18 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Serilog;
 using Todo.API;
 using Todo.Api.Domain;
-using Refit;
 
 // Add services to the container.
 var builder = WebApplication.CreateBuilder(args);
+
 builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
 builder.Services.AddControllers();
+
 builder.Services.AddDbContext<ToDoContext>(opt =>
     opt.UseInMemoryDatabase("ToDoList"));
 

@@ -2,24 +2,21 @@ using Microsoft.AspNetCore.Mvc;
 using Todo.Api.Domain;
 using Todo.Api.Models;
 
-namespace Todo.Api.Controllers;
+namespace Todo.Api.Slices;
 
 [ApiController]
-public class ToDoController : ControllerBase
+public class ToDoController : BaseController
 {
-    private readonly IToDoRepository _toDoRepository;
-
-    public ToDoController(IToDoRepository toDoRepository)
-    {
-        _toDoRepository = toDoRepository;
-    }
-    
     // List all todos with optional complete parameter
+    public ToDoController(IToDoRepository toDoRepository) : base(toDoRepository)
+    {
+    }
+
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ToDo))]
     [HttpGet("todo.findMany")]
     public async Task<ResponseData<List<ToDo>>> FindMany(bool? isComplete)
     {
-        var todos = await _toDoRepository.FindManyAsync(isComplete);
+        var todos = await ToDoRepository.FindManyAsync(isComplete);
         
         return new ResponseData<List<ToDo>>(todos);
     }
@@ -30,7 +27,7 @@ public class ToDoController : ControllerBase
     [HttpGet("todo.findOne")]
     public async Task<ActionResult<ResponseData<ToDo>>> FindOne(Guid id)
     {
-        var todo = await _toDoRepository.FindToDoAsync(id);
+        var todo = await ToDoRepository.FindToDoAsync(id);
 
         if (todo == null)
         {
@@ -46,14 +43,14 @@ public class ToDoController : ControllerBase
     [HttpPost("todo.complete")]
     public async Task<ActionResult<ResponseData<ToDo>>> CompleteToDo(Guid id)
     {
-        var todo = await _toDoRepository.FindToDoAsync(id);
+        var todo = await ToDoRepository.FindToDoAsync(id);
         
         if (todo == null)
         {
             return ValidationProblem("No matching todo was found");
         }
         
-        await _toDoRepository.CompleteToDoAsync(id);
+        await ToDoRepository.CompleteToDoAsync(id);
 
         return NoContent();
     }
@@ -64,7 +61,7 @@ public class ToDoController : ControllerBase
     [HttpPost("todo.add")]
     public async Task<ResponseData<Guid>> AddToDo(CreateToDo model)
     {
-        var toDoId = await _toDoRepository.AddToDoAsync(model);
+        var toDoId = await ToDoRepository.AddToDoAsync(model);
 
         return new ResponseData<Guid>(toDoId);
     }
@@ -75,14 +72,14 @@ public class ToDoController : ControllerBase
     [HttpDelete("todo.remove")]
     public async Task<IActionResult> RemoveToDo(Guid id)
     {
-        var todo = await _toDoRepository.FindToDoAsync(id);
+        var todo = await ToDoRepository.FindToDoAsync(id);
         
         if (todo == null)
         {
             return ValidationProblem("No matching todo was found");
         }
 
-        await _toDoRepository.RemoveToDoAsync(id);
+        await ToDoRepository.RemoveToDoAsync(id);
 
         return NoContent();
     }
