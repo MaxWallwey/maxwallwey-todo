@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Api.Domain;
@@ -41,7 +42,14 @@ public class ToDoController : BaseController
     [HttpPost("todo.add")]
     public async Task<ResponseData<Guid>> AddToDo(CreateToDo model)
     {
-        return await Mediator.Send(new AddToDoRequest(model));
+        try
+        {
+            return await Mediator.Send(new AddToDoRequest(model));
+        }
+        catch (Exception e)
+        {
+            throw new BadHttpRequestException(e.Message);
+        }
     }
 
     // Remove todo
