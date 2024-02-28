@@ -7,6 +7,6 @@ public class CreateToDoValidator : AbstractValidator<AddToDoRequest>
 {
     public CreateToDoValidator()
     {
-        RuleFor(x => x.Model.Name).NotNull().Length(0, 50);
+        RuleFor(x => x.Model.Name).NotNull().Length(3, 50);
     }
 }
