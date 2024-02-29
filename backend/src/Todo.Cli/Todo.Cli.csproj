@@ -14,12 +14,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Todo.Api">
-        <HintPath>..\..\test\Todo.Api.Tests\bin\Debug\net6.0\Todo.Api.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Todo.Api.Sdk\Todo.Api.Sdk.csproj" />
     </ItemGroup>
 

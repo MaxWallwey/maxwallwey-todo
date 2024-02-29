@@ -4,19 +4,22 @@ using Todo.Api.Models;
 
 namespace Todo.Api.Slices;
 
-public record AddToDoRequest(CreateToDo Model) : IRequest<ResponseData<Guid>>;
-
-public class AddToDoHandler : IRequestHandler<AddToDoRequest, ResponseData<Guid>>
+public class AddToDo
 {
-    private readonly IToDoRepository _toDoRepository;
+    public record AddToDoRequest(CreateToDo Model) : IRequest<ResponseData<Guid>>;
 
-    public AddToDoHandler(IToDoRepository toDoRepository)
+    public class AddToDoHandler : IRequestHandler<AddToDoRequest, ResponseData<Guid>>
     {
-        _toDoRepository = toDoRepository;
-    }
+        private readonly IToDoRepository _toDoRepository;
+
+        public AddToDoHandler(IToDoRepository toDoRepository)
+        {
+            _toDoRepository = toDoRepository;
+        }
     
-    public Task<ResponseData<Guid>> Handle(AddToDoRequest request, CancellationToken cancellationToken)
-    {
-        return _toDoRepository.AddToDoAsync(request.Model);
-    }
+        public Task<ResponseData<Guid>> Handle(AddToDoRequest request, CancellationToken cancellationToken)
+        {
+            return _toDoRepository.AddToDoAsync(request.Model);
+        }
+    }   
 }

@@ -12,7 +12,7 @@ public class CompleteItemAction : IMenuAction
     private IToDoClient ToDoClient { get; }
     public async Task Run()
     {
-        var id = Guid.Parse(Console.ReadLine());
+        var id = Guid.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
         await ToDoClient.CompleteToDo(id);
     }
 }

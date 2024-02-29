@@ -33,7 +33,7 @@ public class CompleteAsyncTests : IClassFixture<WebApplicationFactory<Program>>
 
         var checkCompletion = await client.GetAsync($"/todo.findOne?id={content?.Data}");
         var content1 = await checkCompletion.Content.ReadFromJsonAsync<ResponseData<ToDo>>();
-        content1?.Data.IsComplete.Should().Be(true);
+        content1?.Data!.IsComplete.Should().Be(true);
     }
 
     [Fact]

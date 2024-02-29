@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Todo.Api.Models;
 
@@ -18,38 +14,36 @@ public class InMemoryToDoRepository : IToDoRepository
     
     public async Task<ResponseData<List<ToDo>>> FindManyAsync(bool? isComplete)
     {
-        return new ResponseData<List<ToDo>>(await _context.Todos.Where(i => isComplete == null || i.IsComplete == isComplete).ToListAsync());
+        return new ResponseData<List<ToDo>>(await _context.Todos!.Where(i => isComplete == null || i.IsComplete == isComplete).ToListAsync());
     }
 
-    public async Task<ResponseData<ToDo?>> FindOneToDoAsync(Guid id)
+    public async Task<ResponseData<ToDo>?> FindOneToDoAsync(Guid id)
     {
-        var todo = await _context.Todos.FindAsync(id);
+        var todo = await _context.Todos!.FindAsync(id);
         
-        if (todo == null)
+        if (todo != null) return new ResponseData<ToDo>(todo);
+        else
         {
             throw new BadHttpRequestException("Error! ToDo was not found.");
         }
-        
-        return new ResponseData<ToDo?>(todo);
     }
 
     public async Task CompleteToDoAsync(Guid id)
     {
         var todo = await FindOneToDoAsync(id);
 
-        if (todo == null)
+        if (todo != null) todo.Data!.Complete();
+        else
         {
             throw new BadHttpRequestException("Error! ToDo was not found.");
         }
-        
-        todo.Data.Complete();
-        
+
         await _context.SaveChangesAsync();
     }
 
     public async Task<ResponseData<Guid>> AddToDoAsync(CreateToDo toDo)
     {
-        var checkExisting = await _context.Todos.FirstOrDefaultAsync(i => i.Name == toDo.Name);
+        var checkExisting = await _context.Todos!.FirstOrDefaultAsync(i => i.Name == toDo.Name);
         
         if (checkExisting?.Name != null)
         {
@@ -58,7 +52,7 @@ public class InMemoryToDoRepository : IToDoRepository
         
         var todo = new ToDo(toDo.Name!);
 
-        _context.Todos.Add(todo);
+        _context.Todos!.Add(todo);
 
         await _context.SaveChangesAsync();
 
@@ -68,13 +62,12 @@ public class InMemoryToDoRepository : IToDoRepository
     public async Task RemoveToDoAsync(Guid id)
     {
         var todo = await FindOneToDoAsync(id);
-
-        if (todo == null)
+        
+        if (todo != null) _context.Todos!.Remove(todo.Data!);
+        else
         {
             throw new BadHttpRequestException("Error! ToDo was not found.");
         }
-        
-        _context.Todos.Remove(todo.Data);
 
         await _context.SaveChangesAsync();
     }

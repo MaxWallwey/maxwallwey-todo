@@ -4,19 +4,25 @@ using Todo.Api.Models;
 
 namespace Todo.Api.Slices;
 
-public record FindOneToDoRequest(Guid Id) : IRequest<ResponseData<ToDo>>;
-
-public class FindOneToDoHandler : IRequestHandler<FindOneToDoRequest, ResponseData<ToDo>>
+public class FindOneToDo
 {
-    private readonly IToDoRepository _toDoRepository;
+    public record FindOneToDoRequest(Guid Id) : IRequest<ResponseData<ToDo>>;
 
-    public FindOneToDoHandler(IToDoRepository toDoRepository)
+    public class FindOneToDoHandler : IRequestHandler<FindOneToDoRequest, ResponseData<ToDo>?>
     {
-        _toDoRepository = toDoRepository;
-    }
+        private readonly IToDoRepository _toDoRepository;
+
+        public FindOneToDoHandler(IToDoRepository toDoRepository)
+        {
+            _toDoRepository = toDoRepository;
+        }
     
-    public Task<ResponseData<ToDo>> Handle(FindOneToDoRequest request, CancellationToken cancellationToken)
-    {
-        return _toDoRepository.FindOneToDoAsync(request.Id);
+        public Task<ResponseData<ToDo>?> Handle(FindOneToDoRequest request, CancellationToken cancellationToken)
+        {
+            var todo = _toDoRepository.FindOneToDoAsync(request.Id);
+
+            if (todo.Result != null) return todo;
+            else throw new Exception();
+        }
     }
 }

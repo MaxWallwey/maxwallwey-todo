@@ -3,7 +3,7 @@ using Todo.Api.Slices;
 
 namespace Todo.Api.Validation;
 
-public class CreateToDoValidator : AbstractValidator<AddToDoRequest>
+public class CreateToDoValidator : AbstractValidator<AddToDo.AddToDoRequest>
 {
     public CreateToDoValidator()
     {

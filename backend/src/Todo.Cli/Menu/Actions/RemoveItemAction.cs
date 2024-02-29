@@ -14,7 +14,7 @@ public class RemoveItemAction : IMenuAction
     public async Task Run()
     {
         Console.WriteLine("What task would you like to remove?\n");
-        var removeTask = Guid.Parse(Console.ReadLine());
+        var removeTask = Guid.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
 
         await ToDoClient.RemoveToDo(removeTask);
     }

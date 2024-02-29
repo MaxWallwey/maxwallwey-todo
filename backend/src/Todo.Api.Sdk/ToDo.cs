@@ -2,6 +2,11 @@ namespace Todo.Api.Sdk;
 
 public class ToDo
 {
+    public ToDo(string name)
+    {
+        Name = name;
+    }
+
     public Guid Id { get; set; }
     public string Name { get; set; }
     public DateTime CreatedAt { get; set; }

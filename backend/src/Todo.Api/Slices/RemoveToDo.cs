@@ -4,19 +4,22 @@ using Todo.Api.Models;
 
 namespace Todo.Api.Slices;
 
-public record RemoveToDoRequest(Guid Id) : IRequest;
-
-public class RemoveToDoHandler : IRequestHandler<RemoveToDoRequest>
+public class RemoveToDo
 {
-    private readonly IToDoRepository _toDoRepository;
+    public record RemoveToDoRequest(Guid Id) : IRequest;
 
-    public RemoveToDoHandler(IToDoRepository toDoRepository)
+    public class RemoveToDoHandler : IRequestHandler<RemoveToDoRequest>
     {
-        _toDoRepository = toDoRepository;
-    }
+        private readonly IToDoRepository _toDoRepository;
+
+        public RemoveToDoHandler(IToDoRepository toDoRepository)
+        {
+            _toDoRepository = toDoRepository;
+        }
     
-    public Task Handle(RemoveToDoRequest request, CancellationToken cancellationToken)
-    {
-        return _toDoRepository.RemoveToDoAsync(request.Id);
+        public Task Handle(RemoveToDoRequest request, CancellationToken cancellationToken)
+        {
+            return _toDoRepository.RemoveToDoAsync(request.Id);
+        }
     }
 }
