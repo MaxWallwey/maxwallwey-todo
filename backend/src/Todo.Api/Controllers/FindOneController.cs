@@ -15,7 +15,14 @@ public class FindOneController : BaseController
     [HttpGet("todo.findOne")]
     public async Task<ResponseData<ToDo>> FindOne(Guid id)
     {
-        return await Mediator.Send(new FindOneToDo.FindOneToDoRequest(id));
+        try
+        {
+            return await Mediator.Send(new FindOneToDo.FindOneToDoRequest(id));
+        }
+        catch (Exception e)
+        {
+            throw new BadHttpRequestException(e.Message);
+        }
     }
     
     public FindOneController(IMediator mediator) : base(mediator)
