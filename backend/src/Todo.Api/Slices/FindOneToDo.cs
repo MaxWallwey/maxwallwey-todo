@@ -1,25 +1,27 @@
 using MediatR;
 using Todo.Api.Domain;
+using Todo.Api.Domain.Todo;
+using Todo.Api.Infrastructure;
 using Todo.Api.Models;
 
 namespace Todo.Api.Slices;
 
-public class FindOneToDo
+public abstract class FindOneToDo
 {
-    public record FindOneToDoRequest(Guid Id) : IRequest<ResponseData<ToDo>>;
+    public record FindOneToDoRequest(Guid Id) : IRequest<ResponseData<ToDoDocument>>;
 
-    public class FindOneToDoHandler : IRequestHandler<FindOneToDoRequest, ResponseData<ToDo>?>
+    public class FindOneToDoHandler : IRequestHandler<FindOneToDoRequest, ResponseData<ToDoDocument>?>
     {
-        private readonly IToDoRepository _toDoRepository;
+        private readonly IDocumentRepository _documentRepository;
 
-        public FindOneToDoHandler(IToDoRepository toDoRepository)
+        public FindOneToDoHandler(IDocumentRepository documentRepository)
         {
-            _toDoRepository = toDoRepository;
+            _documentRepository = documentRepository;
         }
     
-        public Task<ResponseData<ToDo>?> Handle(FindOneToDoRequest request, CancellationToken cancellationToken)
+        public Task<ResponseData<ToDoDocument>?> Handle(FindOneToDoRequest request, CancellationToken cancellationToken)
         {
-            var todo = _toDoRepository.FindOneToDoAsync(request.Id);
+            var todo = _documentRepository.FindOneToDoAsync(request.Id);
 
             if (todo.Result != null) return todo;
             else throw new Exception();

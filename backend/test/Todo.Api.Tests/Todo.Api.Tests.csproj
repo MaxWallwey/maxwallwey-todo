@@ -30,4 +30,8 @@
       <ProjectReference Include="..\..\src\Todo.Api\Todo.Api.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="ControllerTests\" />
+    </ItemGroup>
+
 </Project>

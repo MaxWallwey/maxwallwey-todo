@@ -1,27 +1,30 @@
 using Microsoft.EntityFrameworkCore;
+using Todo.Api.Domain.Todo;
+using Todo.Api.Infrastructure;
 using Todo.Api.Models;
 
-namespace Todo.Api.Domain;
+namespace Todo.Api.Domain.InMemory;
 
-public class InMemoryToDoRepository : IToDoRepository
+public class InMemoryRepository<TDocument> : IDocumentRepository
+    where TDocument : IDocument
 {
-    private readonly ToDoContext _context;
+    private readonly InMemoryContext _context;
 
-    public InMemoryToDoRepository(ToDoContext context)
+    public InMemoryRepository(InMemoryContext context)
     {
         _context = context;
     }
     
-    public async Task<ResponseData<List<ToDo>>> FindManyAsync(bool? isComplete)
+    public async Task<ResponseData<List<ToDoDocument>>> FindManyAsync(bool? isComplete)
     {
-        return new ResponseData<List<ToDo>>(await _context.Todos!.Where(i => isComplete == null || i.IsComplete == isComplete).ToListAsync());
+        return new ResponseData<List<ToDoDocument>>(await _context.Todos!.Where(i => isComplete == null || i.IsComplete == isComplete).ToListAsync());
     }
 
-    public async Task<ResponseData<ToDo>?> FindOneToDoAsync(Guid id)
+    public async Task<ResponseData<ToDoDocument>?> FindOneToDoAsync(Guid id)
     {
         var todo = await _context.Todos!.FindAsync(id);
         
-        if (todo != null) return new ResponseData<ToDo>(todo);
+        if (todo != null) return new ResponseData<ToDoDocument>(todo);
         else
         {
             throw new BadHttpRequestException("Error! ToDo was not found.");
@@ -50,7 +53,7 @@ public class InMemoryToDoRepository : IToDoRepository
             throw new BadHttpRequestException("Error! ToDo already exists.");
         }
         
-        var todo = new ToDo(toDo.Name!);
+        var todo = new ToDoDocument(toDo.Name!);
 
         _context.Todos!.Add(todo);
 

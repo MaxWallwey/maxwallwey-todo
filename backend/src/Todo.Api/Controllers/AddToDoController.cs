@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Todo.Api.Domain;
 using Todo.Api.Models;
 using Todo.Api.Slices;
 

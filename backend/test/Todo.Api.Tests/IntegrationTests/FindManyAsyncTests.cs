@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Todo.Api.Domain;
+using Todo.Api.Domain.Todo;
 using Todo.Api.Models;
 
 namespace Todo.Api.Tests.IntegrationTests;
@@ -28,7 +28,7 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var response = await client.GetAsync("/todo.findMany");
 
-        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
+        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDoDocument>>>();
 
         content?.Data.Should().NotBeNullOrEmpty();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -47,7 +47,7 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var response = await client.GetAsync("/todo.findMany?isComplete=true");
 
-        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
+        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDoDocument>>>();
 
         content?.Data.Should().NotBeNullOrEmpty();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -63,7 +63,7 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var response = await client.GetAsync("/todo.findMany?isComplete=False");
 
-        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDo>>>();
+        var content = await response.Content.ReadFromJsonAsync<ResponseData<List<ToDoDocument>>>();
 
         content?.Data.Should().NotBeNullOrEmpty();
         response.StatusCode.Should().Be(HttpStatusCode.OK);

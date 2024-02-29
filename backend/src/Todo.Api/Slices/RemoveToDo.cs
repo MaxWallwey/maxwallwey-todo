@@ -1,25 +1,25 @@
 using MediatR;
 using Todo.Api.Domain;
-using Todo.Api.Models;
+using Todo.Api.Infrastructure;
 
 namespace Todo.Api.Slices;
 
-public class RemoveToDo
+public abstract class RemoveToDo
 {
     public record RemoveToDoRequest(Guid Id) : IRequest;
 
     public class RemoveToDoHandler : IRequestHandler<RemoveToDoRequest>
     {
-        private readonly IToDoRepository _toDoRepository;
+        private readonly IDocumentRepository _documentRepository;
 
-        public RemoveToDoHandler(IToDoRepository toDoRepository)
+        public RemoveToDoHandler(IDocumentRepository documentRepository)
         {
-            _toDoRepository = toDoRepository;
+            _documentRepository = documentRepository;
         }
     
         public Task Handle(RemoveToDoRequest request, CancellationToken cancellationToken)
         {
-            return _toDoRepository.RemoveToDoAsync(request.Id);
+            return _documentRepository.RemoveToDoAsync(request.Id);
         }
     }
 }

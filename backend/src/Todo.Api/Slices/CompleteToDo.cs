@@ -1,25 +1,25 @@
 using MediatR;
 using Todo.Api.Domain;
-using Todo.Api.Models;
+using Todo.Api.Infrastructure;
 
 namespace Todo.Api.Slices;
 
-public class CompleteToDo
+public abstract class CompleteToDo
 {
     public record CompleteToDoRequest(Guid Id) : IRequest;
 
     public class CompleteToDoHandler : IRequestHandler<CompleteToDoRequest>
     {
-        private readonly IToDoRepository _toDoRepository;
+        private readonly IDocumentRepository _documentRepository;
 
-        public CompleteToDoHandler(IToDoRepository toDoRepository)
+        public CompleteToDoHandler(IDocumentRepository documentRepository)
         {
-            _toDoRepository = toDoRepository;
+            _documentRepository = documentRepository;
         }
     
         public Task Handle(CompleteToDoRequest request, CancellationToken cancellationToken)
         {
-            return _toDoRepository.CompleteToDoAsync(request.Id);
+            return _documentRepository.CompleteToDoAsync(request.Id);
         }
     }
 }

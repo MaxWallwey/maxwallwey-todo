@@ -4,7 +4,9 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Todo.API;
-using Todo.Api.Domain;
+using Todo.Api.Domain.InMemory;
+using Todo.Api.Domain.Todo;
+using Todo.Api.Infrastructure;
 using Todo.Api.Validation;
 
 // Add services to the container.
@@ -25,10 +27,10 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MediatR.Exten
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<ToDoContext>(opt =>
+builder.Services.AddDbContext<InMemoryContext>(opt =>
     opt.UseInMemoryDatabase("ToDoList"));
 
-builder.Services.AddScoped<IToDoRepository, InMemoryToDoRepository>();
+builder.Services.AddTransient<IDocumentRepository, InMemoryRepository<ToDoDocument>>();
 
 builder.Host.UseSerilog();
 
@@ -46,8 +48,6 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 var app = builder.Build();
-
-//app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
 if (builder.Environment.IsDevelopment())
