@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using Todo.Api.Domain.Models;
 
 namespace Todo.Api.Domain;
 
@@ -23,20 +21,23 @@ public class InMemoryToDoRepository : IToDoRepository
         return Task.FromResult(false);
     }
 
-    public async Task<ResponseData<List<ToDo>>?> FindManyAsync(bool? isComplete)
+    public async Task<List<ToDo>?> FindManyAsync(bool? isComplete)
     {
         if (_context.Todos != null)
-            return new ResponseData<List<ToDo>>(await _context.Todos
-                .Where(i => isComplete == null || i.IsComplete == isComplete).ToListAsync());
+        {
+            return await _context.Todos
+                .Where(i => isComplete == null || i.IsComplete == isComplete).ToListAsync();
+        }
+        
         return null;
     }
 
-    public async Task<ResponseData<ToDo>?> FindOneToDoAsync(Guid id)
+    public async Task<ToDo?> FindOneToDoAsync(Guid id)
     {
         if (_context.Todos != null)
         {
             var todo = await _context.Todos.FindAsync(id);
-            if (todo != null) return new ResponseData<ToDo>(todo);
+            if (todo != null) return todo;
         }
 
         return null;
@@ -46,12 +47,12 @@ public class InMemoryToDoRepository : IToDoRepository
     {
         var todo = await FindOneToDoAsync(id);
 
-        if (todo != null) todo.Data!.Complete();
+        if (todo != null) todo.Complete();
 
         await _context.SaveChangesAsync();
     }
 
-    public async Task<ResponseData<Guid>> AddToDoAsync(string name)
+    public async Task<Guid> AddToDoAsync(string name)
     {
         var todo = new ToDo(name);
 
@@ -59,14 +60,17 @@ public class InMemoryToDoRepository : IToDoRepository
 
         await _context.SaveChangesAsync();
 
-        return new ResponseData<Guid>(todo.Id);
+        return todo.Id;
     }
 
     public async Task RemoveToDoAsync(Guid id)
     {
         var todo = await FindOneToDoAsync(id);
-        
-        _context.Todos!.Remove(todo?.Data!);
+
+        if (todo != null)
+        {
+            _context.Todos!.Remove(todo);
+        }
 
         await _context.SaveChangesAsync();
     }

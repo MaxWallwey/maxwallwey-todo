@@ -1,14 +1,16 @@
+using FluentValidation;
 using MediatR;
 using Todo.Api.Domain;
-using Todo.Api.Domain.Models;
 
 namespace Todo.Api.Slices.Todo;
 
 public abstract class FindOneToDo
 {
-    public record FindOneToDoRequest(Guid Id) : IRequest<ResponseData<ToDo?>>;
-
-    public class FindOneToDoHandler : IRequestHandler<FindOneToDoRequest, ResponseData<ToDo?>>
+    public record FindOneToDoRequest(Guid Id) : IRequest<Response>;
+    
+    public record Response(ToDo Data);
+    
+    public class FindOneToDoHandler : IRequestHandler<FindOneToDoRequest, Response>
     {
         private readonly IToDoRepository _toDoRepository;
 
@@ -17,11 +19,11 @@ public abstract class FindOneToDo
             _toDoRepository = toDoRepository;
         }
     
-        public Task<ResponseData<ToDo?>> Handle(FindOneToDoRequest request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(FindOneToDoRequest request, CancellationToken cancellationToken)
         {
-            var todo = _toDoRepository.FindOneToDoAsync(request.Id);
+            var todo = await _toDoRepository.FindOneToDoAsync(request.Id);
 
-            return todo!;
+            return new Response(todo!);
         }
     }
 }

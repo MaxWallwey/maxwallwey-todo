@@ -1,14 +1,14 @@
 using MediatR;
 using Todo.Api.Domain;
-using Todo.Api.Domain.Models;
 
 namespace Todo.Api.Slices.Todo;
 
 public abstract class FindManyToDo
 {
-    public record FindManyToDoRequest(bool? IsComplete) : IRequest<ResponseData<List<ToDo>>?>;
+    public record FindManyToDoRequest(bool? IsComplete) : IRequest<Response>;
 
-    public class FindManyToDoHandler : IRequestHandler<FindManyToDoRequest, ResponseData<List<ToDo>>?>
+    public record Response(List<ToDo> Data);
+    public class FindManyToDoHandler : IRequestHandler<FindManyToDoRequest, Response>
     {
         private readonly IToDoRepository _toDoRepository;
 
@@ -17,9 +17,11 @@ public abstract class FindManyToDo
             _toDoRepository = toDoRepository;
         }
     
-        public Task<ResponseData<List<ToDo>>?> Handle(FindManyToDoRequest request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(FindManyToDoRequest request, CancellationToken cancellationToken)
         {
-            return _toDoRepository.FindManyAsync(request.IsComplete);
+            var todos = await _toDoRepository.FindManyAsync(request.IsComplete);
+
+            return new Response(todos!);
         }
     }
 }

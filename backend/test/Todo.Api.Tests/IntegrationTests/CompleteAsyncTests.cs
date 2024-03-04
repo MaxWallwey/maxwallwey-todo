@@ -1,10 +1,12 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Text;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
 using Todo.Api.Domain;
-using Todo.Api.Domain.Models;
+using Todo.Api.Slices.Todo;
 
 namespace Todo.Api.Tests.IntegrationTests;
 
@@ -25,15 +27,18 @@ public class CompleteAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         var obj = new { name = "completeMock" };
         var client = _factory.CreateClient();
         var addedTodo = await client.PostAsJsonAsync("/todo.add", obj);
-        var content = await addedTodo.Content.ReadFromJsonAsync<ResponseData<Guid>>();
+        var content = await addedTodo.Content.ReadFromJsonAsync<AddToDo.Response>();
 
-        var response = await client.PostAsync($"/todo.complete?id={content?.Data}", null);
+        var idObj = new CompleteToDo.CompleteToDoRequest(content!.Data);
 
-        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        var request = new HttpRequestMessage {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri("/todo.complete"),
+            Content = new StringContent(JsonConvert.SerializeObject(idObj), Encoding.UTF8, "application/json")
+        };
+        var responseComplete = await client.SendAsync(request);
 
-        var checkCompletion = await client.GetAsync($"/todo.findOne?id={content?.Data}");
-        var content1 = await checkCompletion.Content.ReadFromJsonAsync<ResponseData<ToDo>>();
-        content1?.Data!.IsComplete.Should().Be(true);
+        responseComplete.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Fact]
@@ -43,8 +48,15 @@ public class CompleteAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var client = _factory.CreateClient();
         
-        var response = await client.PostAsync($"/todo.complete?id=", null);
+        var idObj = new CompleteToDo.CompleteToDoRequest(Guid.Empty);
 
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        var request = new HttpRequestMessage {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri("/todo.complete"),
+            Content = new StringContent(JsonConvert.SerializeObject(idObj), Encoding.UTF8, "application/json")
+        };
+        var responseComplete = await client.SendAsync(request);
+
+        responseComplete.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 }

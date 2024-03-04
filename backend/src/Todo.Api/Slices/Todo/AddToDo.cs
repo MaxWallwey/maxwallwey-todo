@@ -1,7 +1,6 @@
 using FluentValidation;
 using MediatR;
 using Todo.Api.Domain;
-using Todo.Api.Domain.Models;
 
 namespace Todo.Api.Slices.Todo;
 
@@ -9,7 +8,7 @@ public abstract class AddToDo
 {
     public record AddToDoRequest(string Name) : IRequest<Response>;
     
-    public record Response(ResponseData<Guid> NewTodoId);
+    public record Response(Guid Data);
     
     public class CreateToDoValidator : AbstractValidator<AddToDoRequest>
     {

@@ -7,7 +7,7 @@ namespace Todo.Api.Slices.Todo;
 public class RemoveController : BaseController
 {    
     // Remove todo
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpDelete("todo.remove")]
     public async Task RemoveToDo(RemoveToDo.RemoveToDoRequest request)
     {
