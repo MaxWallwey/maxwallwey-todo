@@ -1,15 +1,29 @@
+using FluentValidation;
 using MediatR;
 using Todo.Api.Domain;
-using Todo.Api.Infrastructure;
-using Todo.Api.Models;
 
-namespace Todo.Api.Slices;
+namespace Todo.Api.Slices.Todo;
 
 public abstract class AddToDo
 {
-    public record AddToDoRequest(CreateToDo Model) : IRequest<ResponseData<Guid>>;
+    public record AddToDoRequest(string Name) : IRequest<Response>;
+    
+    public record Response(Guid NewTodoId);
+    
+    public class CreateToDoValidator : AbstractValidator<AddToDoRequest>
+    {
+        public CreateToDoValidator(IToDoRepository toDoRepository)
+        {
+            RuleFor(x => x.Name)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .WithMessage("Please provide a name for the todo.")
+                .MustAsync(async (name, _) => name != null && !await toDoRepository.AnyAsync(name))
+                .WithMessage("Name must be unique.");
+        }
+    }
 
-    public class AddToDoHandler : IRequestHandler<AddToDoRequest, ResponseData<Guid>>
+    public class AddToDoHandler : IRequestHandler<AddToDoRequest, Response>
     {
         private readonly IDocumentRepository _documentRepository;
 
@@ -17,10 +31,11 @@ public abstract class AddToDo
         {
             _documentRepository = documentRepository;
         }
-    
-        public Task<ResponseData<Guid>> Handle(AddToDoRequest request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(AddToDoRequest request, CancellationToken cancellationToken)
         {
             return _documentRepository.AddToDoAsync(request.Model);
+            var newTodo = await _toDoRepository.AddToDoAsync(request.Name);
+            return new Response(newTodo);
         }
     }   
 }

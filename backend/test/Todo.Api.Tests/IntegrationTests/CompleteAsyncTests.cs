@@ -4,7 +4,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Todo.Api.Domain.Todo;
-using Todo.Api.Models;
+using Todo.Api.Domain.Models;
 
 namespace Todo.Api.Tests.IntegrationTests;
 

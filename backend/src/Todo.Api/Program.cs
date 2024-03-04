@@ -1,11 +1,10 @@
 using System.Reflection;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Todo.API;
 using Todo.Api.Domain.InMemory;
-using Todo.Api.Domain.Todo;
 using Todo.Api.Infrastructure;
 using Todo.Api.Validation;
 
@@ -18,15 +17,26 @@ builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 
-    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+    cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 });
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MediatR.Extensions.FluentValidation.AspNetCore.ValidationBehavior<,>));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.AddTransient<ValidationException>();
 
 builder.Services.AddControllers();
 
+builder.Services.AddDbContext<InMemoryContext>(opt =>
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidationExceptionFilter>();
+    options.Filters.Add(new ProducesResponseTypeAttribute(typeof(ProblemDetails),
+        StatusCodes.Status500InternalServerError));
+    options.Filters.Add(new ProducesResponseTypeAttribute(typeof(ValidationProblemDetails),
+        StatusCodes.Status400BadRequest));
+}));
+    
 builder.Services.AddDbContext<InMemoryContext>(opt =>
     opt.UseInMemoryDatabase("ToDoList"));
 
@@ -61,6 +71,11 @@ app.UseSerilogRequestLogging(opts
     => opts.EnrichDiagnosticContext = LogHelper.EnrichFromRequest);
 
 app.UseHttpsRedirection();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/error");
+}
 
 app.UseAuthorization();
 
