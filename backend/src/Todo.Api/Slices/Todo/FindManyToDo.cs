@@ -1,15 +1,14 @@
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Todo.Api.Domain;
-using Todo.Api.Models;
+using Todo.Api.Domain.Models;
 
-namespace Todo.Api.Slices;
+namespace Todo.Api.Slices.Todo;
 
-public class FindManyToDo
+public abstract class FindManyToDo
 {
-    public record FindManyToDoRequest(bool IsComplete) : IRequest<ResponseData<List<ToDo>>>;
+    public record FindManyToDoRequest(bool? IsComplete) : IRequest<ResponseData<List<ToDo>>?>;
 
-    public class FindManyToDoHandler : IRequestHandler<FindManyToDoRequest, ResponseData<List<ToDo>>>
+    public class FindManyToDoHandler : IRequestHandler<FindManyToDoRequest, ResponseData<List<ToDo>>?>
     {
         private readonly IToDoRepository _toDoRepository;
 
@@ -18,7 +17,7 @@ public class FindManyToDo
             _toDoRepository = toDoRepository;
         }
     
-        public Task<ResponseData<List<ToDo>>> Handle(FindManyToDoRequest request, CancellationToken cancellationToken)
+        public Task<ResponseData<List<ToDo>>?> Handle(FindManyToDoRequest request, CancellationToken cancellationToken)
         {
             return _toDoRepository.FindManyAsync(request.IsComplete);
         }

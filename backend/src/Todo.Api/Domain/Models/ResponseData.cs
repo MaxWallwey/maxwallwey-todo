@@ -1,6 +1,4 @@
-using MediatR;
-
-namespace Todo.Api.Models;
+namespace Todo.Api.Domain.Models;
 
 public class ResponseData<T>
 {

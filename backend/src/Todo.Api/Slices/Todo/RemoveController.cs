@@ -1,22 +1,17 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Todo.Api.Domain;
-using Todo.Api.Models;
-using Todo.Api.Slices;
 
-namespace Todo.Api.Controllers;
+namespace Todo.Api.Slices.Todo;
 
 [ApiController]
 public class RemoveController : BaseController
 {    
     // Remove todo
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [HttpDelete("todo.remove")]
-    public async Task<ActionResult> RemoveToDo(Guid id)
+    public async Task RemoveToDo(RemoveToDo.RemoveToDoRequest request)
     {
-        await Mediator.Send(new RemoveToDo.RemoveToDoRequest(id));
-        return NoContent();
+        await Mediator.Send(request);
     }
     
     public RemoveController(IMediator mediator) : base(mediator)

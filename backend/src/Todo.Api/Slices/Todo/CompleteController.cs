@@ -1,22 +1,17 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Todo.Api.Domain;
-using Todo.Api.Models;
-using Todo.Api.Slices;
 
-namespace Todo.Api.Controllers;
+namespace Todo.Api.Slices.Todo;
 
 [ApiController]
 public class CompleteController : BaseController
 {
     // Complete todo
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [HttpPost("todo.complete")]
-    public async Task<ActionResult> CompleteToDo(Guid id)
+    public async Task CompleteToDo(CompleteToDo.CompleteToDoRequest request)
     {
-        await Mediator.Send(new CompleteToDo.CompleteToDoRequest(id));
-        return NoContent();
+        await Mediator.Send(request);
     }
     public CompleteController(IMediator mediator) : base(mediator)
     {

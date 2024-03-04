@@ -1,28 +1,18 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Todo.Api.Domain;
-using Todo.Api.Models;
-using Todo.Api.Slices;
 
-namespace Todo.Api.Controllers;
+namespace Todo.Api.Slices.Todo;
 
 [ApiController]
 public class AddToDoController : BaseController
 {
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    [ProducesResponseType(typeof(AddToDo.Response), StatusCodes.Status200OK)]
     [HttpPost("todo.add")]
-    public async Task<ResponseData<Guid>> AddToDo(CreateToDo model)
-    {
-        try
-        {
-            return await Mediator.Send(new AddToDo.AddToDoRequest(model));
-        }
-        catch (Exception e)
-        {
-            throw new BadHttpRequestException(e.Message);
-        }
-    }
+    public async Task<AddToDo.Response> AddToDo(
+        [FromBody] AddToDo.AddToDoRequest request,
+        [FromServices] IMediator mediator,
+        CancellationToken cancellationToken)
+    => await Mediator.Send(request, cancellationToken);
     
     public AddToDoController(IMediator mediator) : base(mediator)
     {

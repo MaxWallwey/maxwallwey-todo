@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Todo.Api.Models;
+using Todo.Api.Domain.Models;
 
 namespace Todo.Api.Tests.IntegrationTests;
 

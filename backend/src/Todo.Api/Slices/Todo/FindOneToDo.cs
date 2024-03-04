@@ -1,14 +1,14 @@
 using MediatR;
 using Todo.Api.Domain;
-using Todo.Api.Models;
+using Todo.Api.Domain.Models;
 
-namespace Todo.Api.Slices;
+namespace Todo.Api.Slices.Todo;
 
-public class FindOneToDo
+public abstract class FindOneToDo
 {
-    public record FindOneToDoRequest(Guid Id) : IRequest<ResponseData<ToDo>>;
+    public record FindOneToDoRequest(Guid Id) : IRequest<ResponseData<ToDo?>>;
 
-    public class FindOneToDoHandler : IRequestHandler<FindOneToDoRequest, ResponseData<ToDo>?>
+    public class FindOneToDoHandler : IRequestHandler<FindOneToDoRequest, ResponseData<ToDo?>>
     {
         private readonly IToDoRepository _toDoRepository;
 
@@ -17,12 +17,11 @@ public class FindOneToDo
             _toDoRepository = toDoRepository;
         }
     
-        public Task<ResponseData<ToDo>?> Handle(FindOneToDoRequest request, CancellationToken cancellationToken)
+        public Task<ResponseData<ToDo?>> Handle(FindOneToDoRequest request, CancellationToken cancellationToken)
         {
             var todo = _toDoRepository.FindOneToDoAsync(request.Id);
 
-            if (todo.Result != null) return todo;
-            else throw new Exception();
+            return todo!;
         }
     }
 }

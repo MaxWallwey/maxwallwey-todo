@@ -1,6 +1,6 @@
 using Serilog;
 
-namespace Todo.API;
+namespace Todo.Api;
 
 public static class LogHelper 
 {
