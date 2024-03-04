@@ -27,21 +27,21 @@ public class RemoveAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var client = _factory.CreateClient();
         
-        var addedTodo = await client.PostAsJsonAsync("file:///todo.add", obj);
+        var addedTodo = await client.PostAsJsonAsync("/todo.add", obj);
         var content = await addedTodo.Content.ReadFromJsonAsync<AddToDo.Response>();
 
         var objId = new RemoveToDo.RemoveToDoRequest(content!.Data);
         
         var request = new HttpRequestMessage {
             Method = HttpMethod.Delete,
-            RequestUri = new Uri("file:///todo.remove"),
+            RequestUri = new Uri("/todo.remove", UriKind.Relative),
             Content = new StringContent(JsonConvert.SerializeObject(objId), Encoding.UTF8, "application/json")
         };
         var response = await client.SendAsync(request);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         
-        var checkDeletion = await client.GetAsync($"file:///todo.findOne?id={content}");
+        var checkDeletion = await client.GetAsync($"/todo.findOne?id={content}");
         checkDeletion.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
     
@@ -56,7 +56,7 @@ public class RemoveAsyncTests : IClassFixture<WebApplicationFactory<Program>>
    
         var request = new HttpRequestMessage {
             Method = HttpMethod.Delete,
-            RequestUri = new Uri("file:///todo.remove"),
+            RequestUri = new Uri("/todo.remove", UriKind.Relative),
             Content = new StringContent(JsonConvert.SerializeObject(objId), Encoding.UTF8, "application/json")
         };
         var response = await client.SendAsync(request);

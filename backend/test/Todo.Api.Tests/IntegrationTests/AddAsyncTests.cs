@@ -24,7 +24,7 @@ public class AddAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         var obj = new { name = "addMock1" };
         
         var client = _factory.CreateClient();
-        var response = await client.PostAsJsonAsync("file:///todo.add", obj);
+        var response = await client.PostAsJsonAsync("/todo.add", obj);
         
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -41,7 +41,7 @@ public class AddAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         var obj = new { name = "" };
         
         var client = _factory.CreateClient();
-        var response = await client.PostAsJsonAsync("file:///todo.add", obj);
+        var response = await client.PostAsJsonAsync("/todo.add", obj);
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
