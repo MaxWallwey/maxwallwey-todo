@@ -42,19 +42,19 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         using var scope = new AssertionScope();
         var obj = new { name = "mock2" };
         var client = _factory.CreateClient();
-        var addedTodo = await client.PostAsJsonAsync("file:///todo.add", obj);
+        var addedTodo = await client.PostAsJsonAsync("/todo.add", obj);
         var id = await addedTodo.Content.ReadFromJsonAsync<AddToDo.Response>();
 
         var idObj = new CompleteToDo.CompleteToDoRequest(id!.Data);
         
         var request = new HttpRequestMessage {
             Method = HttpMethod.Post,
-            RequestUri = new Uri("file:///todo.complete"),
+            RequestUri = new Uri("/todo.complete", UriKind.Relative),
             Content = new StringContent(JsonConvert.SerializeObject(idObj), Encoding.UTF8, "application/json")
         };
         var responseComplete = await client.SendAsync(request);
         
-        var response = await client.GetAsync("file:///todo.findMany?isComplete=true");
+        var response = await client.GetAsync("/todo.findMany?isComplete=true");
 
         var content = await response.Content.ReadFromJsonAsync<FindManyToDo.Response>();
 
@@ -68,9 +68,9 @@ public class FindManyAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         using var scope = new AssertionScope();
         var obj = new { name = "mock" };
         var client = _factory.CreateClient();
-        await client.PostAsJsonAsync("file:///todo.add", obj);
+        await client.PostAsJsonAsync("/todo.add", obj);
         
-        var response = await client.GetAsync("file:///todo.findMany?isComplete=False");
+        var response = await client.GetAsync("/todo.findMany?isComplete=False");
 
         var content = await response.Content.ReadFromJsonAsync<FindManyToDo.Response>();
 

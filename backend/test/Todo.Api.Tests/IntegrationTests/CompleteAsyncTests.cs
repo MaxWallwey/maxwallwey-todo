@@ -26,14 +26,14 @@ public class CompleteAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var obj = new { name = "completeMock" };
         var client = _factory.CreateClient();
-        var addedTodo = await client.PostAsJsonAsync("file:///todo.add", obj);
+        var addedTodo = await client.PostAsJsonAsync("/todo.add", obj);
         var content = await addedTodo.Content.ReadFromJsonAsync<AddToDo.Response>();
 
         var idObj = new CompleteToDo.CompleteToDoRequest(content!.Data);
 
         var request = new HttpRequestMessage {
             Method = HttpMethod.Post,
-            RequestUri = new Uri("file:///todo.complete"),
+            RequestUri = new Uri("/todo.complete", UriKind.Relative),
             Content = new StringContent(JsonConvert.SerializeObject(idObj), Encoding.UTF8, "application/json")
         };
         var responseComplete = await client.SendAsync(request);
@@ -52,7 +52,7 @@ public class CompleteAsyncTests : IClassFixture<WebApplicationFactory<Program>>
 
         var request = new HttpRequestMessage {
             Method = HttpMethod.Post,
-            RequestUri = new Uri("file:///todo.complete"),
+            RequestUri = new Uri("/todo.complete", UriKind.Relative),
             Content = new StringContent(JsonConvert.SerializeObject(idObj), Encoding.UTF8, "application/json")
         };
         var responseComplete = await client.SendAsync(request);
