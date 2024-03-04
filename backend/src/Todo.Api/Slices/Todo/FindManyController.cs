@@ -1,16 +1,15 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Todo.Api.Domain.Todo;
-using Todo.Api.Domain.Models;
+using Todo.Api.Domain;
 
 namespace Todo.Api.Slices.Todo;
 
 [ApiController]
 public class FindManyController : BaseController
 {
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseData<List<ToDoDocument>>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ToDo>))]
     [HttpGet("todo.findMany")]
-    public async Task<ResponseData<List<ToDoDocument>>?> FindMany(bool? isComplete)
+    public async Task<FindManyToDo.Response> FindMany(bool? isComplete)
     {
         return await Mediator.Send(new FindManyToDo.FindManyToDoRequest(isComplete));
     }

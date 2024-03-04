@@ -8,7 +8,7 @@ public abstract class AddToDo
 {
     public record AddToDoRequest(string Name) : IRequest<Response>;
     
-    public record Response(Guid NewTodoId);
+    public record Response(Guid Data);
     
     public class CreateToDoValidator : AbstractValidator<AddToDoRequest>
     {
@@ -25,15 +25,14 @@ public abstract class AddToDo
 
     public class AddToDoHandler : IRequestHandler<AddToDoRequest, Response>
     {
-        private readonly IDocumentRepository _documentRepository;
+        private readonly IToDoRepository _toDoRepository;
 
-        public AddToDoHandler(IDocumentRepository documentRepository)
+        public AddToDoHandler(IToDoRepository toDoRepository)
         {
-            _documentRepository = documentRepository;
+            _toDoRepository = toDoRepository;
         }
         public async Task<Response> Handle(AddToDoRequest request, CancellationToken cancellationToken)
         {
-            return _documentRepository.AddToDoAsync(request.Model);
             var newTodo = await _toDoRepository.AddToDoAsync(request.Name);
             return new Response(newTodo);
         }

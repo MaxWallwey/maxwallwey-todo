@@ -8,7 +8,7 @@ namespace Todo.Api.Slices.Todo;
 public class CompleteController : BaseController
 {
     // Complete todo
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpPost("todo.complete")]
     public async Task CompleteToDo(CompleteToDo.CompleteToDoRequest request)
     {
