@@ -1,12 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using Todo.Api.Domain.Todo;
+using Todo.Api.Infrastructure;
 
-namespace Todo.Api.Domain;
+namespace Todo.Api.InMemory;
 
-public class InMemoryToDoRepository : IToDoRepository
+public class InMemoryRepository : IDocumentRepository
 {
-    private readonly ToDoContext _context;
+    private readonly InMemoryContext _context;
 
-    public InMemoryToDoRepository(ToDoContext context)
+    public InMemoryRepository(InMemoryContext context)
     {
         _context = context;
     }
@@ -21,18 +23,17 @@ public class InMemoryToDoRepository : IToDoRepository
         return Task.FromResult(false);
     }
 
-    public async Task<List<ToDo>?> FindManyAsync(bool? isComplete)
+    public async Task<List<ToDoDocument>?> FindManyAsync(bool? isComplete)
     {
         if (_context.Todos != null)
         {
-            return await _context.Todos
-                .Where(i => isComplete == null || i.IsComplete == isComplete).ToListAsync();
+            return await _context.Todos.Where(i => isComplete == null || i.IsComplete == isComplete).ToListAsync();
         }
         
         return null;
     }
 
-    public async Task<ToDo?> FindOneToDoAsync(Guid id)
+    public async Task<ToDoDocument?> FindOneToDoAsync(Guid id)
     {
         if (_context.Todos != null)
         {
@@ -54,7 +55,7 @@ public class InMemoryToDoRepository : IToDoRepository
 
     public async Task<Guid> AddToDoAsync(string name)
     {
-        var todo = new ToDo(name);
+        var todo = new ToDoDocument(name);
 
         _context.Todos!.Add(todo);
 

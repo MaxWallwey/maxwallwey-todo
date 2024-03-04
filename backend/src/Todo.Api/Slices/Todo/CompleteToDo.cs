@@ -1,6 +1,5 @@
 using FluentValidation;
 using MediatR;
-using Todo.Api.Domain;
 using Todo.Api.Infrastructure;
 
 namespace Todo.Api.Slices.Todo;
@@ -13,7 +12,7 @@ public abstract class CompleteToDo
     
     public class CompleteToDoValidator : AbstractValidator<CompleteToDoRequest>
     {
-        public CompleteToDoValidator(IToDoRepository toDoRepository)
+        public CompleteToDoValidator(IDocumentRepository toDoRepository)
         {
             RuleFor(x => x.Id)
                 .Cascade(CascadeMode.Stop)

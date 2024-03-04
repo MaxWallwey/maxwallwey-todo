@@ -1,6 +1,6 @@
-using FluentValidation;
 using MediatR;
-using Todo.Api.Domain;
+using Todo.Api.Domain.Todo;
+using Todo.Api.Infrastructure;
 
 namespace Todo.Api.Slices.Todo;
 
@@ -8,13 +8,13 @@ public abstract class FindOneToDo
 {
     public record FindOneToDoRequest(Guid Id) : IRequest<Response>;
     
-    public record Response(ToDo Data);
+    public record Response(ToDoDocument Data);
     
     public class FindOneToDoHandler : IRequestHandler<FindOneToDoRequest, Response>
     {
-        private readonly IToDoRepository _toDoRepository;
+        private readonly IDocumentRepository _toDoRepository;
 
-        public FindOneToDoHandler(IToDoRepository toDoRepository)
+        public FindOneToDoHandler(IDocumentRepository toDoRepository)
         {
             _toDoRepository = toDoRepository;
         }

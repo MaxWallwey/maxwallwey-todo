@@ -5,7 +5,6 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
-using Todo.Api.Domain;
 using Todo.Api.Slices.Todo;
 
 namespace Todo.Api.Tests.IntegrationTests;

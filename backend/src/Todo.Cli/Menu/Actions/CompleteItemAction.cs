@@ -1,4 +1,3 @@
-using Refit;
 using Todo.Api.Sdk;
 
 namespace Todo.Cli.Menu.Actions;

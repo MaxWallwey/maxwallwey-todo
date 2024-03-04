@@ -4,9 +4,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Todo.Api.Domain.InMemory;
+using Todo.Api;
 using Todo.Api.Infrastructure;
 using Todo.Api.Validation;
+using Todo.Api.InMemory;
 
 // Add services to the container.
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +28,6 @@ builder.Services.AddTransient<ValidationException>();
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<InMemoryContext>(opt =>
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ValidationExceptionFilter>();
@@ -35,12 +35,12 @@ builder.Services.AddControllers(options =>
         StatusCodes.Status500InternalServerError));
     options.Filters.Add(new ProducesResponseTypeAttribute(typeof(ValidationProblemDetails),
         StatusCodes.Status400BadRequest));
-}));
+});
     
 builder.Services.AddDbContext<InMemoryContext>(opt =>
     opt.UseInMemoryDatabase("ToDoList"));
 
-builder.Services.AddTransient<IDocumentRepository, InMemoryRepository<ToDoDocument>>();
+builder.Services.AddTransient<IDocumentRepository, InMemoryRepository>();
 
 builder.Host.UseSerilog();
 

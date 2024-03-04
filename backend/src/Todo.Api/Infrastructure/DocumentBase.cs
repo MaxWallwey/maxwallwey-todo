@@ -1,5 +1,3 @@
-using Todo.Api.Domain.Todo;
-
 namespace Todo.Api.Infrastructure;
 
 public abstract class DocumentBase : IDocument

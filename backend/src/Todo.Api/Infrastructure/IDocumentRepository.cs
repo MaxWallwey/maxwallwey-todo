@@ -1,17 +1,18 @@
 using Todo.Api.Domain.Todo;
-using Todo.Api.Models;
 
 namespace Todo.Api.Infrastructure;
 
 public interface IDocumentRepository
 {
-    public Task<ResponseData<List<ToDoDocument>>> FindManyAsync(bool? isComplete);
+    public Task<List<ToDoDocument>?> FindManyAsync(bool? isComplete);
 
-    public Task<ResponseData<ToDoDocument>?> FindOneToDoAsync(Guid id);
+    public Task<ToDoDocument?> FindOneToDoAsync(Guid id);
+
+    public Task<bool> AnyAsync(string name);
 
     public Task CompleteToDoAsync(Guid id);
 
-    public Task<ResponseData<Guid>> AddToDoAsync(CreateToDo toDo);
+    public Task<Guid> AddToDoAsync(string name);
 
     public Task RemoveToDoAsync(Guid id);
 }

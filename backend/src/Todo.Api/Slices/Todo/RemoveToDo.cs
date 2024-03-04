@@ -1,6 +1,5 @@
 using FluentValidation;
 using MediatR;
-using Todo.Api.Domain;
 using Todo.Api.Infrastructure;
 
 namespace Todo.Api.Slices.Todo;
@@ -13,7 +12,7 @@ public abstract class RemoveToDo
     
     public class RemoveToDoValidator : AbstractValidator<RemoveToDoRequest>
     {
-        public RemoveToDoValidator(IToDoRepository toDoRepository)
+        public RemoveToDoValidator(IDocumentRepository toDoRepository)
         {
             RuleFor(x => x.Id)
                 .Cascade(CascadeMode.Stop)
