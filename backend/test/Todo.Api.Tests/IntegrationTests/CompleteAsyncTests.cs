@@ -4,6 +4,7 @@ using System.Text;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc.Testing;
+using MongoDB.Bson;
 using Newtonsoft.Json;
 using Todo.Api.Slices.Todo;
 
@@ -47,7 +48,7 @@ public class CompleteAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var client = _factory.CreateClient();
         
-        var idObj = new CompleteToDo.CompleteToDoRequest(Guid.Empty);
+        var idObj = new CompleteToDo.CompleteToDoRequest(String.Empty);
 
         var request = new HttpRequestMessage {
             Method = HttpMethod.Post,

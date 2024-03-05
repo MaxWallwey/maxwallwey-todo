@@ -6,7 +6,7 @@ namespace Todo.Api.Slices.Todo;
 
 public abstract class RemoveToDo
 {
-    public record RemoveToDoRequest(Guid Id) : IRequest<Response>;
+    public record RemoveToDoRequest(string Id) : IRequest<Response>;
 
     public record Response;
     

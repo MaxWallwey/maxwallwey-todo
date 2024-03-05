@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 using Todo.Api.Domain.Todo;
 using Todo.Api.Infrastructure;
 
@@ -33,18 +34,18 @@ public class InMemoryRepository : IDocumentRepository
         return null;
     }
 
-    public async Task<ToDoDocument?> FindOneToDoAsync(Guid id)
+    public async Task<ToDoDocument?> FindOneToDoAsync(string id)
     {
         if (_context.Todos != null)
         {
-            var todo = await _context.Todos.FindAsync(id);
+            var todo = await _context.Todos.FindAsync(ObjectId.Parse(id));
             if (todo != null) return todo;
         }
 
         return null;
     }
     
-    public async Task CompleteToDoAsync(Guid id)
+    public async Task CompleteToDoAsync(string id)
     {
         var todo = await FindOneToDoAsync(id);
 
@@ -53,7 +54,7 @@ public class InMemoryRepository : IDocumentRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Guid> AddToDoAsync(string name)
+    public async Task<string> AddToDoAsync(string name)
     {
         var todo = new ToDoDocument(name);
 
@@ -61,10 +62,10 @@ public class InMemoryRepository : IDocumentRepository
 
         await _context.SaveChangesAsync();
 
-        return todo.Id;
+        return todo.Id.ToString();
     }
 
-    public async Task RemoveToDoAsync(Guid id)
+    public async Task RemoveToDoAsync(string id)
     {
         var todo = await FindOneToDoAsync(id);
 
