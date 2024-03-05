@@ -4,6 +4,7 @@ using System.Text;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc.Testing;
+using MongoDB.Bson;
 using Newtonsoft.Json;
 using Todo.Api.Slices.Todo;
 
@@ -52,7 +53,7 @@ public class RemoveAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var client = _factory.CreateClient();
         
-        var objId = new RemoveToDo.RemoveToDoRequest(Guid.Empty);
+        var objId = new RemoveToDo.RemoveToDoRequest(String.Empty);
    
         var request = new HttpRequestMessage {
             Method = HttpMethod.Delete,

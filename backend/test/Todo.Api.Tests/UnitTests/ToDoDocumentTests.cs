@@ -1,4 +1,5 @@
 using FluentAssertions;
+using MongoDB.Bson;
 using Todo.Api.Domain.Todo;
 
 namespace Todo.Api.Tests.UnitTests;
@@ -12,7 +13,7 @@ public class ToDoDocumentTests
 
         item.Name.Should().Be("mock");
 
-        item.Id.Should().NotBe(Guid.Empty);
+        item.Id.Should().NotBe(ObjectId.Empty);
 
         item.IsComplete.Should().BeFalse();
 

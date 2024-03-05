@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using Todo.Api.Domain.Todo;
 
 namespace Todo.Api.Slices.Todo;
@@ -10,7 +11,7 @@ public class FindOneController : BaseController
     // List ToDo based on ID
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ToDoDocument))]
     [HttpGet("todo.findOne")]
-    public async Task<FindOneToDo.Response> FindOne(Guid id)
+    public async Task<FindOneToDo.Response> FindOne([FromQuery]string id)
     { 
         return await Mediator.Send(new FindOneToDo.FindOneToDoRequest(id));
     }

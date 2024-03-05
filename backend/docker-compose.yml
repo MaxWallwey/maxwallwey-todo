@@ -9,4 +9,7 @@
       - "8080:80"
     volumes:
       - /Users/maxwallwey/code/maxwallwey-todo/backend/logs:/data
-    
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017

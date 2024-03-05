@@ -8,6 +8,7 @@ using Todo.Api;
 using Todo.Api.Infrastructure;
 using Todo.Api.Validation;
 using Todo.Api.InMemory;
+using Todo.Api.Mongo;
 
 // Add services to the container.
 var builder = WebApplication.CreateBuilder(args);
@@ -40,7 +41,11 @@ builder.Services.AddControllers(options =>
 builder.Services.AddDbContext<InMemoryContext>(opt =>
     opt.UseInMemoryDatabase("ToDoList"));
 
-builder.Services.AddTransient<IDocumentRepository, InMemoryRepository>();
+// Uncomment this for in-memory DB
+//builder.Services.AddTransient<IDocumentRepository, InMemoryRepository>();
+
+// Uncomment this for Mongo DB
+builder.Services.AddSingleton<IDocumentRepository, MongoDbRepository>();
 
 builder.Host.UseSerilog();
 

@@ -1,5 +1,6 @@
 using FluentValidation;
 using MediatR;
+using MongoDB.Bson;
 using Todo.Api.Infrastructure;
 
 namespace Todo.Api.Slices.Todo;
@@ -8,7 +9,7 @@ public abstract class AddToDo
 {
     public record AddToDoRequest(string Name) : IRequest<Response>;
     
-    public record Response(Guid Data);
+    public record Response(string Data);
     
     public class CreateToDoValidator : AbstractValidator<AddToDoRequest>
     {
@@ -34,7 +35,7 @@ public abstract class AddToDo
         public async Task<Response> Handle(AddToDoRequest request, CancellationToken cancellationToken)
         {
             var newTodo = await _toDoRepository.AddToDoAsync(request.Name);
-            return new Response(newTodo);
+            return new Response(newTodo.ToString());
         }
     }   
 }

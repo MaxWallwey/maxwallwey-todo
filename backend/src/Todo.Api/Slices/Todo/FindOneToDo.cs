@@ -1,4 +1,5 @@
 using MediatR;
+using MongoDB.Bson;
 using Todo.Api.Domain.Todo;
 using Todo.Api.Infrastructure;
 
@@ -6,7 +7,7 @@ namespace Todo.Api.Slices.Todo;
 
 public abstract class FindOneToDo
 {
-    public record FindOneToDoRequest(Guid Id) : IRequest<Response>;
+    public record FindOneToDoRequest(string Id) : IRequest<Response>;
     
     public record Response(ToDoDocument Data);
     

@@ -6,7 +6,7 @@ namespace Todo.Api.Slices.Todo;
 
 public abstract class CompleteToDo
 {
-    public record CompleteToDoRequest(Guid Id) : IRequest<Response>;
+    public record CompleteToDoRequest(string Id) : IRequest<Response>;
     
     public record Response;
     

@@ -12,6 +12,6 @@ public abstract class BaseController : ControllerBase
     {
         Mediator = mediator;
     }
-    
-    protected IMediator Mediator { get; set; }
+
+    protected IMediator Mediator { get; }
 }
