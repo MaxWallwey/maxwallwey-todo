@@ -53,7 +53,7 @@ public class RemoveAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var client = _factory.CreateClient();
         
-        var objId = new RemoveToDo.RemoveToDoRequest(String.Empty);
+        var objId = new RemoveToDo.RemoveToDoRequest(ObjectId.Empty);
    
         var request = new HttpRequestMessage {
             Method = HttpMethod.Delete,
