@@ -48,7 +48,7 @@ public class CompleteAsyncTests : IClassFixture<WebApplicationFactory<Program>>
         
         var client = _factory.CreateClient();
         
-        var idObj = new CompleteToDo.CompleteToDoRequest(String.Empty);
+        var idObj = new CompleteToDo.CompleteToDoRequest(ObjectId.Empty);
 
         var request = new HttpRequestMessage {
             Method = HttpMethod.Post,

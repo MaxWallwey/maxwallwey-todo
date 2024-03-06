@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
+using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Todo;
-using Todo.Api.Infrastructure;
+using Todo.Api.InMemory;
 
-namespace Todo.Api.InMemory;
+namespace Todo.Api.Domain.InMemory;
 
-public class InMemoryRepository : IDocumentRepository
+public class InMemoryRepository : IDocumentRepository<ToDoDocument>
 {
     private readonly InMemoryContext _context;
 
@@ -34,27 +35,27 @@ public class InMemoryRepository : IDocumentRepository
         return null;
     }
 
-    public async Task<ToDoDocument?> FindOneToDoAsync(string id)
+    public async Task<ToDoDocument?> FindOneToDoAsync(ObjectId id)
     {
         if (_context.Todos != null)
         {
-            var todo = await _context.Todos.FindAsync(ObjectId.Parse(id));
+            var todo = await _context.Todos.FindAsync(id);
             if (todo != null) return todo;
         }
 
         return null;
     }
     
-    public async Task CompleteToDoAsync(string id)
+    public async Task UpdateToDoAsync(ToDoDocument document)
     {
-        var todo = await FindOneToDoAsync(id);
+        var todo = await FindOneToDoAsync(document.Id);
 
         if (todo != null) todo.Complete();
 
         await _context.SaveChangesAsync();
     }
 
-    public async Task<string> AddToDoAsync(string name)
+    public async Task<ObjectId> AddToDoAsync(string name)
     {
         var todo = new ToDoDocument(name);
 
@@ -62,10 +63,10 @@ public class InMemoryRepository : IDocumentRepository
 
         await _context.SaveChangesAsync();
 
-        return todo.Id.ToString();
+        return todo.Id;
     }
 
-    public async Task RemoveToDoAsync(string id)
+    public async Task RemoveToDoAsync(ObjectId id)
     {
         var todo = await FindOneToDoAsync(id);
 

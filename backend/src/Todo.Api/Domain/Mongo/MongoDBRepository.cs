@@ -1,12 +1,14 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Todo;
 using Todo.Api.Infrastructure;
 
 namespace Todo.Api.Mongo;
 
-public class MongoDbRepository : IDocumentRepository
+public class MongoDbRepository<TDocument> : IDocumentRepository<TDocument>
+    where TDocument : IDocument
 {
     private IMongoCollection<ToDoDocument> Collection { get; }
 
@@ -19,14 +21,15 @@ public class MongoDbRepository : IDocumentRepository
     
     public async Task<List<ToDoDocument>?> FindManyAsync(bool? isComplete)
     {
-        return await Collection.AsQueryable()
+        var todos = await Collection.AsQueryable()
             .Where(x => isComplete == null || x.IsComplete == isComplete)
             .ToListAsync();
+        return todos;
     }
 
-    public async Task<ToDoDocument?> FindOneToDoAsync(string id)
+    public async Task<ToDoDocument?> FindOneToDoAsync(ObjectId id)
     {
-        var document = await Collection.FindAsync(x => x.Id == ObjectId.Parse(id));
+        var document = await Collection.FindAsync(x => x.Id == id);
         return document.SingleOrDefault();
     }
 
@@ -42,24 +45,24 @@ public class MongoDbRepository : IDocumentRepository
         return Task.FromResult(false);
     }
 
-    public async Task CompleteToDoAsync(string id)
+    public async Task UpdateToDoAsync(ToDoDocument document)
     {
-        var document = await FindOneToDoAsync(id);
-        
-        document!.Complete();
+        var filter = Builders<ToDoDocument>.Filter.Eq(x => x.Id, document.Id);
+
+        await Collection.ReplaceOneAsync(filter, document);
     }
 
-    public async Task<string> AddToDoAsync(string name)
+    public async Task<ObjectId> AddToDoAsync(string name)
     {
         var todo = new ToDoDocument(name);
         
         await Collection.InsertOneAsync(todo);
 
-        return todo.Id.ToString();
+        return todo.Id;
     }
 
-    public async Task RemoveToDoAsync(string id)
+    public async Task RemoveToDoAsync(ObjectId id)
     {
-        await Collection.DeleteOneAsync(x => x.Id == ObjectId.Parse(id));
+        await Collection.DeleteOneAsync(x => x.Id == id);
     }
 }

@@ -1,4 +1,5 @@
 using MediatR;
+using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Todo;
 using Todo.Api.Infrastructure;
 
@@ -11,9 +12,9 @@ public abstract class FindManyToDo
     public record Response(List<ToDoDocument> Data);
     public class FindManyToDoHandler : IRequestHandler<FindManyToDoRequest, Response>
     {
-        private readonly IDocumentRepository _toDoRepository;
+        private readonly IDocumentRepository<ToDoDocument> _toDoRepository;
 
-        public FindManyToDoHandler(IDocumentRepository toDoRepository)
+        public FindManyToDoHandler(IDocumentRepository<ToDoDocument> toDoRepository)
         {
             _toDoRepository = toDoRepository;
         }

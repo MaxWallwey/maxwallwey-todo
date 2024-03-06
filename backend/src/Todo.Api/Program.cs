@@ -5,10 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Todo.Api;
+using Todo.Api.Domain.Infrastructure;
+using Todo.Api.Domain.Todo;
 using Todo.Api.Infrastructure;
 using Todo.Api.Validation;
 using Todo.Api.InMemory;
+using Todo.Api.ModelBinding;
 using Todo.Api.Mongo;
+using ToDo.Api.Sdk;
 
 // Add services to the container.
 var builder = WebApplication.CreateBuilder(args);
@@ -36,22 +40,30 @@ builder.Services.AddControllers(options =>
         StatusCodes.Status500InternalServerError));
     options.Filters.Add(new ProducesResponseTypeAttribute(typeof(ValidationProblemDetails),
         StatusCodes.Status400BadRequest));
-});
     
-builder.Services.AddDbContext<InMemoryContext>(opt =>
-    opt.UseInMemoryDatabase("ToDoList"));
+    options.ModelBinderProviders.Insert(0, new ObjectIdModelBinderProvider());
+})
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter());
+    });
 
 // Uncomment this for in-memory DB
+//builder.Services.AddDbContext<InMemoryContext>(opt =>
+//    opt.UseInMemoryDatabase("ToDoList"));
 //builder.Services.AddTransient<IDocumentRepository, InMemoryRepository>();
 
 // Uncomment this for Mongo DB
-builder.Services.AddSingleton<IDocumentRepository, MongoDbRepository>();
+//builder.Services.AddTransient<IDatabaseClient, MongoDatabaseClient>();
+builder.Services.AddTransient<IDocumentRepository<ToDoDocument>, MongoDbRepository<ToDoDocument>>();
 
 builder.Host.UseSerilog();
 
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "TodoApi", Version = "v1" });
+    c.OperationFilter<ObjectIdOperationFilter>();
+    c.SchemaFilter<ObjectIdSchemaFilter>();
 });
 
 var configuration = new ConfigurationBuilder()
@@ -69,7 +81,8 @@ if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApi v1"));
+    app.UseSwaggerUI(c => 
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApi v1"));
 }
 
 app.UseSerilogRequestLogging(opts
@@ -88,7 +101,7 @@ app.MapControllers();
 
 try
 {
-    Log.Information("Application starting.");
+    MongoConfigurator.Configure("pascal case");
     app.Run();
 }
 catch (Exception e)

@@ -1,18 +1,21 @@
 using FluentValidation;
 using MediatR;
+using MongoDB.Bson;
+using Todo.Api.Domain.Infrastructure;
+using Todo.Api.Domain.Todo;
 using Todo.Api.Infrastructure;
 
 namespace Todo.Api.Slices.Todo;
 
 public abstract class RemoveToDo
 {
-    public record RemoveToDoRequest(string Id) : IRequest<Response>;
+    public record RemoveToDoRequest(ObjectId Id) : IRequest<Response>;
 
     public record Response;
     
     public class RemoveToDoValidator : AbstractValidator<RemoveToDoRequest>
     {
-        public RemoveToDoValidator(IDocumentRepository toDoRepository)
+        public RemoveToDoValidator(IDocumentRepository<ToDoDocument> toDoRepository)
         {
             RuleFor(x => x.Id)
                 .Cascade(CascadeMode.Stop)
@@ -29,9 +32,9 @@ public abstract class RemoveToDo
 
     public class RemoveToDoHandler : IRequestHandler<RemoveToDoRequest, Response>
     {
-        private readonly IDocumentRepository _documentRepository;
+        private readonly IDocumentRepository<ToDoDocument> _documentRepository;
 
-        public RemoveToDoHandler(IDocumentRepository documentRepository)
+        public RemoveToDoHandler(IDocumentRepository<ToDoDocument> documentRepository)
         {
             _documentRepository = documentRepository;
         }

@@ -30,7 +30,7 @@ public class AddAsyncTests : IClassFixture<WebApplicationFactory<Program>>
 
         var content = await response.Content.ReadFromJsonAsync<AddToDo.Response>();
 
-        content?.Data.Should().NotBeEmpty();
+        content?.Data.ToString().Should().NotBeEmpty();
     }
     
     [Fact]
