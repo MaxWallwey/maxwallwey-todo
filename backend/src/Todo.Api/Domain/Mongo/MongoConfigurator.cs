@@ -3,9 +3,9 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;
-using Todo.Api.Infrastructure;
+using Todo.Api.Domain.Infrastructure;
 
-namespace Todo.Api.Mongo;
+namespace Todo.Api.Domain.Mongo;
 
 public static class MongoConfigurator
 {

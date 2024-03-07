@@ -1,6 +1,6 @@
 using MongoDB.Bson;
 
-namespace Todo.Api.Infrastructure;
+namespace Todo.Api.Domain.Infrastructure;
 
 public interface IDocument
 {

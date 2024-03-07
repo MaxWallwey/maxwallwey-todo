@@ -1,4 +1,4 @@
-namespace Todo.Api.Mongo;
+namespace Todo.Api.Domain.Mongo;
 
 public interface IDatabaseClient
 {

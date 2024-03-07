@@ -2,7 +2,6 @@ using MediatR;
 using MongoDB.Bson;
 using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Todo;
-using Todo.Api.Infrastructure;
 
 namespace Todo.Api.Slices.Todo;
 

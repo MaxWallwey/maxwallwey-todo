@@ -3,9 +3,8 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Todo;
-using Todo.Api.Infrastructure;
 
-namespace Todo.Api.Mongo;
+namespace Todo.Api.Domain.Mongo;
 
 public class MongoDbRepository<TDocument> : IDocumentRepository<TDocument>
     where TDocument : IDocument
