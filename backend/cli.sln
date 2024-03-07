@@ -14,7 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDo.Api.Sdk", "src\ToDo.Api.Sdk\ToDo.Api.Sdk.csproj", "{8B5F03C4-84DC-4A4C-9B69-C6AF300F8933}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Api.Seeder", "src\Todo.Api.Seeder\Todo.Api.Seeder.csproj", "{99995382-8AC2-45C0-AC86-0747AC09EA50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,11 +41,16 @@ Global
 		{8B5F03C4-84DC-4A4C-9B69-C6AF300F8933}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B5F03C4-84DC-4A4C-9B69-C6AF300F8933}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B5F03C4-84DC-4A4C-9B69-C6AF300F8933}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99995382-8AC2-45C0-AC86-0747AC09EA50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99995382-8AC2-45C0-AC86-0747AC09EA50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99995382-8AC2-45C0-AC86-0747AC09EA50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99995382-8AC2-45C0-AC86-0747AC09EA50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DF113CB6-80CD-4F54-AE6D-B0610AAABE3B} = {404A62F3-D4A3-473A-8B31-AB7309D837A5}
 		{D8EB7E55-4DC3-4A4C-80EB-3CA47C988DCA} = {404A62F3-D4A3-473A-8B31-AB7309D837A5}
 		{9CC48E0D-284D-497C-818D-15B815FB1FFC} = {C70E57E7-EFAF-44FD-8A14-F3595DC16B12}
 		{8B5F03C4-84DC-4A4C-9B69-C6AF300F8933} = {404A62F3-D4A3-473A-8B31-AB7309D837A5}
+		{99995382-8AC2-45C0-AC86-0747AC09EA50} = {404A62F3-D4A3-473A-8B31-AB7309D837A5}
 	EndGlobalSection
 EndGlobal

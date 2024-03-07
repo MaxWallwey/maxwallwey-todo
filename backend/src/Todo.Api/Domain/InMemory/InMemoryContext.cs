@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Todo.Api.Domain.Todo;
 
-namespace Todo.Api.InMemory;
+namespace Todo.Api.Domain.InMemory;
 
 public class InMemoryContext : DbContext
 {

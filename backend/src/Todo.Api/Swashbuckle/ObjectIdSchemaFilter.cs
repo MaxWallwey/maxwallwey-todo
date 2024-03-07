@@ -2,7 +2,7 @@ using Microsoft.OpenApi.Models;
 using MongoDB.Bson;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Todo.Api;
+namespace Todo.Api.Swashbuckle;
 
 public class ObjectIdSchemaFilter : ISchemaFilter
 {

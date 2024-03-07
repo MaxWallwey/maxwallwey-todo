@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Todo;
-using Todo.Api.InMemory;
 
 namespace Todo.Api.Domain.InMemory;
 

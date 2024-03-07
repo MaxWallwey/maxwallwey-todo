@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 
-namespace Todo.Api.Mongo;
+namespace Todo.Api.Domain.Mongo;
 
 public class MongoDatabaseClient : IDatabaseClient
 {

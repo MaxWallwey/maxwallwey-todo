@@ -6,13 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Todo.Api;
 using Todo.Api.Domain.Infrastructure;
+using Todo.Api.Domain.Mongo;
 using Todo.Api.Domain.Todo;
-using Todo.Api.Infrastructure;
 using Todo.Api.Validation;
-using Todo.Api.InMemory;
 using Todo.Api.ModelBinding;
-using Todo.Api.Mongo;
 using ToDo.Api.Sdk;
+using Todo.Api.Swashbuckle;
 
 // Add services to the container.
 var builder = WebApplication.CreateBuilder(args);
@@ -54,7 +53,8 @@ builder.Services.AddControllers(options =>
 //builder.Services.AddTransient<IDocumentRepository, InMemoryRepository>();
 
 // Uncomment this for Mongo DB
-//builder.Services.AddTransient<IDatabaseClient, MongoDatabaseClient>();
+builder.Services.AddMongo();
+builder.Services.AddTransient<IDatabaseClient, MongoDatabaseClient>();
 builder.Services.AddTransient<IDocumentRepository<ToDoDocument>, MongoDbRepository<ToDoDocument>>();
 
 builder.Host.UseSerilog();

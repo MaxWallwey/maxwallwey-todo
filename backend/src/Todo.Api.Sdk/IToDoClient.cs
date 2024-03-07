@@ -6,10 +6,10 @@ namespace Todo.Api.Sdk;
 public interface IToDoClient
 {
     [Get("/todo.findMany")]
-    Task<ResponseData<List<ToDo>>> FindMany(bool isComplete);
+    Task<ResponseData<List<ToDoDocument>>> FindMany(bool isComplete);
     
     [Get("/todo.findOne")]
-    Task<ToDo> FindOne(Guid id);
+    Task<ToDoDocument> FindOne(Guid id);
 
     [Post("/todo.complete")]
     Task CompleteToDo(Guid id);

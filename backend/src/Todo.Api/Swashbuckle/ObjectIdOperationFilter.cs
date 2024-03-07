@@ -4,7 +4,7 @@ using System.Xml.XPath;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Todo.Api;
+namespace Todo.Api.Swashbuckle;
 
 public class ObjectIdOperationFilter : IOperationFilter
 {
