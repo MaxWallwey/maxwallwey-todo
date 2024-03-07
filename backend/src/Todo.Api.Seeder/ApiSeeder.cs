@@ -1,4 +1,3 @@
-using Bogus;
 using Bogus.DataSets;
 using MongoDB.Driver;
 using Todo.Api.Sdk;
@@ -29,11 +28,8 @@ public class ApiSeeder
     private static async Task SeedDatabaseAsync()
     {
         var mongoConnectionString = "mongodb://localhost:27017";
-
         var client = new MongoClient(mongoConnectionString);
-
         var database = client.GetDatabase("todo-api");
-        
         Collection = database.GetCollection<ToDoDocument>("todo");
 
         var lorem = new Lorem();
@@ -45,6 +41,6 @@ public class ApiSeeder
             await Collection.InsertOneAsync(todo);
         }
 
-        Console.WriteLine("Database seeded.");
+        Console.WriteLine($"Database '{database.DatabaseNamespace}' seeded.");
     }
 }
