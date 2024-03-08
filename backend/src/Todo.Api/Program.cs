@@ -2,12 +2,12 @@ using System.Reflection;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Todo.Api;
 using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Mongo;
 using Todo.Api.Domain.Todo;
+using Todo.Api.HealthChecks;
 using Todo.Api.Validation;
 using Todo.Api.ModelBinding;
 using ToDo.Api.Sdk;
@@ -31,6 +31,15 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 builder.Services.AddTransient<ValidationException>();
 
 builder.Services.AddControllers();
+
+// Mongo Health Checks
+var mongoOptions = builder.Configuration.GetSection(MongoOptions.Key).Get<MongoOptions>();
+
+if (mongoOptions.ConnectionString != null)
+{
+    builder.Services.AddHealthChecks()
+        .AddCheck<MongoDbHealthCheck>("Mongo");
+}
 
 builder.Services.AddControllers(options =>
 {
@@ -95,13 +104,17 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/error");
 }
 
+app.UseRouting();
+
 app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapHealthChecks("/health");
+
 try
 {
-    MongoConfigurator.Configure("pascal case");
+    //MongoConfigurator.Configure("pascal case");
     app.Run();
 }
 catch (Exception e)
