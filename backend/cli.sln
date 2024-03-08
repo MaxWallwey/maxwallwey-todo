@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Api.Seeder", "src\Todo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Api.Sdk", "src\Todo.Api.Sdk\Todo.Api.Sdk.csproj", "{D180CA8F-B973-4EF4-AA56-D6BD2026F65D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Api.Seeder", "src\Todo.Api.Seeder\Todo.Api.Seeder.csproj", "{99995382-8AC2-45C0-AC86-0747AC09EA50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
