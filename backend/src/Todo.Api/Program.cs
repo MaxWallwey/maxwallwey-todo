@@ -10,7 +10,6 @@ using Todo.Api.Domain.Todo;
 using Todo.Api.HealthChecks;
 using Todo.Api.Validation;
 using Todo.Api.ModelBinding;
-using ToDo.Api.Sdk;
 using Todo.Api.Swashbuckle;
 
 // Add services to the container.
@@ -35,7 +34,7 @@ builder.Services.AddControllers();
 // Mongo Health Checks
 var mongoOptions = builder.Configuration.GetSection(MongoOptions.Key).Get<MongoOptions>();
 
-if (mongoOptions.ConnectionString != null)
+if (mongoOptions?.ConnectionString != null)
 {
     builder.Services.AddHealthChecks()
         .AddCheck<MongoDbHealthCheck>("Mongo");
