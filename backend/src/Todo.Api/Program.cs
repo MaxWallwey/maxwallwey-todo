@@ -12,6 +12,7 @@ using Todo.Api.Validation;
 using Todo.Api.ModelBinding;
 using Todo.Api.Swashbuckle;
 
+
 // Add services to the container.
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,8 @@ if (mongoOptions?.ConnectionString != null)
     builder.Services.AddHealthChecks()
         .AddCheck<MongoDbHealthCheck>("Mongo");
 }
+
+builder.Services.AddHealthChecks();
 
 builder.Services.AddControllers(options =>
 {

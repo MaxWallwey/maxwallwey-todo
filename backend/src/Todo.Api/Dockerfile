@@ -17,12 +17,11 @@ COPY ["src/Todo.Api/Todo.Api.csproj", "src/Todo.Api/"]
 RUN dotnet restore "src/Todo.Api/Todo.Api.csproj"
 
 COPY . .
-WORKDIR "/src/Todo.Api"
-RUN dotnet build "Todo.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "src/Todo.Api/Todo.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "Todo.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "src/Todo.Api/Todo.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
