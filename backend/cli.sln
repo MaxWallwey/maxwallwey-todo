@@ -13,6 +13,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C365BE7F-CB10-47E8-917A-D9C1D9147D20}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
+		Taskfile.yaml = Taskfile.yaml
+		Taskfile-docker.yaml = Taskfile-docker.yaml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Api.Seeder", "src\Todo.Api.Seeder\Todo.Api.Seeder.csproj", "{99995382-8AC2-45C0-AC86-0747AC09EA50}"

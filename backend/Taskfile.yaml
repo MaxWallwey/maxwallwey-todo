@@ -1,0 +1,62 @@
+version: '3'
+
+includes:
+  docker: ./Taskfile-docker.yaml
+  local:
+    taskfile: ./Taskfile-docker.yaml
+    optional: true
+  
+silent: true
+
+tasks:
+  ci:
+    desc: Restore NuGet packages, compile the code, and run all the tests
+    cmds:
+      - dotnet restore --verbosity quiet
+      - dotnet build --configuration Release --nologo --no-restore --verbosity quiet
+      - task: test
+
+  clean:
+    desc: Remove all unused containers, networks, images (both dangling and unreferenced), and optionally, volumes
+    cmds:
+      - task: docker:compose-down
+      - task: docker:system-prune
+
+  start:backend:
+    desc: Start all backend containers
+    cmds:
+      - task: docker:compose-down
+      - task: docker:compose-up
+        vars:
+          {
+            PROFILE: backend
+          }
+
+  start:services:
+    desc: Start and restart all the services defined in docker-compose.yml
+    cmds:
+      - task: docker:compose-down
+      - task: docker:compose-up
+        vars:
+          {
+            PROFILE: services
+          }
+
+  start:all:
+    desc: Start and restart all frontend portals and backend containers
+    cmds:
+      - task: docker:compose-down
+      - task: docker:compose-up
+        vars:
+          {
+            PROFILE: all
+          }
+  stop:
+    desc: Stop running containers, and also remove the stopped containers as well as any networks that were created
+    cmds:
+      - task: docker:compose-down
+
+  seed:
+    desc: Seed the database
+    cmds:
+      - dotnet run --project src/Todo.Api.Seeder/Todo.Api.Seeder.csproj --verbosity quiet
