@@ -6,6 +6,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 
+WORKDIR /backend
 COPY zscalar.crt .
 ADD zscalar.crt /usr/local/share/ca-certificates/zscalar.crt
 ADD zscalar.crt /etc/ssl/certs/zscalar.crt
