@@ -1,0 +1,12 @@
+version: '3'
+
+tasks:
+  compose-down:
+    cmds:
+      - docker-compose --project-name down
+  compose-up:
+    cmds:
+      - docker-compose --profile {{.PROFILE}} --project-name up build
+  system-prune:
+    cmds:
+      - docker system prune --all --force --volumes

@@ -5,12 +5,18 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
+
+COPY zscalar.crt .
+ADD zscalar.crt /usr/local/share/ca-certificates/zscalar.crt
+ADD zscalar.crt /etc/ssl/certs/zscalar.crt
+RUN chmod 644 /usr/local/share/ca-certificates/zscalar.crt && update-ca-certificates
+
 WORKDIR /src
 COPY ["src/Todo.Api/Todo.Api.csproj", "src/Todo.Api/"]
-COPY ["src/Todo.Api.Sdk/Todo.Api.Sdk.csproj", "src/Todo.Api.Sdk/"]
 RUN dotnet restore "src/Todo.Api/Todo.Api.csproj"
+
 COPY . .
-WORKDIR "/src/src/Todo.Api"
+WORKDIR "/src/Todo.Api"
 RUN dotnet build "Todo.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
