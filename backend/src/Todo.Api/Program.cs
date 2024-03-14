@@ -1,9 +1,15 @@
 using System.Reflection;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Serilog;
 using Todo.Api;
+using Todo.Api.Authentication;
+using Todo.Api.Authorization;
 using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Mongo;
 using Todo.Api.Domain.Todo;
@@ -32,6 +38,29 @@ builder.Services.AddTransient<ValidationException>();
 
 builder.Services.AddControllers();
 
+// Authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://localhost:9000";
+        options.Audience = "";
+
+        options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+        options.TokenValidationParameters.ValidateAudience = false;
+    });  
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddTransient<IUserProfileAccessor, HttpContextUserProfileAccessor>();
+
+// Authorization
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
+        
 // Mongo Health Checks
 var mongoOptions = builder.Configuration.GetSection(MongoOptions.Key).Get<MongoOptions>();
 
@@ -75,6 +104,8 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new() { Title = "TodoApi", Version = "v1" });
     c.OperationFilter<ObjectIdOperationFilter>();
     c.SchemaFilter<ObjectIdSchemaFilter>();
+    
+    c.OperationFilter<OAuth2OperationFilter>();
 });
 
 var configuration = new ConfigurationBuilder()
@@ -92,8 +123,16 @@ if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c => 
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApi v1"));
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoAPI");
+        c.OAuthClientId("todo-api-swagger");
+        c.OAuthClientSecret("secret");
+        c.OAuthAppName("Todo API Swagger");
+        c.OAuthUsePkce();
+
+        app.UseCors("cors.development");
+    });
 }
 
 app.UseSerilogRequestLogging(opts
@@ -108,6 +147,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -116,7 +156,6 @@ app.MapHealthChecks("/health");
 
 try
 {
-    //MongoConfigurator.Configure("pascal case");
     app.Run();
 }
 catch (Exception e)

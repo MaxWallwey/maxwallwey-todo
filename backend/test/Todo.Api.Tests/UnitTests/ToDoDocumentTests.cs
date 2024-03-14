@@ -9,7 +9,7 @@ public class ToDoDocumentTests
     [Fact]
     public void ToDoTest()
     {
-        var item = new ToDoDocument("mock");
+        var item = new ToDoDocument("mockID", "mockName");
 
         item.Name.Should().Be("mock");
 
@@ -23,7 +23,7 @@ public class ToDoDocumentTests
     [Fact]
     public void Complete_CompletesSpecifiedToDo()
     {
-        var item = new ToDoDocument("mock");
+        var item = new ToDoDocument("mockID", "mockName");
         
         item.Complete();
         

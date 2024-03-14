@@ -22,8 +22,4 @@ public class ErrorController : BaseController
             detail: exceptionHandlerFeature.Error.StackTrace,
             title: exceptionHandlerFeature.Error.Message);
     }
-
-    public ErrorController(IMediator mediator) : base(mediator)
-    {
-    }
 }

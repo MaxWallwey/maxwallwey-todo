@@ -9,12 +9,8 @@ public class FindManyController : BaseController
 {
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ToDoDocument>))]
     [HttpGet("todo.findMany")]
-    public async Task<FindManyToDo.Response> FindMany([FromQuery]bool? isComplete)
+    public async Task<FindManyToDo.Response> FindMany([FromQuery]bool? isComplete, [FromServices] IMediator mediator)
     {
-        return await Mediator.Send(new FindManyToDo.FindManyToDoRequest(isComplete));
-    }
-    
-    public FindManyController(IMediator mediator) : base(mediator)
-    {
+        return await mediator.Send(new FindManyToDo.FindManyToDoRequest(isComplete));
     }
 }

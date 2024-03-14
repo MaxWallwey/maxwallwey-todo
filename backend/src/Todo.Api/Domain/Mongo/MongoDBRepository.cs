@@ -51,10 +51,8 @@ public class MongoDbRepository<TDocument> : IDocumentRepository<TDocument>
         await Collection.ReplaceOneAsync(filter, document);
     }
 
-    public async Task<ObjectId> AddToDoAsync(string name)
+    public async Task<ObjectId> AddToDoAsync(ToDoDocument todo)
     {
-        var todo = new ToDoDocument(name);
-        
         await Collection.InsertOneAsync(todo);
 
         return todo.Id;
