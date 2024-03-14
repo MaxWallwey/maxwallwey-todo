@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Todo.Identity": {
+      "commandName": "Project",
+      "dotnetRunMessage": true,
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:9002; http://localhost:9003"
+    }
+  }
+}
