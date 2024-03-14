@@ -5,15 +5,16 @@ namespace Todo.Api.Domain.Todo;
 
 public class ToDoDocument : DocumentBase
 {
-    public ToDoDocument(string name)
+    public ToDoDocument(string userId, string name)
     {
         Name = name;
         IsComplete = false;
+        UserId = userId;
     }
     
-    [MaxLength(100)]
     public string Name { get; set; }
     public bool IsComplete { get; private set; }
+    public string UserId { get; private set; }
 
     public void Complete()
     {

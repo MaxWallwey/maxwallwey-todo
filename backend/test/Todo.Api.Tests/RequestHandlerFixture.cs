@@ -55,7 +55,7 @@ public abstract class RequestHandlerFixture : IAsyncLifetime
     {
     }
 
-    public async Task AddToDoAsync<TDocument>(string document)
+    public async Task AddToDoAsync<TDocument>(ToDoDocument document)
         where TDocument : IDocument
     {
         using var serviceScopeFactory = _webApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>()

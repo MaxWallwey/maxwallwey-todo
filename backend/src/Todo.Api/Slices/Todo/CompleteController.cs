@@ -9,12 +9,8 @@ public class CompleteController : BaseController
     // Complete todo
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpPost("todo.complete")]
-    public async Task CompleteToDo([FromQuery]CompleteToDo.CompleteToDoRequest request)
+    public async Task CompleteToDo([FromQuery]CompleteToDo.CompleteToDoRequest request, [FromServices] IMediator mediator)
     {
-        await Mediator.Send(request);
-    }
-
-    public CompleteController(IMediator mediator) : base(mediator)
-    {
+        await mediator.Send(request);
     }
 }

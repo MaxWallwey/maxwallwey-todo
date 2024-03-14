@@ -14,7 +14,7 @@ public interface IDocumentRepository<TDocument>
 
     public Task UpdateToDoAsync(ToDoDocument document);
 
-    public Task<ObjectId> AddToDoAsync(string name);
+    public Task<ObjectId> AddToDoAsync(ToDoDocument todo);
 
     public Task RemoveToDoAsync(ObjectId id);
 }

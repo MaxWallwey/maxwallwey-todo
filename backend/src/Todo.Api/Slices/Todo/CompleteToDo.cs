@@ -1,6 +1,7 @@
 using FluentValidation;
 using MediatR;
 using MongoDB.Bson;
+using Todo.Api.Authentication;
 using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Todo;
 
@@ -32,19 +33,28 @@ public abstract class CompleteToDo
     public class CompleteToDoHandler : IRequestHandler<CompleteToDoRequest, Response>
     {
         private readonly IDocumentRepository<ToDoDocument> _documentRepository;
+        private readonly IUserProfileAccessor _userProfileAccessor;
 
-        public CompleteToDoHandler(IDocumentRepository<ToDoDocument> documentRepository)
+        public CompleteToDoHandler(IDocumentRepository<ToDoDocument> documentRepository, IUserProfileAccessor userProfileAccessor)
         {
             _documentRepository = documentRepository;
+            _userProfileAccessor = userProfileAccessor;
         }
     
         public async Task<Response> Handle(CompleteToDoRequest request, CancellationToken cancellationToken)
         {
-            var document = await _documentRepository.FindOneToDoAsync(request.Id);
+            var todo = await _documentRepository.FindOneToDoAsync(request.Id);
             
-            document!.Complete();
+            var userId = _userProfileAccessor.Subject;
+
+            if (todo!.UserId != userId)
+            {
+                throw new UnauthorizedAccessException("You do not have access to this todo");
+            }
             
-            await _documentRepository.UpdateToDoAsync(document);
+            todo!.Complete();
+            
+            await _documentRepository.UpdateToDoAsync(todo);
             
             return new Response();
         }

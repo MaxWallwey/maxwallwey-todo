@@ -11,12 +11,8 @@ public class FindOneController : BaseController
     // List ToDo based on ID
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ToDoDocument))]
     [HttpGet("todo.findOne")]
-    public async Task<FindOneToDo.Response> FindOne([FromQuery]ObjectId id)
+    public async Task<FindOneToDo.Response> FindOne([FromQuery]ObjectId id, [FromServices] IMediator mediator)
     { 
-        return await Mediator.Send(new FindOneToDo.FindOneToDoRequest(id));
-    }
-    
-    public FindOneController(IMediator mediator) : base(mediator)
-    {
+        return await mediator.Send(new FindOneToDo.FindOneToDoRequest(id));
     }
 }

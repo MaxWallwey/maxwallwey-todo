@@ -54,9 +54,8 @@ public class InMemoryRepository : IDocumentRepository<ToDoDocument>
         await _context.SaveChangesAsync();
     }
 
-    public async Task<ObjectId> AddToDoAsync(string name)
+    public async Task<ObjectId> AddToDoAsync(ToDoDocument todo)
     {
-        var todo = new ToDoDocument(name);
 
         _context.Todos!.Add(todo);
 

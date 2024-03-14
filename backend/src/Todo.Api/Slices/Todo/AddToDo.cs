@@ -1,6 +1,7 @@
 using FluentValidation;
 using MediatR;
 using MongoDB.Bson;
+using Todo.Api.Authentication;
 using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Todo;
 
@@ -28,15 +29,25 @@ public abstract class AddToDo
     public class AddToDoHandler : IRequestHandler<AddToDoRequest, Response>
     {
         private readonly IDocumentRepository<ToDoDocument> _toDoRepository;
+        private readonly IUserProfileAccessor _userProfileAccessor;
 
-        public AddToDoHandler(IDocumentRepository<ToDoDocument> toDoRepository)
+        public AddToDoHandler(IDocumentRepository<ToDoDocument> toDoRepository, IUserProfileAccessor userProfileAccessor)
         {
             _toDoRepository = toDoRepository;
+            _userProfileAccessor = userProfileAccessor;
         }
         public async Task<Response> Handle(AddToDoRequest request, CancellationToken cancellationToken)
         {
-            var newTodo = await _toDoRepository.AddToDoAsync(request.Name);
-            return new Response(newTodo);
+            var userId = _userProfileAccessor.Subject;
+
+            if (userId == null)
+            {
+                throw new UnauthorizedAccessException("Must be logged in to add a todo");
+            }
+            
+            var todo = new ToDoDocument(_userProfileAccessor.Subject!, request.Name);
+            await _toDoRepository.AddToDoAsync(todo);
+            return new Response(todo.Id);
         }
     }   
 }
