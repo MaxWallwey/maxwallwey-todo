@@ -27,7 +27,9 @@ public abstract class ControllerFixture : IAsyncLifetime
     private readonly HttpClient _httpClient;
     private JsonSerializerOptions _jsonSerializerOptions;
     private readonly WebApplicationFactory<Program> _webApplicationFactory;
-    
+
+    protected Faker Faker { get; }
+    protected Lorem Lorem { get; }
     public Mock<IMediator> MediatorMock;
 
     public ControllerFixture()
@@ -42,7 +44,7 @@ public abstract class ControllerFixture : IAsyncLifetime
                     {
                         var configuration = new Dictionary<string, string>
                         {
-                            { "Seq:ServerUrl", "http://localhost:8080/" }
+                            { "Seq:ServerUrl", "http://localhost:5341/" }
                         };
                         configurationBuilder.AddInMemoryCollection(configuration);
                     })
@@ -62,8 +64,8 @@ public abstract class ControllerFixture : IAsyncLifetime
 
         _httpClient = _webApplicationFactory.CreateClient();
 
-        Faker faker = new Faker();
-        Lorem lorem = new Lorem();
+        Faker = new Faker();
+        Lorem = new Lorem();
         MediatorMock = mediatorMock;
 
         _jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
@@ -103,7 +105,7 @@ public abstract class ControllerFixture : IAsyncLifetime
     {
         if (!string.IsNullOrWhiteSpace(userId))
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("FakeBearer", $"FakeToken-{ObjectId.GenerateNewId()}");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("FakeBearer", $"FakeToken-{Guid.NewGuid()}");
             _httpClient.DefaultRequestHeaders.Add("X-UserId", userId);
         }
 
@@ -114,7 +116,7 @@ public abstract class ControllerFixture : IAsyncLifetime
     {
         if (!string.IsNullOrWhiteSpace(userId))
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("FakeBearer", $"FakeToken-{ObjectId.GenerateNewId()}");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("FakeBearer", $"FakeToken-{Guid.NewGuid()}");
             _httpClient.DefaultRequestHeaders.Add("X-UserId", userId);
         }
 

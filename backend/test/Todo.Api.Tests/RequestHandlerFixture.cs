@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
 using Moq;
+using Todo.Api.Authentication;
 using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Mongo;
 using Todo.Api.Domain.Todo;
@@ -18,14 +19,14 @@ namespace Todo.Api.Tests;
 public abstract class RequestHandlerFixture : IAsyncLifetime
 {
     private readonly WebApplicationFactory<Program> _webApplicationFactory;
-    //private readonly Mock<IUserProfileAccessor> _userProfileAccessorMock;
+    private readonly Mock<IUserProfileAccessor> _userProfileAccessorMock;
 
     protected Faker Faker { get; }
     protected Lorem Lorem { get; }
 
     public RequestHandlerFixture()
     {
-        // _userProfileAccessorMock = new Mock<IUserProfileAccessor>();
+        _userProfileAccessorMock = new Mock<IUserProfileAccessor>();
         _webApplicationFactory = new WebApplicationFactory<Program>()
             .WithWebHostBuilder(builder =>
             {
@@ -35,15 +36,15 @@ public abstract class RequestHandlerFixture : IAsyncLifetime
                         var configuration = new Dictionary<string, string>
                         {
                             { "Mongo:UseMongo", "true" },
-                            { "Mongo:ConnectionString", $"mongodb://localhost:27017/todo-test-{ObjectId.GenerateNewId()}?serverSelectionTimeoutMS=2000" },
+                            { "Mongo:ConnectionString", $"mongodb://localhost:27017/todo-test" },
                             { "Seq:ServerUrl", "http://localhost:5341/" }
                         };
                         configurationBuilder.AddInMemoryCollection(configuration);
                     })
-                    // .ConfigureTestServices(services =>
-                    // {
-                    //     services.AddTransient(_ => _userProfileAccessorMock.Object);
-                    // })
+                    .ConfigureTestServices(services =>
+                    {
+                        services.AddTransient(_ => _userProfileAccessorMock.Object);
+                    })
                     .UseEnvironment("Test");
             });
 
@@ -55,7 +56,7 @@ public abstract class RequestHandlerFixture : IAsyncLifetime
     {
     }
 
-    public async Task AddToDoAsync<TDocument>(ToDoDocument document)
+    public async Task CreateOneAsync<TDocument>(ToDoDocument document)
         where TDocument : IDocument
     {
         using var serviceScopeFactory = _webApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>()
@@ -65,22 +66,6 @@ public abstract class RequestHandlerFixture : IAsyncLifetime
 
         await repository.AddToDoAsync(document);
     }
-
-    // public async Task<int> CountAsync<TDocument>()
-    //     where TDocument : IDocument
-    //     => await CountAsync<TDocument>(d => true);
-
-    // public async Task<int> CountAsync<TDocument>(Expression<Func<TDocument, bool>> filter)
-    //     where TDocument : IDocument
-    // {
-    //     using var serviceScopeFactory = _webApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>()
-    //         .CreateScope();
-    //
-    //     var repository = serviceScopeFactory.ServiceProvider.GetRequiredService<IDocumentRepository<TDocument>>();
-    //
-    //     return await repository.CountAsync(filter, CancellationToken.None);
-    // }
-
     async Task IAsyncLifetime.DisposeAsync()
     {
         await DropDatabaseAsync();
@@ -102,7 +87,7 @@ public abstract class RequestHandlerFixture : IAsyncLifetime
         await databaseClient.DropDatabaseAsync(CancellationToken.None);
     }
 
-    public async Task<ToDoDocument?> FindOneToDoAsync<TDocument>(ObjectId id)
+    public async Task<ToDoDocument?> FindOneAsync<TDocument>(ObjectId id)
         where TDocument : IDocument
     {
         using var serviceScopeFactory = _webApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>()
@@ -112,10 +97,6 @@ public abstract class RequestHandlerFixture : IAsyncLifetime
 
         return await repository.FindOneToDoAsync(id);
     }
-
-    public async Task<List<ToDoDocument>?> FindManyAsync<TDocument>()
-        where TDocument : IDocument
-        => await FindManyAsync<TDocument>(true);
 
     public async Task<List<ToDoDocument>?> FindManyAsync<TDocument>(bool filter)
         where TDocument : IDocument
@@ -138,8 +119,8 @@ public abstract class RequestHandlerFixture : IAsyncLifetime
         using var serviceScopeFactory = _webApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>()
             .CreateScope();
 
-        //_userProfileAccessorMock.SetupGet(userProfileAccessor => userProfileAccessor.Subject)
-        //    .Returns(userId);
+        _userProfileAccessorMock.SetupGet(userProfileAccessor => userProfileAccessor.Subject)
+            .Returns(userId);
 
         var mediator = serviceScopeFactory.ServiceProvider.GetRequiredService<IMediator>();
 
