@@ -36,7 +36,7 @@ public class ApiSeeder
 
         for (int i = 0; i < 5; i++)
         {
-            var todo = new ToDoDocument(lorem.Sentences(1));
+            var todo = new ToDoDocument("1",lorem.Sentences(1));
         
             await Collection.InsertOneAsync(todo);
         }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Todo.Api;
 using Todo.Api.Authentication;
@@ -17,7 +18,8 @@ using Todo.Api.HealthChecks;
 using Todo.Api.Validation;
 using Todo.Api.ModelBinding;
 using Todo.Api.Swashbuckle;
-
+using Todo.Api.Options;
+using IdentityOptions = Todo.Api.Options.IdentityOptions;
 
 // Add services to the container.
 var builder = WebApplication.CreateBuilder(args);
@@ -39,14 +41,18 @@ builder.Services.AddTransient<ValidationException>();
 builder.Services.AddControllers();
 
 // Authentication
+var identityOptions = builder.Configuration.GetSection(IdentityOptions.Key).Get<IdentityOptions>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = "https://localhost:9000";
-        options.Audience = "";
-
+        options.Authority = File.Exists("/.dockerenv")
+            ? identityOptions.BaseAddress
+            : identityOptions.BaseAddressSwagger;
+        options.RequireHttpsMetadata = !builder.Environment.IsDevelopment();
         options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
         options.TokenValidationParameters.ValidateAudience = false;
+        options.TokenValidationParameters.ValidIssuers = new[] { identityOptions.BaseAddressSwagger };
     });  
 
 builder.Services.AddHttpContextAccessor();
@@ -106,6 +112,25 @@ builder.Services.AddSwaggerGen(c =>
     c.SchemaFilter<ObjectIdSchemaFilter>();
     
     c.OperationFilter<OAuth2OperationFilter>();
+    
+    c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows
+        {
+            AuthorizationCode = new OpenApiOAuthFlow
+            {
+                AuthorizationUrl = new Uri($"{identityOptions.BaseAddressSwagger}/connect/authorize"),
+                TokenUrl = new Uri($"{identityOptions.BaseAddressSwagger}/connect/token"),
+                Scopes =
+                {
+                    {
+                        "todo-api", "Todo API"
+                    }
+                }
+            }
+        }
+    });
 });
 
 var configuration = new ConfigurationBuilder()
