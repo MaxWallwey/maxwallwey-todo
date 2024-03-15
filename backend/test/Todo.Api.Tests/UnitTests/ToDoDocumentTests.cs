@@ -11,7 +11,7 @@ public class ToDoDocumentTests
     {
         var item = new ToDoDocument("mockID", "mockName");
 
-        item.Name.Should().Be("mock");
+        item.Name.Should().Be("mockName");
 
         item.Id.Should().NotBe(ObjectId.Empty);
 
