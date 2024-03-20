@@ -66,6 +66,18 @@ builder.Services.AddAuthorization(options =>
         .RequireAuthenticatedUser()
         .Build();
 });
+
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "cors.development", policy =>
+    {
+        policy.WithOrigins("http://localhost:9004")
+            .AllowCredentials()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
         
 // Mongo Health Checks
 var mongoOptions = builder.Configuration.GetSection(MongoOptions.Key).Get<MongoOptions>();
@@ -159,6 +171,8 @@ if (builder.Environment.IsDevelopment())
         app.UseCors("cors.development");
     });
 }
+
+app.UseCors("cors.development");
 
 app.UseSerilogRequestLogging(opts
     => opts.EnrichDiagnosticContext = LogHelper.EnrichFromRequest);
