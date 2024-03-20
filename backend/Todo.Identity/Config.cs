@@ -68,6 +68,23 @@ public static class Config
                 {
                     "https://localhost:9000/swagger/oauth2-redirect.html"
                 }
+            },
+            
+            new Client
+            {
+            ClientId = "todo-portal",
+            ClientName = "Todo Portal",
+            ClientUri = "http://localhost:9004",
+            AllowedGrantTypes = GrantTypes.Code,
+            RequireClientSecret = false,
+            RedirectUris =
+            {
+            "http://localhost:9004/",
+            },
+            PostLogoutRedirectUris = new [] { "http://localhost:9004/" },
+            AllowedCorsOrigins = { "http://localhost:9004" },
+            AllowedScopes = { "openid", "profile", "todo-api" },
+            AllowAccessTokensViaBrowser = true
             }
         };
 }
