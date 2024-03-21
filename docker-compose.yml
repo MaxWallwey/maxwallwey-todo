@@ -10,7 +10,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: ./src/Todo.Api/Dockerfile
+      dockerfile: backend/src/Todo.Api/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTPS_PORT=9000
@@ -30,6 +30,21 @@ services:
     volumes:
       - ~/.aspnet/https:/https:ro
   
+  todo-portal:
+    command: "npm start"
+    build:
+      context: .
+      dockerfile: ./todo-portal/Dockerfile
+    volumes:
+      - "./frontend/todo-portal:/app"
+      - "/app/node_modules"
+    ports:
+      - "9004:9004"
+    profiles:
+      - all
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
   seq:
     container_name: seq
     image: datalust/seq:latest
@@ -43,7 +58,7 @@ services:
       - services
       - all
     volumes:
-      - /Users/maxwallwey/code/maxwallwey-todo/backend/logs:/data
+      - ./backend/logs:/data
   
   mongo:
     image: mongo
@@ -57,7 +72,7 @@ services:
   identity:
     build:
       context: .
-      dockerfile: Todo.Identity/Dockerfile
+      dockerfile: backend/Todo.Identity/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTPS_PORT=9002
@@ -67,8 +82,8 @@ services:
       - Mongo__ConnectionString=mongodb://mongo:27017/todo-api
       - Seq__ServerUrl=http://seq:5341
     ports:
-      - 9002:443
-      - 9003:80
+      - "9002:443"
+      - "9003:80"
     profiles:
       - backend
       - all
