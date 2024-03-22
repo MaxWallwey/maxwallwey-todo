@@ -25,7 +25,9 @@ export const Todo: React.FC<TodoProp> = ({
             {!isComplete && (
                 <TodoButton variant={Buttons.complete} onClick={completeTodo} />
             )}
-
+            
+            &nbsp;&nbsp;
+            
             <TodoButton variant={Buttons.remove} onClick={removeTodo} />
         </div>
     </>
