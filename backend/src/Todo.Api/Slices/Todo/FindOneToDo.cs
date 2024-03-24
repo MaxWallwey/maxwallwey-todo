@@ -7,20 +7,20 @@ namespace Todo.Api.Slices.Todo;
 
 public abstract class FindOneToDo
 {
-    public record FindOneToDoRequest(ObjectId Id) : IRequest<Response>;
+    public record Request(ObjectId Id) : IRequest<Response>;
     
     public record Response(ToDoDocument Data);
     
-    public class FindOneToDoHandler : IRequestHandler<FindOneToDoRequest, Response>
+    public class RequestHandler : IRequestHandler<Request, Response>
     {
         private readonly IDocumentRepository<ToDoDocument> _toDoRepository;
 
-        public FindOneToDoHandler(IDocumentRepository<ToDoDocument> toDoRepository)
+        public RequestHandler(IDocumentRepository<ToDoDocument> toDoRepository)
         {
             _toDoRepository = toDoRepository;
         }
     
-        public async Task<Response> Handle(FindOneToDoRequest request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
             var todo = await _toDoRepository.FindOneToDoAsync(request.Id);
 

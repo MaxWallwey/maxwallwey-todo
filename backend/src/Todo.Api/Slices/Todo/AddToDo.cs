@@ -7,15 +7,15 @@ using Todo.Api.Domain.Todo;
 
 namespace Todo.Api.Slices.Todo;
 
-public abstract class AddToDo
+public class AddToDo
 {
-    public record AddToDoRequest(string Name) : IRequest<Response>;
+    public record Request(string Name) : IRequest<Response>;
     
     public record Response(ObjectId Data);
     
-    public class CreateToDoValidator : AbstractValidator<AddToDoRequest>
+    public class RequestValidator : AbstractValidator<Request>
     {
-        public CreateToDoValidator(IDocumentRepository<ToDoDocument> toDoRepository)
+        public RequestValidator(IDocumentRepository<ToDoDocument> toDoRepository)
         {
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)
@@ -26,17 +26,17 @@ public abstract class AddToDo
         }
     }
 
-    public class AddToDoHandler : IRequestHandler<AddToDoRequest, Response>
+    public class RequestHandler : IRequestHandler<Request, Response>
     {
         private readonly IDocumentRepository<ToDoDocument> _toDoRepository;
         private readonly IUserProfileAccessor _userProfileAccessor;
 
-        public AddToDoHandler(IDocumentRepository<ToDoDocument> toDoRepository, IUserProfileAccessor userProfileAccessor)
+        public RequestHandler(IDocumentRepository<ToDoDocument> toDoRepository, IUserProfileAccessor userProfileAccessor)
         {
             _toDoRepository = toDoRepository;
             _userProfileAccessor = userProfileAccessor;
         }
-        public async Task<Response> Handle(AddToDoRequest request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
             var userId = _userProfileAccessor.Subject;
 

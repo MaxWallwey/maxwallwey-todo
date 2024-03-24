@@ -7,21 +7,21 @@ namespace Todo.Api.Slices.Todo;
 
 public abstract class FindManyToDo
 {
-    public record FindManyToDoRequest(bool? IsComplete) : IRequest<Response>;
+    public record Request(bool? IsComplete) : IRequest<Response>;
 
     public record Response(List<ToDoDocument> Data);
-    public class FindManyToDoHandler : IRequestHandler<FindManyToDoRequest, Response>
+    public class RequestHandler : IRequestHandler<Request, Response>
     {
         private readonly IDocumentRepository<ToDoDocument> _toDoRepository;
         private readonly IUserProfileAccessor _userProfileAccessor;
 
-        public FindManyToDoHandler(IDocumentRepository<ToDoDocument> toDoRepository, IUserProfileAccessor userProfileAccessor)
+        public RequestHandler(IDocumentRepository<ToDoDocument> toDoRepository, IUserProfileAccessor userProfileAccessor)
         {
             _toDoRepository = toDoRepository;
             _userProfileAccessor = userProfileAccessor;
         }
     
-        public async Task<Response> Handle(FindManyToDoRequest request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
             var userId = _userProfileAccessor.Subject;
 

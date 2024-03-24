@@ -9,13 +9,13 @@ namespace Todo.Api.Slices.Todo;
 
 public abstract class RemoveToDo
 {
-    public record RemoveToDoRequest(ObjectId Id) : IRequest<Response>;
+    public record Request(ObjectId Id) : IRequest<Response>;
 
     public record Response;
     
-    public class RemoveToDoValidator : AbstractValidator<RemoveToDoRequest>
+    public class RequestValidator : AbstractValidator<Request>
     {
-        public RemoveToDoValidator(IDocumentRepository<ToDoDocument> toDoRepository)
+        public RequestValidator(IDocumentRepository<ToDoDocument> toDoRepository)
         {
             RuleFor(x => x.Id)
                 .Cascade(CascadeMode.Stop)
@@ -30,18 +30,18 @@ public abstract class RemoveToDo
         }
     }
 
-    public class RemoveToDoHandler : IRequestHandler<RemoveToDoRequest, Response>
+    public class RequestHandler : IRequestHandler<Request, Response>
     {
         private readonly IDocumentRepository<ToDoDocument> _documentRepository;
         private readonly IUserProfileAccessor _userProfileAccessor;
 
-        public RemoveToDoHandler(IDocumentRepository<ToDoDocument> documentRepository, IUserProfileAccessor userProfileAccessor)
+        public RequestHandler(IDocumentRepository<ToDoDocument> documentRepository, IUserProfileAccessor userProfileAccessor)
         {
             _documentRepository = documentRepository;
             _userProfileAccessor = userProfileAccessor;
         }
     
-        public async Task<Response> Handle(RemoveToDoRequest request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
             var userId = _userProfileAccessor.Subject;
             

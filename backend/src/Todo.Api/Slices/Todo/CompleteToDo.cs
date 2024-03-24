@@ -7,15 +7,15 @@ using Todo.Api.Domain.Todo;
 
 namespace Todo.Api.Slices.Todo;
 
-public abstract class CompleteToDo
+public class CompleteToDo
 {
-    public record CompleteToDoRequest(ObjectId Id) : IRequest<Response>;
+    public record Request(ObjectId Id) : IRequest<Response>;
     
     public record Response;
     
-    public class CompleteToDoValidator : AbstractValidator<CompleteToDoRequest>
+    public class RequestValidator : AbstractValidator<Request>
     {
-        public CompleteToDoValidator(IDocumentRepository<ToDoDocument> toDoRepository)
+        public RequestValidator(IDocumentRepository<ToDoDocument> toDoRepository)
         {
             RuleFor(x => x.Id)
                 .Cascade(CascadeMode.Stop)
@@ -30,18 +30,18 @@ public abstract class CompleteToDo
         }
     }
 
-    public class CompleteToDoHandler : IRequestHandler<CompleteToDoRequest, Response>
+    public class RequestHandler : IRequestHandler<Request, Response>
     {
         private readonly IDocumentRepository<ToDoDocument> _documentRepository;
         private readonly IUserProfileAccessor _userProfileAccessor;
 
-        public CompleteToDoHandler(IDocumentRepository<ToDoDocument> documentRepository, IUserProfileAccessor userProfileAccessor)
+        public RequestHandler(IDocumentRepository<ToDoDocument> documentRepository, IUserProfileAccessor userProfileAccessor)
         {
             _documentRepository = documentRepository;
             _userProfileAccessor = userProfileAccessor;
         }
     
-        public async Task<Response> Handle(CompleteToDoRequest request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
             var todo = await _documentRepository.FindOneToDoAsync(request.Id);
             
