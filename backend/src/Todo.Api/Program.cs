@@ -3,14 +3,13 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Todo.Api;
 using Todo.Api.Authentication;
 using Todo.Api.Authorization;
+using Todo.Api.Domain;
 using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Mongo;
 using Todo.Api.Domain.Todo;
@@ -18,7 +17,6 @@ using Todo.Api.HealthChecks;
 using Todo.Api.Validation;
 using Todo.Api.ModelBinding;
 using Todo.Api.Swashbuckle;
-using Todo.Api.Options;
 using IdentityOptions = Todo.Api.Options.IdentityOptions;
 
 // Add services to the container.
@@ -36,6 +34,8 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RetryBehaviour<,>));
+
 builder.Services.AddTransient<ValidationException>();
 
 builder.Services.AddControllers();
@@ -47,8 +47,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.Authority = File.Exists("/.dockerenv")
-            ? identityOptions.BaseAddress
-            : identityOptions.BaseAddressSwagger;
+            ? identityOptions!.BaseAddress
+            : identityOptions!.BaseAddressSwagger;
         options.RequireHttpsMetadata = !builder.Environment.IsDevelopment();
         options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
         options.TokenValidationParameters.ValidateAudience = false;
@@ -132,7 +132,7 @@ builder.Services.AddSwaggerGen(c =>
         {
             AuthorizationCode = new OpenApiOAuthFlow
             {
-                AuthorizationUrl = new Uri($"{identityOptions.BaseAddressSwagger}/connect/authorize"),
+                AuthorizationUrl = new Uri($"{identityOptions!.BaseAddressSwagger}/connect/authorize"),
                 TokenUrl = new Uri($"{identityOptions.BaseAddressSwagger}/connect/token"),
                 Scopes =
                 {
