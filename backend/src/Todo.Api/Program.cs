@@ -16,6 +16,7 @@ using Todo.Api.Domain.Todo;
 using Todo.Api.HealthChecks;
 using Todo.Api.Validation;
 using Todo.Api.ModelBinding;
+using Todo.Api.MongoHelper;
 using Todo.Api.Swashbuckle;
 using IdentityOptions = Todo.Api.Options.IdentityOptions;
 
@@ -34,7 +35,6 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RetryBehaviour<,>));
 
 builder.Services.AddTransient<ValidationException>();
 
@@ -105,12 +105,6 @@ builder.Services.AddControllers(options =>
         options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter());
     });
 
-// Uncomment this for in-memory DB
-//builder.Services.AddDbContext<InMemoryContext>(opt =>
-//    opt.UseInMemoryDatabase("ToDoList"));
-//builder.Services.AddTransient<IDocumentRepository, InMemoryRepository>();
-
-// Uncomment this for Mongo DB
 builder.Services.AddMongo();
 builder.Services.AddTransient<IDatabaseClient, MongoDatabaseClient>();
 builder.Services.AddTransient<IDocumentRepository<ToDoDocument>, MongoDbRepository<ToDoDocument>>();

@@ -3,7 +3,8 @@ using MediatR;
 using MongoDB.Bson;
 using Todo.Api.Authentication;
 using Todo.Api.Domain.Infrastructure;
-using Todo.Api.Domain.Todo;
+using Todo.Api.Sdk;
+using ToDoDocument = Todo.Api.Domain.Todo.ToDoDocument;
 
 namespace Todo.Api.Slices.Todo;
 
@@ -35,7 +36,9 @@ public class CompleteToDo
         private readonly IDocumentRepository<ToDoDocument> _documentRepository;
         private readonly IUserProfileAccessor _userProfileAccessor;
 
-        public RequestHandler(IDocumentRepository<ToDoDocument> documentRepository, IUserProfileAccessor userProfileAccessor)
+        public RequestHandler(
+            IDocumentRepository<ToDoDocument> documentRepository, 
+            IUserProfileAccessor userProfileAccessor)
         {
             _documentRepository = documentRepository;
             _userProfileAccessor = userProfileAccessor;

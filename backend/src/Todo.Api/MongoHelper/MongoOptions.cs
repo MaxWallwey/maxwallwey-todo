@@ -1,4 +1,4 @@
-namespace Todo.Api;
+namespace Todo.Api.MongoHelper;
 
 public class MongoOptions
 {

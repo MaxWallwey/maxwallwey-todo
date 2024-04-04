@@ -11,8 +11,6 @@ public class ToDoDocument
         IsComplete = false;
         UserId = userId;
     }
-
-    [MaxLength(100)]
     public string Name { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public bool IsComplete { get; private set; }
