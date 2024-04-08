@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using MongoDB.Bson;
 using Moq;
+using Todo.Api.MongoHelper;
 using MediaTypeHeaderValue = System.Net.Http.Headers.MediaTypeHeaderValue;
 
 namespace Todo.Api.Tests;

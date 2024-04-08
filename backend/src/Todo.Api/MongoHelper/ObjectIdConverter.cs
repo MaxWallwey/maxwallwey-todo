@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
 
-namespace Todo.Api;
+namespace Todo.Api.MongoHelper;
 
 public class ObjectIdConverter : JsonConverter<ObjectId>
 {

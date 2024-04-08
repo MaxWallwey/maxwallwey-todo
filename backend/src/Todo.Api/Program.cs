@@ -3,22 +3,21 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Todo.Api;
 using Todo.Api.Authentication;
 using Todo.Api.Authorization;
+using Todo.Api.Domain;
 using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Mongo;
 using Todo.Api.Domain.Todo;
 using Todo.Api.HealthChecks;
 using Todo.Api.Validation;
 using Todo.Api.ModelBinding;
+using Todo.Api.MongoHelper;
 using Todo.Api.Swashbuckle;
-using Todo.Api.Options;
 using IdentityOptions = Todo.Api.Options.IdentityOptions;
 
 // Add services to the container.
@@ -36,6 +35,7 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
 builder.Services.AddTransient<ValidationException>();
 
 builder.Services.AddControllers();
@@ -105,12 +105,6 @@ builder.Services.AddControllers(options =>
         options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter());
     });
 
-// Uncomment this for in-memory DB
-//builder.Services.AddDbContext<InMemoryContext>(opt =>
-//    opt.UseInMemoryDatabase("ToDoList"));
-//builder.Services.AddTransient<IDocumentRepository, InMemoryRepository>();
-
-// Uncomment this for Mongo DB
 builder.Services.AddMongo();
 builder.Services.AddTransient<IDatabaseClient, MongoDatabaseClient>();
 builder.Services.AddTransient<IDocumentRepository<ToDoDocument>, MongoDbRepository<ToDoDocument>>();
@@ -132,8 +126,8 @@ builder.Services.AddSwaggerGen(c =>
         {
             AuthorizationCode = new OpenApiOAuthFlow
             {
-                AuthorizationUrl = new Uri($"{identityOptions?.BaseAddressSwagger}/connect/authorize"),
-                TokenUrl = new Uri($"{identityOptions?.BaseAddressSwagger}/connect/token"),
+                AuthorizationUrl = new Uri($"{identityOptions!.BaseAddressSwagger}/connect/authorize"),
+                TokenUrl = new Uri($"{identityOptions.BaseAddressSwagger}/connect/token"),
                 Scopes =
                 {
                     {

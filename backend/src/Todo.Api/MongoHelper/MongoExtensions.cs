@@ -4,7 +4,7 @@ using MongoDB.Driver;
 using Todo.Api.Domain.Infrastructure;
 using Todo.Api.Domain.Mongo;
 
-namespace Todo.Api;
+namespace Todo.Api.MongoHelper;
 
 public static class MongoExtensions
 {
