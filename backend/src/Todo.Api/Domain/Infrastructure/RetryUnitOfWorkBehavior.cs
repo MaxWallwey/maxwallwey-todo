@@ -12,33 +12,35 @@ public class RetryUnitOfWorkBehavior<TRequest, TResponse>
     public RetryUnitOfWorkBehavior(IUnitOfWork unitOfWork) 
         => _unitOfWork = unitOfWork;
     
-    public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var retryCount = 0;
-
-        while (true)
         {
-            try
+            var retryCount = 0;
+
+            while (true)
             {
-                return next();
-            }
-            catch (MongoConnectionException exception)
-            {
-                if (retryCount >= 5)
-                    throw;
+                try
+                {
+                    return next();
+                }
+                catch (MongoConnectionException exception)
+                {
+                    if (retryCount >= 5)
+                        throw;
 
-                _unitOfWork.Reset();
+                    _unitOfWork.Reset();
 
-                retryCount++;
-            }
-            catch (DBConcurrencyException exception)
-            {
-                if (retryCount >= 5)
-                    throw;
+                    retryCount++;
+                }
+                catch (DBConcurrencyException exception)
+                {
+                    if (retryCount >= 5)
+                        throw;
 
-                _unitOfWork.Reset();
+                    _unitOfWork.Reset();
 
-                retryCount++;
+                    retryCount++;
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-using MediatR;
+/*using MediatR;
 using MongoDB.Bson;
 using Todo.Api.Domain.Commands;
 using Todo.Api.Domain.Todo;
@@ -140,4 +140,4 @@ public class DocumentMessageDispatcher : IDocumentMessageDispatcher
             }
         }
     }
-}
+}*/
