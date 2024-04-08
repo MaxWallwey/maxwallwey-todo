@@ -3,7 +3,6 @@ using MediatR;
 using MongoDB.Bson;
 using Todo.Api.Authentication;
 using Todo.Api.Domain.Infrastructure;
-using Todo.Api.Sdk;
 using ToDoDocument = Todo.Api.Domain.Todo.ToDoDocument;
 
 namespace Todo.Api.Slices.Todo;

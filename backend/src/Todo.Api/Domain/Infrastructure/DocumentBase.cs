@@ -1,6 +1,5 @@
 using MongoDB.Bson;
 using Newtonsoft.Json;
-using Todo.Api.Sdk;
 
 namespace Todo.Api.Domain.Infrastructure;
 

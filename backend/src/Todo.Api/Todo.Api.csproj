@@ -47,10 +47,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ToDo.Api.Sdk\ToDo.Api.Sdk.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Content Include="..\..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
