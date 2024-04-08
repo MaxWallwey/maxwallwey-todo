@@ -17,6 +17,7 @@ module.exports = {
       'background': '#222222',
       'gray-light': '#e9edf2',
       white: '#fff',
+      'nice-white': '#f1f1f1',
     },
     fontFamily: {
       sans: ['Helvetica Neue', 'sans-serif'],

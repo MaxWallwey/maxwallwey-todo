@@ -47,12 +47,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.Authority = File.Exists("/.dockerenv")
-            ? identityOptions!.BaseAddress
-            : identityOptions!.BaseAddressSwagger;
+            ? identityOptions?.BaseAddress
+            : identityOptions?.BaseAddressSwagger;
         options.RequireHttpsMetadata = !builder.Environment.IsDevelopment();
         options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
         options.TokenValidationParameters.ValidateAudience = false;
-        options.TokenValidationParameters.ValidIssuers = new[] { identityOptions.BaseAddressSwagger };
+        options.TokenValidationParameters.ValidIssuers = new[] { identityOptions?.BaseAddressSwagger };
     });  
 
 builder.Services.AddHttpContextAccessor();
