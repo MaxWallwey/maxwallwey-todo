@@ -27,7 +27,9 @@ public class ToDoDocument : DocumentBase
 
     private void SendTodoCompletedEmail(ObjectId id)
     {
-        Send(new SendTodoCompletedEmail(id));
+        var mailSender = new MailSender();
+        
+        mailSender.SendEmail("max.wallwey@gmail.com", $"TODO - {Name}", $"Congratulations, your todo {Name} has been completed.");
     }
 
     public bool Handle(SendTodoCompletedEmail message) => Receive(message);
