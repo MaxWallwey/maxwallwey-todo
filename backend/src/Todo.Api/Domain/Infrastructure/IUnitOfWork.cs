@@ -7,6 +7,6 @@ public interface IUnitOfWork
     T? Find<T>(ObjectId id) where T : DocumentBase;
     void Register(DocumentBase document);
     void Register(IEnumerable<DocumentBase> aggregates);
-    Task Complete();
+    Task Complete(CancellationToken cancellationToken);
     void Reset();
 }

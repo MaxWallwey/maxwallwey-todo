@@ -6,8 +6,9 @@ namespace Todo.Api.Domain.Infrastructure;
 
 public abstract class DocumentBase : IDocument
 {
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    [JsonProperty(PropertyName = "id")]
     public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     private HashSet<IDocumentMessage> _outbox
         = new(DocumentMessageEqualityComparer.Instance);
@@ -17,7 +18,7 @@ public abstract class DocumentBase : IDocument
     public IEnumerable<IDocumentMessage> Outbox
     {
         get => _outbox;
-        protected internal set => _outbox = value == null
+        protected set => _outbox = value == null
             ? new HashSet<IDocumentMessage>(DocumentMessageEqualityComparer.Instance)
             : new HashSet<IDocumentMessage>(value, DocumentMessageEqualityComparer.Instance);
     }

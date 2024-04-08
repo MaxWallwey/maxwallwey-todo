@@ -8,15 +8,17 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly IDocumentMessageDispatcher _dispatcher;
     private readonly IOfflineDispatcher _offlineDispatcher;
-    private readonly ILogger<ToDoDocument> _logger;
+    private readonly ILogger _logger;
     private readonly IRetryableExceptionFilter _retryableExceptionFilter;
     
     private readonly ISet<DocumentBase> _identityMap 
         = new HashSet<DocumentBase>(DocumentBaseEqualityComparer.Instance);
 
-    public UnitOfWork(IDocumentMessageDispatcher dispatcher, 
+    public UnitOfWork(
+        IDocumentMessageDispatcher dispatcher, 
         IOfflineDispatcher offlineDispatcher, 
-        ILogger<ToDoDocument> logger, IRetryableExceptionFilter retryableExceptionFilter)
+        ILogger<UnitOfWork> logger, 
+        IRetryableExceptionFilter retryableExceptionFilter)
     {
         _dispatcher = dispatcher;
         _offlineDispatcher = offlineDispatcher;
@@ -45,7 +47,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    public async Task Complete()
+    public async Task Complete(CancellationToken cancellationToken)
     {
         var toSkip = new HashSet<DocumentBase>();
 
@@ -56,7 +58,7 @@ public class UnitOfWork : IUnitOfWork
                 document.Id.ToString());
             try
             {
-                await _dispatcher.Dispatch(document);
+                await _dispatcher.Dispatch(document, cancellationToken);
             }
             catch (Exception exception)
             {

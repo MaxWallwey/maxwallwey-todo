@@ -12,9 +12,7 @@ public class RetryUnitOfWorkBehavior<TRequest, TResponse>
     public RetryUnitOfWorkBehavior(IUnitOfWork unitOfWork) 
         => _unitOfWork = unitOfWork;
     
-    public Task<TResponse> Handle(TRequest request, 
-        RequestHandlerDelegate<TResponse> next, 
-        CancellationToken cancellationToken)
+    public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
     {
         var retryCount = 0;
 
