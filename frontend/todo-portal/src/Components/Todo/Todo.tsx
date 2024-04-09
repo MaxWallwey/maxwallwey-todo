@@ -19,7 +19,9 @@ export const Todo: React.FC<TodoProp> = ({
   <>
     <div className="flex mb-4 items-center" id={id}>
       <p className={`w-full`}>
-        <span className={isComplete ? "font-style: italic" : ""}>{name}</span>
+        <span className={isComplete ? "textDecoration: line-through" : ""}>
+          {name}
+        </span>
       </p>
       {!isComplete && (
         <TodoButton variant={Buttons.complete} onClick={completeTodo} />
