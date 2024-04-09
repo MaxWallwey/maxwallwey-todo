@@ -16,7 +16,7 @@ public class MailSender : IMailSender
             smtpClient.EnableSsl = true;
             smtpClient.Credentials = new NetworkCredential("max.wallwey@gmail.com", "kguvlqwzxxkdfglm");
             using (var message = new MailMessage(
-                       from: new MailAddress("max.wallwey@gmail.com", "Max Wallwey"),
+                       from: new MailAddress("max.wallwey@gmail.com", "TODO"),
                        to: new MailAddress(recipientAddress)
                    ))
             {
