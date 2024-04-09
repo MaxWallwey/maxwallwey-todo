@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using MongoDB.Bson;
 using Todo.Api.Domain.Collections;
 using Todo.Api.Domain.Infrastructure;
 
@@ -20,7 +21,7 @@ public class ToDoDocument : DocumentBase
     public void Complete()
     {
         IsComplete = true;
-        
+       
         //SendTodoCompletedEmail();
     }
 
