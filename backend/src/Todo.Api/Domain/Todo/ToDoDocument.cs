@@ -22,6 +22,7 @@ public class ToDoDocument : DocumentBase
     {
         IsComplete = true;
        
+        // Uncomment this to enable the email sender
         //SendTodoCompletedEmail();
     }
 
@@ -29,7 +30,7 @@ public class ToDoDocument : DocumentBase
     {
         var mailSender = new MailSender();
         
-        mailSender.SendEmail("max.wallwey@gmail.com", $"TODO - {Name}", $"Your todo '{Name}' has been completed.");
+        mailSender.SendEmail("max.wallwey@mina.co.uk", $"TODO - {Name}", $"Your todo '{Name}' has been completed.");
     }
 
     public bool Handle(SendTodoCompletedEmail message) => Receive(message);
