@@ -32,8 +32,22 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ControllerTests\" />
-      <Folder Include="SliceTests\" />
+      <Compile Remove="ControllerTests\**" />
+      <Compile Remove="SliceTests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="ControllerTests\**" />
+      <EmbeddedResource Remove="SliceTests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="ControllerTests\**" />
+      <None Remove="SliceTests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="IntegrationTests\" />
     </ItemGroup>
 
 </Project>
